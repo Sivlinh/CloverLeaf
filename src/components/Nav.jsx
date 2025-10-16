@@ -47,7 +47,7 @@ export default function Nav() {
                     className={`px-3 py-2 rounded-3xl text-sm font-medium transition-colors duration-200 ${
                       isActiveLink(link.href)
                         ? "text-gray-800 bg-gray-500/10"
-                        : "text-gray-800 hover:text-gray-900 hover:bg-gray-200"
+                        : "text-gray-800 hover:text-gray-900 hover:bg-gray-500/10"
                     }`}
                   >
                     {link.label}

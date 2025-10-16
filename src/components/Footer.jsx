@@ -8,14 +8,14 @@ export default function Footer() {
 
         {/* Logo & Description */}
         <div>
-          <h2 className="ml-2 text-black text-xl font-bold flex items-center">
+          <div className="ml-2 text-black text-xl font-bold flex items-center">
              <img 
                   src="public/logo_shop.png" 
                   alt="Logo" 
                   className="h-12 w-12"
                 />
              <h3 className="ml-2 font-medium"> Cloverleaf</h3>
-          </h2>
+          </div>
           <p className="mt-3 text-sm">
             Your trusted source for gentle and effective skincare. <br />
             Because self-care starts with healthy skin.
