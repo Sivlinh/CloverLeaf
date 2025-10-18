@@ -38,6 +38,7 @@ import Cart from "./pages/Cart";
 import Profile from "./pages/Profile";
 import Footer from "./components/Footer";
 import Hero from "./components/Hero";
+
 export default function App() {
   return (
     <div className="App">
@@ -46,6 +47,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+       
         <Route path="/contact" element={<Contact />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/profile" element={<Profile />} />
