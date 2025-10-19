@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from "react";
 import { FaStar } from "react-icons/fa"; // ⭐ Add this for star icons
 
@@ -181,3 +182,6 @@ export default function Shop() {
     </div>
   );
 }
+=======
+
+>>>>>>> 92aed22d6a3af610026c06789fafc53a4e4c515a
