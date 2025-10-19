@@ -38,12 +38,8 @@ import Cart from "./pages/Cart";
 import Profile from "./pages/Profile";
 import Footer from "./components/Footer";
 import Hero from "./components/Hero";
-<<<<<<< HEAD
 import Shop from "./pages/Shop";
 import React from "react";
-=======
->>>>>>> 92aed22d6a3af610026c06789fafc53a4e4c515a
-
 export default function App() {
   return (
     <div className="App">
