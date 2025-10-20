@@ -1,6 +1,3 @@
-
-
-
 import { Routes, Route } from "react-router-dom";
 import Nav from "./components/Nav";
 import Home from "./pages/Home";
@@ -12,7 +9,6 @@ import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Shop from "./pages/Shop";
 import React from "react";
-
 
 export default function App() {
   return (

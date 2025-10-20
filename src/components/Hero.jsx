@@ -5,7 +5,7 @@ export default function Hero() {
   const images = [
     'public/bg2.webp',
     'public/pg4.jpg',
-    'public/pg5.jpg',
+    '/pg5.jpg',
   ];
 
   const [index, setIndex] = useState(0);
