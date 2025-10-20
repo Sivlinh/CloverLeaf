@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
 export default function Hero() {
-  // List of background images
+ 
   const images = [
-    '/bg.webp',
-    '/bg2.webp',
-    '/pg4.jpg',
-    '/pg5.jpg',
-    
-   
+    'public/bg2.webp',
+    'public/pg4.jpg',
+    'public/pg5.jpg',
   ];
 
   const [index, setIndex] = useState(0);
@@ -19,11 +16,11 @@ export default function Hero() {
       setIndex((prev) => {
         let next = prev + direction;
         if (next === images.length - 1 || next === 0) {
-          setDirection(-direction); // reverse when hitting ends
+          setDirection(-direction); 
         }
         return next;
       });
-    }, 3000); // change every 4 seconds
+    }, 3000); 
 
     return () => clearInterval(interval);
   }, [direction, images.length]);
@@ -52,9 +49,6 @@ export default function Hero() {
 
         {/* Category Filters */}
         <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-<<<<<<< HEAD
-          {['All Products', ,'Cleanser','Toner','Serum', 'Sunscreen','Moisturizer','Face mask/Sheet mask','Eye cream','Blush','Highlighter','Lip balm/Lip gloss'].map((category) => (
-=======
           {[
             'All Products',
             'Cleanser',
@@ -68,7 +62,6 @@ export default function Hero() {
             'Highlighter',
             'Lip Balm',
           ].map((category) => (
->>>>>>> 92aed22d6a3af610026c06789fafc53a4e4c515a
             <button
               key={category}
               className="px-4 py-2 bg-white bg-opacity-20 backdrop-blur-sm rounded-full text-white hover:bg-opacity-30 transition-all duration-300 border border-white border-opacity-30"

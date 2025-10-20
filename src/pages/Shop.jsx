@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import React, { useState } from "react";
 import { FaStar } from "react-icons/fa"; // ⭐ Add this for star icons
 
@@ -65,11 +65,13 @@ export default function Shop() {
     { id: 48, title: "Coconut Lip Balm", price: 5.8, category: "Lip Balm", rating: 4.6, images: ["/images/lip3.png"] },
     { id: 49, title: "Mint Lip Balm", price: 6.2, category: "Lip Balm", rating: 4.3, images: ["/images/lip4.png"] },
     { id: 50, title: "Honey Lip Balm", price: 5.9, category: "Lip Balm", rating: 4.7, images: ["/images/lip5.png"] },
-  ]);
+  ]
+);
 
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [orderCode, setOrderCode] = useState("");
+  
 
   const generateOrderCode = () =>
     "SKN-" + Math.random().toString(36).substring(2, 8).toUpperCase();
@@ -182,6 +184,6 @@ export default function Shop() {
     </div>
   );
 }
-=======
 
->>>>>>> 92aed22d6a3af610026c06789fafc53a4e4c515a
+
+
