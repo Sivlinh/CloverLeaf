@@ -117,6 +117,7 @@ export default function Nav() {
                   />
                   <button className="ml-2 bg-blue-500 text-white px-3 py-2 rounded-md text-sm hover:bg-blue-600">
                     Go
+                   
                   </button>
                 </div>
               )}

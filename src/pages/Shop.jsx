@@ -8,18 +8,18 @@ export default function Shop() {
 
   const [products] = useState([
     // 🌿 Cleanser (1–5)
-    { id: 1, title: "[ANUA]Heartleaf Quercetinol Deep Cleansing Foam (150ml)", price: 15.0, category: "Cleanser", rating: 4.5, images: ["/Cleanser/anua.png"] },
-    { id: 2, title: "Hydrating Gel Cleanser", price: 12.5, category: "Cleanser", rating: 4.8, images: ["/images/cleanser2.png"] },
-    { id: 3, title: "Brightening Cleanser", price: 11.99, category: "Cleanser", rating: 4.2, images: ["/images/cleanser3.png"] },
-    { id: 4, title: "Deep Pore Cleanser", price: 13.99, category: "Cleanser", rating: 4.7, images: ["/images/cleanser4.png"] },
-    { id: 5, title: "Soothing Cleanser", price: 9.99, category: "Cleanser", rating: 4.3, images: ["/images/cleanser5.png"] },
+    { id: 1, title: "[ANUA]Heartleaf Quercetinol Deep Cleansing Foam (150ml)", price: 15.0, category: "Cleanser", rating: 4.5, images: ["public/Cleanser/Anua-removebg-preview (1).png"] },
+    { id: 2, title: "Hydrating Gel Cleanser", price: 12.5, category: "Cleanser", rating: 4.8, images: ["public/Cleanser/Hydrating_Gel_Cleanser-removebg-preview.png"] },
+    { id: 3, title: "Brightening Cleanser", price: 11.99, category: "Cleanser", rating: 4.2, images: ["public/Cleanser/Anua-HeartleafPoreControlCleansingOil-removebg-preview.png"] },
+    { id: 4, title: "Deep Pore Cleanser", price: 13.99, category: "Cleanser", rating: 4.7, images: ["public/Cleanser/Deep_Pore_Cleanser-removebg-preview.png"] },
+    { id: 5, title: "Softing Cleanser", price: 9.99, category: "Cleanser", rating: 4.3, images: ["public/Cleanser/Softting.png"] },
 
     // 🌸 Toner (6–10)
-    { id: 6, title: "[ANUA] Heartleaf 77% Soothing Toner 250ml | 500ml", price: 18.5, category: "Toner", rating: 4.6, images: ["/Toner/toner1.png"] },
-    { id: 7, title: "Green Tea Toner", price: 10.5, category: "Toner", rating: 4.7, images: ["/images/toner2.png"] },
-    { id: 8, title: "Hydrating Toner", price: 11.0, category: "Toner", rating: 4.4, images: ["/images/toner3.png"] },
-    { id: 9, title: "Aloe Refresh Toner", price: 9.99, category: "Toner", rating: 4.2, images: ["/images/toner4.png"] },
-    { id: 10, title: "Vitamin Toner", price: 12.0, category: "Toner", rating: 4.8, images: ["/images/toner5.png"] },
+    { id: 6, title: "[ANUA] Heartleaf 77% Soothing Toner 250ml | 500ml", price: 18.5, category: "Toner", rating: 4.6, images: ["public/Toner/Anua-Heartleaf-77-Soothing-Toner-250ml-2-removebg-preview.png"] },
+    { id: 7, title: "Green Tea Toner", price: 10.5, category: "Toner", rating: 4.7, images: ["public/Toner/SOME-removebg-preview.png"] },
+    { id: 8, title: "Hydrating Toner", price: 11.0, category: "Toner", rating: 4.4, images: ["public/Toner/1004.png"] },
+    { id: 9, title: "Aloe Refresh Toner", price: 9.99, category: "Toner", rating: 4.2, images: ["public/Toner/Aloe.png"] },
+    { id: 10, title: "Vitamin Toner", price: 12.0, category: "Toner", rating: 4.8, images: ["public/Toner/CeraVe_Hydrating_Toner.png"] },
 
     // 💧 Serum (11–15)
     { id: 11, title: "Vitamin C Serum", price: 19.99, category: "Serum", rating: 4.9, images: ["/images/serum1.png"] },
@@ -36,8 +36,8 @@ export default function Shop() {
     { id: 20, title: "Sensitive Skin SPF", price: 15.0, category: "Sunscreen", rating: 4.7, images: ["/images/sunscreen5.png"] },
 
     // 💦 Moisturizer (21–25)
-    { id: 21, title: "Aloe Vera Moisturizer", price: 12.99, category: "Moisturizer", rating: 4.8, images: ["/images/moist1.png"] },
-    { id: 22, title: "Hydra Boost Cream", price: 13.5, category: "Moisturizer", rating: 4.7, images: ["/images/moist2.png"] },
+    { id: 21, title: "Aloe Vera Moisturizer", price: 12.99, category: "Moisturizer", rating: 4.8, images: ["public/Moisturizer/ALoe.png"] },
+    { id: 22, title: "Hydra Boost Cream", price: 13.5, category: "Moisturizer", rating: 4.7, images: ["public/Moisturizer/cerave.png"] },
     { id: 23, title: "Light Daily Cream", price: 11.5, category: "Moisturizer", rating: 4.3, images: ["/images/moist3.png"] },
     { id: 24, title: "Collagen Moist Cream", price: 15.5, category: "Moisturizer", rating: 4.6, images: ["/images/moist4.png"] },
     { id: 25, title: "Oil-Free Moist Gel", price: 10.99, category: "Moisturizer", rating: 4.4, images: ["/images/moist5.png"] },
