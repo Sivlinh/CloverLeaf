@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Hero() {
+  const navigate = useNavigate();
+
   const images = [
     '/bg.webp',
     '/bg2.webp',
@@ -60,6 +63,7 @@ export default function Hero() {
           {categories.map((category) => (
             <button
               key={category}
+              onClick={() => navigate(`/shop?category=${encodeURIComponent(category)}`)}
               className="px-4 py-2 bg-white bg-opacity-20 backdrop-blur-sm rounded-full text-white hover:bg-opacity-30 transition-all duration-300 border border-white border-opacity-30"
             >
               {category}

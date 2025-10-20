@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaStar, FaHeart } from "react-icons/fa";
+import { useSearchParams } from "react-router-dom";
 
 export default function Shop() {
+  const [searchParams] = useSearchParams();
+  const selectedCategory = searchParams.get('category');
+
   const [products] = useState([
     // 🌿 Cleanser (1–5)
     { id: 1, title: "[ANUA]Heartleaf Quercetinol Deep Cleansing Foam (150ml)", price: 15.0, category: "Cleanser", rating: 4.5, images: ["/Cleanser/anua.png"] },
@@ -77,6 +81,10 @@ export default function Shop() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [orderCode, setOrderCode] = useState("");
 
+  const filteredProducts = selectedCategory && selectedCategory !== 'All Products'
+    ? products.filter(product => product.category === selectedCategory)
+    : products;
+
   const generateOrderCode = () =>
     "SKN-" + Math.random().toString(36).substring(2, 8).toUpperCase();
 
@@ -115,11 +123,13 @@ export default function Shop() {
   };
 
  return (
-  <div className="min-h-screen bg-[#f9fcff] flex flex-col items-center py-10">
-    <h1 className="text-3xl font-bold text-[#0a1a2f] mb-10">🛍 Shop All Products</h1>
+ <div className="min-h-screen bg-[#f9fcff] flex flex-col items-center py-10">
+   <h1 className="text-3xl font-bold text-[#0a1a2f] mb-10">
+     🛍 Shop {selectedCategory && selectedCategory !== 'All Products' ? selectedCategory : 'All Products'}
+   </h1>
 
-    <div className="w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-      {products.map((item) => (
+   <div className="w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+     {filteredProducts.map((item) => (
         <div
           key={item.id}
           className="bg-white rounded-3xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden"
