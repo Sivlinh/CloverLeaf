@@ -123,9 +123,9 @@ export default function Shop() {
   };
 
  return (
- <div className="min-h-screen bg-[#f9fcff] flex flex-col items-center py-10">
-   <h1 className="text-3xl font-bold text-[#0a1a2f] mb-10">
-     🛍 Shop {selectedCategory && selectedCategory !== 'All Products' ? selectedCategory : 'All Products'}
+ <div   className="  min-h-screen bg- flex flex-col items-center py-10">
+   <h1 className="text-2xl   text-[#1e385b] mb-10 font-serif">
+       About {selectedCategory && selectedCategory !== 'All Products' ? selectedCategory : 'All Products'}
    </h1>
 
    <div className="w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">

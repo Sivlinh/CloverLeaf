@@ -3,22 +3,26 @@ import Home from "../pages/Home";
 
 export default function Footer() {
   return (
-    <footer className="bg-blue-100 text-gray-700 py-10 mt-16">
+    <footer className="bg-black text-white py-10 mt-16">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
 
         {/* Logo & Description */}
         <div>
-          <div className="ml-2 text-black text-xl font-bold flex items-center">
+          {/* <div className="ml-2 text-black text-xl font-bold flex items-center">
              <img 
                   src="public/logo_shop.png" 
                   alt="Logo" 
                   className="h-12 w-12"
                 />
              <h3 className="ml-2 font-medium"> Cloverleaf</h3>
-          </div>
+          </div> */}
           <p className="mt-3 text-sm">
             Your trusted source for gentle and effective skincare. <br />
             Because self-care starts with healthy skin.
+          </p>
+          
+          <p className="mt-6 text-sm flex justify-content-center text-gray-500">
+            © 2025 Cloverleaf. All rights reserved.
           </p>
         </div>
 
@@ -61,9 +65,9 @@ export default function Footer() {
             </form>
           </div>
 
-          <p className="mt-6 text-sm text-gray-500">
+          {/* <p className="mt-6 text-sm flex justify-content-center text-gray-500">
             © 2025 Cloverleaf. All rights reserved.
-          </p>
+          </p> */}
         </div>
 
       </div>

@@ -20,7 +20,7 @@ export default function Nav() {
 
   return (
     <div>
-      <nav className="fixed top-0 left-0 w-full bg-blue-100 shadow-md z-50">
+      <nav className="fixed top-0 left-0 w-full bg-white  shadow-md z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
