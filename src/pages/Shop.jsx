@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> 3dc4b9980d04fcc9c64bcfd8d42c650dd1b1468d
 import React, { useState } from "react";
 import { FaStar, FaHeart } from "react-icons/fa";
 
@@ -76,12 +72,10 @@ export default function Shop() {
     { id: 48, title: "Coconut Lip Balm", price: 5.8, category: "Lip Balm", rating: 4.6, images: ["/images/lip3.png"] },
     { id: 49, title: "Mint Lip Balm", price: 6.2, category: "Lip Balm", rating: 4.3, images: ["/images/lip4.png"] },
     { id: 50, title: "Honey Lip Balm", price: 5.9, category: "Lip Balm", rating: 4.7, images: ["/images/lip5.png"] },
-  ]
-);
+  ]);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [orderCode, setOrderCode] = useState("");
-  
 
   const generateOrderCode = () =>
     "SKN-" + Math.random().toString(36).substring(2, 8).toUpperCase();
@@ -140,7 +134,6 @@ export default function Shop() {
               <FaHeart className="text-gray-400 hover:text-red-500 transition-all cursor-pointer" />
             </div>
           </div>
-<<<<<<< HEAD
 
           <div className="p-6 flex flex-col items-center text-center">
             <h3 className="font-semibold text-lg text-[#0a1a2f] mb-1 line-clamp-2">
@@ -193,13 +186,3 @@ export default function Shop() {
   </div>
 );
 }
-=======
-        </div>
-      )}
-    </div>
-  );
-}
-
-
-
->>>>>>> 3dc4b9980d04fcc9c64bcfd8d42c650dd1b1468d
