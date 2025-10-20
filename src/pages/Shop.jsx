@@ -36,8 +36,8 @@ export default function Shop() {
     { id: 20, title: "Sensitive Skin SPF", price: 15.0, category: "Sunscreen", rating: 4.7, images: ["/images/sunscreen5.png"] },
 
     // 💦 Moisturizer (21–25)
-    { id: 21, title: "Aloe Vera Moisturizer", price: 12.99, category: "Moisturizer", rating: 4.8, images: ["/images/moist1.png"] },
-    { id: 22, title: "Hydra Boost Cream", price: 13.5, category: "Moisturizer", rating: 4.7, images: ["/images/moist2.png"] },
+    { id: 21, title: "Aloe Vera Moisturizer", price: 12.99, category: "Moisturizer", rating: 4.8, images: ["public/Moisturizer/ALoe.png"] },
+    { id: 22, title: "Hydra Boost Cream", price: 13.5, category: "Moisturizer", rating: 4.7, images: ["public/Moisturizer/cerave.png"] },
     { id: 23, title: "Light Daily Cream", price: 11.5, category: "Moisturizer", rating: 4.3, images: ["/images/moist3.png"] },
     { id: 24, title: "Collagen Moist Cream", price: 15.5, category: "Moisturizer", rating: 4.6, images: ["/images/moist4.png"] },
     { id: 25, title: "Oil-Free Moist Gel", price: 10.99, category: "Moisturizer", rating: 4.4, images: ["/images/moist5.png"] },
