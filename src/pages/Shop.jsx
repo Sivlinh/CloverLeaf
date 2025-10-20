@@ -5,10 +5,10 @@ export default function Shop() {
   const [products] = useState([
     // 🌿 Cleanser (1–5)
     { id: 1, title: "[ANUA]Heartleaf Quercetinol Deep Cleansing Foam (150ml)", price: 15.0, category: "Cleanser", rating: 4.5, images: ["/Cleanser/anua.png"] },
-    { id: 2, title: "Hydrating Gel Cleanser", price: 12.5, category: "Cleanser", rating: 4.8, images: ["/images/cleanser2.png"] },
-    { id: 3, title: "Brightening Cleanser", price: 11.99, category: "Cleanser", rating: 4.2, images: ["/images/cleanser3.png"] },
-    { id: 4, title: "Deep Pore Cleanser", price: 13.99, category: "Cleanser", rating: 4.7, images: ["/images/cleanser4.png"] },
-    { id: 5, title: "Soothing Cleanser", price: 9.99, category: "Cleanser", rating: 4.3, images: ["/images/cleanser5.png"] },
+    { id: 2, title: "Hydrating Gel Cleanser", price: 12.5, category: "Cleanser", rating: 4.8, images: ["public/Cleanser/Brightening Cleanser.avif"] },
+    { id: 3, title: "Brightening Cleanser", price: 11.99, category: "Cleanser", rating: 4.2, images: ["public/Cleanser/Hydrating Gel Cleanser.jpg"] },
+    { id: 4, title: "Deep Pore Cleanser", price: 13.99, category: "Cleanser", rating: 4.7, images: ["public/Cleanser/Deep Pore Cleanser.jpg"] },
+    { id: 5, title: "Softing Cleanser", price: 9.99, category: "Cleanser", rating: 4.3, images: ["public/Cleanser/Softting.png"] },
 
     // 🌸 Toner (6–10)
     { id: 6, title: "[ANUA] Heartleaf 77% Soothing Toner 250ml | 500ml", price: 18.5, category: "Toner", rating: 4.6, images: ["/Toner/toner1.png"] },

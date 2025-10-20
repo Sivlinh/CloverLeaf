@@ -20,15 +20,15 @@ export default function ContactPage() {
             <h2 className="text-2xl font-semibold text-black mb-4">Contact Information</h2>
             <ul className="space-y-4 text-gray-700">
               <li className="flex items-center gap-3">
-                <FaEnvelope className="text-blue-600" />
+                <FaEnvelope className="text-blue-500" />
                 <span>support@cloverleaf.com</span>
               </li>
               <li className="flex items-center gap-3">
-                <FaPhoneAlt className="text-blue-600" />
+                <FaPhoneAlt className="text-blue-500" />
                 <span>+855 12 345 678</span>
               </li>
               <li className="flex items-center gap-3">
-                <FaMapMarkerAlt className="text-blue-600" />
+                <FaMapMarkerAlt className="text-blue-500" />
                 <span>#12, st.202, Tuek Thla, Sen Sok, Phnom Penh, Cambodia</span>
               </li>
             </ul>
@@ -50,7 +50,7 @@ export default function ContactPage() {
             <h2 className="text-2xl font-semibold text-black mb-4">Send Us a Message</h2>
             <form className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-blue-600 mb-1">
+                <label className="block text-sm font-medium text-blue-500 mb-1">
                   Name
                 </label>
                 <input
@@ -61,18 +61,18 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-blue-600 mb-1">
+                <label className="block text-sm font-medium text-blue-500 mb-1">
                   Email
                 </label>
                 <input
                   type="email"
-                  placeholder="you@example.com"
+                  placeholder="your@email.com"
                   className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-400"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-blue-600 mb-1">
+                <label className="block text-sm font-medium text-blue-500 mb-1">
                   Message
                 </label>
                 <textarea
@@ -84,7 +84,7 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-green-700 transition"
+                className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-400 transition"
               >
                 Send Message
               </button>
