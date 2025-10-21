@@ -43,29 +43,29 @@ export default function Shop() {
     { id: 25, title: "Oil-Free Moist Gel", price: 10.99, category: "Moisturizer", rating: 4.4, images: ["public/Moisturizer/Skin 1004.webp"] },
 
     // 🧖 Face Mask (26–30)
-    { id: 26, title: "Charcoal Detox Mask", price: 8.5, category: "Face Mask", rating: 4.5, images: ["/images/mask1.png"] },
-    { id: 27, title: "Clay Purify Mask", price: 9.0, category: "Face Mask", rating: 4.4, images: ["/images/mask2.png"] },
-    { id: 28, title: "Hydrating Sheet Mask", price: 7.5, category: "Face Mask", rating: 4.3, images: ["/images/mask3.png"] },
-    { id: 29, title: "Vitamin Mask", price: 8.0, category: "Face Mask", rating: 4.5, images: ["/images/mask4.png"] },
-    { id: 30, title: "Bright Glow Mask", price: 9.5, category: "Face Mask", rating: 4.6, images: ["/images/mask5.png"] },
+    { id: 26, title: "Mary & May Face Mask", price: 8.5, category: "Face Mask", rating: 4.5, images: ["public/Face mask/f2b146fbc7610ba277664abc0ba32d26_8vy3yk9s_ddd8e7e4-removebg-preview.png"] },
+    { id: 27, title: "Some by Mi Mask", price: 1.0, category: "Face Mask", rating: 4.4, images: ["public/Face mask/some.png"] },
+    { id: 28, title: "Torriden Sheet Mask", price: 7.5, category: "Face Mask", rating: 4.3, images: ["public/Face mask/Torriden.png"] },
+    { id: 29, title: "Biodance Vitamin Mask", price: 12.0, category: "Face Mask", rating: 4.5, images: ["public/Face mask/biodance.png"] },
+    { id: 30, title: "Beauty of Joseon clay ask", price: 13.5, category: "Face Mask", rating: 4.6, images: ["public/Face mask/beauty.png"] },
 
     // 👁 Eye Cream (31–35)
-    { id: 31, title: "Anti-Wrinkle Eye Cream", price: 14.0, category: "Eye Cream", rating: 4.8, images: ["/images/eye1.png"] },
-    { id: 32, title: "Hydra Eye Gel", price: 13.0, category: "Eye Cream", rating: 4.5, images: ["/images/eye2.png"] },
-    { id: 33, title: "Bright Eye Serum", price: 15.0, category: "Eye Cream", rating: 4.6, images: ["/images/eye3.png"] },
-    { id: 34, title: "Caffeine Eye Cream", price: 12.5, category: "Eye Cream", rating: 4.4, images: ["/images/eye4.png"] },
-    { id: 35, title: "Soothing Eye Balm", price: 14.5, category: "Eye Cream", rating: 4.5, images: ["/images/eye5.png"] },
+    { id: 31, title: "Seoul Eye Cream", price: 12.0, category: "Eye Cream", rating: 4.8, images: ["public/Eye Cream/seoul.png"] },
+    { id: 32, title: "Beauty of Joseon Eye Gel", price: 13.0, category: "Eye Cream", rating: 4.5, images: ["public/Eye Cream/b.png"] },
+    { id: 33, title: "Mary & May Bright Eye Serum", price: 15.0, category: "Eye Cream", rating: 4.6, images: ["public/Eye Cream/may.png"] },
+    { id: 34, title: "Skin 1004 Eye Cream", price: 12.5, category: "Eye Cream", rating: 4.4, images: ["public/Eye Cream/1004.webp"] },
+    { id: 35, title: "Cosrx Soothing Eye Balm", price: 14.5, category: "Eye Cream", rating: 4.5, images: ["public/Eye Cream/Cosrx.png"] },
 
     // 🌸 Blush (36–40)
-    { id: 36, title: "Peach Glow Blush", price: 9.99, category: "Blush", rating: 4.6, images: ["/images/blush1.png"] },
-    { id: 37, title: "Rose Pink Blush", price: 10.5, category: "Blush", rating: 4.7, images: ["/images/blush2.png"] },
-    { id: 38, title: "Coral Shine Blush", price: 9.5, category: "Blush", rating: 4.3, images: ["/images/blush3.png"] },
-    { id: 39, title: "Natural Tone Blush", price: 11.0, category: "Blush", rating: 4.4, images: ["/images/blush4.png"] },
-    { id: 40, title: "Matte Finish Blush", price: 10.99, category: "Blush", rating: 4.6, images: ["/images/blush5.png"] },
+    { id: 36, title: "Carrot Glow Blush 3ce", price: 8.0, category: "Blush", rating: 4.6, images: ["public/Blush/3ce1.png"] },
+    { id: 37, title: "Rose Pink Blush 3ce", price: 10.5, category: "Blush", rating: 4.7, images: ["public/Blush/3ce2.png"] },
+    { id: 38, title: "Coral Shine Blush", price: 5.5, category: "Blush", rating: 4.3, images: ["public/Blush/m1.png"] },
+    { id: 39, title: "Than Tone Blush Romand", price: 6.0, category: "Blush", rating: 4.4, images: ["public/Blush/romand.png"] },
+    { id: 40, title: "Matte Finish Blush Ampouel", price: 10.0, category: "Blush", rating: 4.6, images: ["public/Blush/am.png"] },
 
     // ✨ Highlighter (41–45)
-    { id: 41, title: "Golden Glow Highlighter", price: 11.99, category: "Highlighter", rating: 4.7, images: ["/images/high1.png"] },
-    { id: 42, title: "Shimmer Beam", price: 12.5, category: "Highlighter", rating: 4.6, images: ["/images/high2.png"] },
+    { id: 41, title: "Golden Glow Highlighter", price: 5.6, category: "Highlighter", rating: 4.7, images: ["public/Highliter/1.png"] },
+    { id: 42, title: "Jumbo Highlighter White Stick", price: 7.5, category: "Highlighter", rating: 4.6, images: ["public/Highliter/2.png"] },
     { id: 43, title: "Soft Glow Stick", price: 10.5, category: "Highlighter", rating: 4.5, images: ["/images/high3.png"] },
     { id: 44, title: "Radiant Highlighter", price: 13.0, category: "Highlighter", rating: 4.8, images: ["/images/high4.png"] },
     { id: 45, title: "Diamond Shine", price: 14.0, category: "Highlighter", rating: 4.9, images: ["/images/high5.png"] },
