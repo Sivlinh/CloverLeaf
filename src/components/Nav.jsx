@@ -20,13 +20,13 @@ export default function Nav() {
 
   return (
     <div>
-      <nav className="fixed top-0 left-0 w-full bg-white  shadow-md z-50">
+      <nav className="fixed top-0 left-0 w-full     bg-slate-50   shadow-md z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex-shrink-0">
               <Link to="/" className="flex items-center">
-                <img src="logo_shop.png" alt="Logo" className="h-12 w-12" />
+                <img src="public/logo_shop.png" alt="Logo" className="h-12 w-12" />
                 <span className="ml-2 text-black text-xl font-semibold">
                   Cloverleaf
                 </span>

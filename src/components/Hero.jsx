@@ -5,7 +5,6 @@ export default function Hero() {
   const navigate = useNavigate();
 
   const images = [
-    '/bg.webp',
     '/bg2.webp',
     '/pg4.jpg',
     '/pg5.jpg',

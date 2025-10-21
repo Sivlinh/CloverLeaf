@@ -8,7 +8,7 @@ export default function Shop() {
 
   const [products] = useState([
     // 🌿 Cleanser (1–5)
-    { id: 1, title: "[ANUA]Heartleaf Quercetinol Deep Cleansing Foam (150ml)", price: 15.0, category: "Cleanser", rating: 4.5, images: ["public/Cleanser/Anua-removebg-preview (1).png"] },
+    { id: 1, title: "ANUA Deep Cleansing", price: 15.0, category: "Cleanser", rating: 4.5, images: ["public/Cleanser/Anua-removebg-preview (1).png"] },
     { id: 2, title: "Hydrating Gel Cleanser", price: 12.5, category: "Cleanser", rating: 4.8, images: ["public/Cleanser/Hydrating_Gel_Cleanser-removebg-preview.png"] },
     { id: 3, title: "Brightening Cleanser", price: 11.99, category: "Cleanser", rating: 4.2, images: ["public/Cleanser/Anua-HeartleafPoreControlCleansingOil-removebg-preview.png"] },
     { id: 4, title: "Deep Pore Cleanser", price: 13.99, category: "Cleanser", rating: 4.7, images: ["public/Cleanser/Deep_Pore_Cleanser-removebg-preview.png"] },
@@ -38,9 +38,9 @@ export default function Shop() {
     // 💦 Moisturizer (21–25)
     { id: 21, title: "Aloe Vera Moisturizer", price: 12.99, category: "Moisturizer", rating: 4.8, images: ["public/Moisturizer/ALoe.png"] },
     { id: 22, title: "Hydra Boost Cream", price: 13.5, category: "Moisturizer", rating: 4.7, images: ["public/Moisturizer/cerave.png"] },
-    { id: 23, title: "Light Daily Cream", price: 11.5, category: "Moisturizer", rating: 4.3, images: ["/images/moist3.png"] },
-    { id: 24, title: "Collagen Moist Cream", price: 15.5, category: "Moisturizer", rating: 4.6, images: ["/images/moist4.png"] },
-    { id: 25, title: "Oil-Free Moist Gel", price: 10.99, category: "Moisturizer", rating: 4.4, images: ["/images/moist5.png"] },
+    { id: 23, title: "Light Daily Cream", price: 11.5, category: "Moisturizer", rating: 4.3, images: ["/public/Moisturizer/3.png"] },
+    { id: 24, title: "Collagen Moist Cream", price: 15.5, category: "Moisturizer", rating: 4.6, images: ["public/Moisturizer/isntree.png"] },
+    { id: 25, title: "Oil-Free Moist Gel", price: 10.99, category: "Moisturizer", rating: 4.4, images: ["public/Moisturizer/Skin 1004.webp"] },
 
     // 🧖 Face Mask (26–30)
     { id: 26, title: "Charcoal Detox Mask", price: 8.5, category: "Face Mask", rating: 4.5, images: ["/images/mask1.png"] },
