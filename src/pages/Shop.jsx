@@ -121,12 +121,28 @@ export default function Shop() {
       </div>
     );
   };
+const handleAddToCart = (item) => {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  // prevent duplicate product
+  const exists = cart.find((p) => p.id === item.id);
+  if (exists) {
+    alert("❤️ This product is already in your cart!");
+    return;
+  }
+
+  cart.push(item);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  alert(`🛒 Added "${item.title}" to your cart!`);
+};
 
  return (
+  
  <div   className="  min-h-screen bg- flex flex-col items-center py-10">
    <h1 className="text-2xl   text-[#1e385b] mb-10 font-serif">
        About {selectedCategory && selectedCategory !== 'All Products' ? selectedCategory : 'All Products'}
    </h1>
+   
 
    <div className="w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
      {filteredProducts.map((item) => (
@@ -141,8 +157,11 @@ export default function Shop() {
               className="w-full h-60 object-contain p-6 bg-gradient-to-b from-[#f9fcff] to-[#eef5ff]"
             />
             <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-md rounded-full p-2 shadow-sm">
-              <FaHeart className="text-gray-400 hover:text-red-500 transition-all cursor-pointer" />
+             <FaHeart onClick={() => handleAddToCart(item)}
+             className="text-gray-400 hover:text-red-500 transition-all cursor-pointer"/>
+      
             </div>
+            
           </div>
 
           <div className="p-6 flex flex-col items-center text-center">
@@ -161,6 +180,7 @@ export default function Shop() {
             </button>
           </div>
         </div>
+        
       ))}
     </div>
 
