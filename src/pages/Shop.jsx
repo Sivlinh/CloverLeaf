@@ -15,23 +15,23 @@ export default function Shop() {
     { id: 5, title: "Softing Cleanser", price: 9.99, category: "Cleanser", rating: 4.3, images: ["public/Cleanser/Softting.png"] },
 
     // 🌸 Toner (6–10)
-    { id: 6, title: "[ANUA] Heartleaf 77% Soothing Toner 250ml | 500ml", price: 18.5, category: "Toner", rating: 4.6, images: ["public/Toner/Anua-Heartleaf-77-Soothing-Toner-250ml-2-removebg-preview.png"] },
-    { id: 7, title: "Green Tea Toner", price: 10.5, category: "Toner", rating: 4.7, images: ["public/Toner/SOME-removebg-preview.png"] },
-    { id: 8, title: "Hydrating Toner", price: 11.0, category: "Toner", rating: 4.4, images: ["public/Toner/1004.png"] },
-    { id: 9, title: "Aloe Refresh Toner", price: 9.99, category: "Toner", rating: 4.2, images: ["public/Toner/Aloe.png"] },
-    { id: 10, title: "Vitamin Toner", price: 12.0, category: "Toner", rating: 4.8, images: ["public/Toner/CeraVe_Hydrating_Toner.png"] },
+    { id: 6, title: "Anua bright  ", price: 18.5, category: "Toner", rating: 4.6, images: ["public/Toner/Anua-Heartleaf-77-Soothing-Toner-250ml-2-removebg-preview.png"] },
+    { id: 7, title: "Some by Mi ", price: 10.5, category: "Toner", rating: 4.7, images: ["public/Toner/SOME-removebg-preview.png"] },
+    { id: 8, title: "Skin 1004 ", price: 11.0, category: "Toner", rating: 4.4, images: ["public/Toner/1004.png"] },
+    { id: 9, title: "Aloe Refresh", price: 9.99, category: "Toner", rating: 4.2, images: ["public/Toner/Aloe.png"] },
+    { id: 10, title: "Cerave Hydrating", price: 12.0, category: "Toner", rating: 4.8, images: ["public/Toner/CeraVe_Hydrating_Toner.png"] },
 
     // 💧 Serum (11–15)
-    { id: 11, title: "Skin 1004 Serum", price: 12.99, category: "Serum", rating: 4.9, images: ["public/seroum/1004.png"] },
+    { id: 11, title: "Skin 1004 Tea", price: 12.99, category: "Serum", rating: 4.9, images: ["public/seroum/1004.png"] },
     { id: 12, title: "Anua Serum", price: 13.5, category: "Serum", rating: 4.6, images: ["public/seroum/anua.png"] },
     { id: 13, title: "Niacinamide Serum APLB", price: 11.99, category: "Serum", rating: 4.5, images: ["public/seroum/aplb.png"] },
     { id: 14, title: "Skin 1004 Serum Pink", price: 16.0, category: "Serum", rating: 4.9, images: ["public/seroum/pink1004.png"] },
     { id: 15, title: "Bright Boost Serum Anua", price: 22.0, category: "Serum", rating: 4.7, images: ["public/seroum/redAnua.png"] },
 
     // ☀️ Sunscreen (16–20)
-    { id: 16, title: "Daily UV Defense Skin1004", price: 12.5, category: "Sunscreen", rating: 4.4, images: ["public/sunscreen/1004.png"] },
+    { id: 16, title: "Daily UV Defense Skin 1004", price: 12.5, category: "Sunscreen", rating: 4.4, images: ["public/sunscreen/1004.png"] },
     { id: 17, title: "APLB Sun Shield", price: 10.99, category: "Sunscreen", rating: 4.5, images: ["public/sunscreen/aplb.png"] },
-    { id: 18, title: "Matte Finish SPF 50 IsnTree", price: 9.5, category: "Sunscreen", rating: 4.8, images: ["public/sunscreen/isntree.png"] },
+    { id: 18, title: "SPF 50+ IsnTree", price: 9.5, category: "Sunscreen", rating: 4.8, images: ["public/sunscreen/isntree.png"] },
     { id: 19, title: "Mary & May", price: 13.5, category: "Sunscreen", rating: 4.3, images: ["public/sunscreen/Mary.png"] },
     { id: 20, title: "Medicube Sunscreenn SPF", price: 13.0, category: "Sunscreen", rating: 4.7, images: ["public/sunscreen/medicube.png"] },
 
@@ -94,7 +94,7 @@ export default function Shop() {
   };
 
   const handleConfirm = () => {
-    alert(`✅ Added to Cart!\nProduct: ${selectedProduct.title}\nCode: ${orderCode}`);
+    alert(`✅ Aready Buy!\nProduct: ${selectedProduct.title}\nCode: ${orderCode}`);
     setSelectedProduct(null);
   };
 
