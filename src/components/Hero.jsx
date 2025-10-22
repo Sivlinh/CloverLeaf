@@ -5,9 +5,12 @@ export default function Hero() {
   const navigate = useNavigate();
 
   const images = [
+
     'public/treegirl.png',
     './public/face.png',
     
+
+  
   ];
 
   const [index, setIndex] = useState(0);

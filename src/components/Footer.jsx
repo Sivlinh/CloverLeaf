@@ -21,9 +21,7 @@ export default function Footer() {
             Because self-care starts with healthy skin.
           </p>
           
-          <p className="mt-6 text-sm flex justify-content-center text-gray-500">
-            © 2025 Cloverleaf. All rights reserved.
-          </p>
+          
         </div>
 
         {/* Quick Links */}
@@ -65,9 +63,9 @@ export default function Footer() {
             </form>
           </div>
 
-          {/* <p className="mt-6 text-sm flex justify-content-center text-gray-500">
+          {<p className="mt-6 text-sm flex justify-content-center text-gray-500">
             © 2025 Cloverleaf. All rights reserved.
-          </p> */}
+          </p>}
         </div>
 
       </div>
