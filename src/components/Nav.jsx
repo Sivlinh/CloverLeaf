@@ -23,7 +23,9 @@ export default function Nav() {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim() !== "") {
+
      
+      navigate(`/shop?search=${encodeURIComponent(searchTerm)}`);
       navigate(`/shop?search=${encodeURIComponent(searchTerm)}`);
 
       setShowSearch(false);

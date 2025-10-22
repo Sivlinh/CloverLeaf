@@ -8,6 +8,7 @@ import Profile from "./pages/Profile";
 import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Shop from "./pages/Shop";
+import Search from "./pages/Search";
 import React from "react";
 
 
@@ -24,7 +25,10 @@ export default function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/shop" element={<Shop />} />
+
         <Route path="/cart" element={<Cart />} />
+        <Route path="/search" element={<Search />} />
+
       </Routes>
       <Footer />
     </div>
