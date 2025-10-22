@@ -61,12 +61,12 @@ export default function Cart() {
         <p className="text-gray-500">Your cart is empty.</p>
       ) : (
         <>
-          <div className="space-y-4">
+          <div className="space-y-4 ">
             {cartItems.map((item) => (
               <div
                 key={item.id}
                 className={`flex items-center justify-between bg-white shadow-md rounded-2xl p-4 hover:shadow-lg transition-all ${
-                  selectedItems.includes(item.id) ? "ring-2 ring-[#5a8dee]" : ""
+                  selectedItems.includes(item.id) ? "ring-2 ring-[#102b5d]" : ""
                 }`}
               >
                 {/* Checkbox */}
@@ -74,7 +74,7 @@ export default function Cart() {
                   type="checkbox"
                   checked={selectedItems.includes(item.id)}
                   onChange={() => handleSelect(item.id)}
-                  className="w-5 h-5 accent-[#007bff] cursor-pointer"
+                  className="w-5 h-5  accent-[#4a8cd2] cursor-pointer mr-4"
                 />
 
                 {/* Product Info */}
@@ -125,9 +125,9 @@ export default function Cart() {
             </p>
             <button
               onClick={handleCheckout}
-              className="bg-gradient-to-r from-[#5a8dee] to-[#007bff] hover:from-[#007bff] hover:to-[#5a8dee] text-white px-8 py-2.5 rounded-full font-medium shadow-md hover:shadow-lg transition-all"
+              className="bg-gradient-to-r from-[#5a8dee] to-[#007bff]  hover:to-[#5a8dee] text-white px-8 py-2.5 rounded-full font-medium shadow-md hover:shadow-lg transition-all"
             >
-              Buy Selected
+              Checkout
             </button>
           </div>
         </>
