@@ -31,17 +31,13 @@ export default function Nav() {
 
   return (
     <div>
-<<<<<<< HEAD
       <nav className="fixed top-0 left-0 w-full z-50 bg-white/20 backdrop-blur-xl border-b border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
-=======
-      <nav className="fixed top-0 left-0 w-full     bg-slate-50   shadow-md z-50">
->>>>>>> 701797afc38a1cfd024e7bd60591885733834d7d
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex-shrink-0">
               <Link to="/" className="flex items-center">
-                <img src="public/logo_shop.png" alt="Logo" className="h-12 w-12" />
+                <img src="logo_shop.png" alt="Logo" className="h-12 w-12" />
                 <span className="ml-2 text-black text-xl font-semibold">
                   Cloverleaf
                 </span>
@@ -168,8 +164,7 @@ export default function Nav() {
                 <span className="absolute -top-1 -right-0 bg-blue-500 text-white text-xs rounded-full h-3 w-3 flex items-center justify-center"></span>
               </Link>
 
-             
-              
+            
   
                       
               {/* Profile */}
@@ -265,9 +260,6 @@ export default function Nav() {
       </nav>
 
       <div className="h-16"></div>
-      
-    </div> 
-  
+    </div>
   );
-
 }
