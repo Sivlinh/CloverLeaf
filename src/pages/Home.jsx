@@ -2,14 +2,14 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const products = [
-  { id: 1, name: "Gentle Cleansing Balm", price: "$42", image: "/public/sunscreen.png" },
-  { id: 2, name: "Hydrating Face Serum", price: "$16", image: "/public/sunscreen.png" },
-  { id: 3, name: "Nourishing Night Cream", price: "$28", image: "/public/sunscreen.png" },
-  { id: 4, name: "Brightening Clay Mask", price: "$18", image: "/public/sunscreen.png" },
-  { id: 5, name: "Vitamin C Toner", price: "$29", image: "/public/sunscreen.png" },
-  { id: 6, name: "Aloe Vera Gel", price: "$20", image: "/public/sunscreen.png" },
-  { id: 7, name: "Relief Sun Aqua-Fresh", price: "$16", image: "/public/sunscreen.png" },
-  { id: 8, name: "Anua Cleansing Oil", price: "$19", image: "/public/sunscreen.png" },
+  { id: 1, name: "Anua Deep Cleansing", price: "$7.0", image: "public/Cleanser/Anua-removebg-preview (1).png" },
+  { id: 2, name: "Serum Skin 1004", price: "$12.99", image: "public/seroum/1004.png" },
+  { id: 3, name: "Anua Serum", price: "$13.5", image: "public/seroum/anua.png" },
+  { id: 4, name: "Beauty of Joseon Clay Mask", price: "$13.5", image: "public/Face mask/beauty.png" },
+  { id: 5, name: "Vitamin C Toner", price: "$12", image: "public/Toner/toner1.png" },
+  { id: 6, name: "Light Daily Cream", price: "$11.5", image: "public/Moisturizer/3.png" },
+  { id: 7, name: "IsnTree Sunscreen", price: "$9.5", image: "public/sunscreen/isntree.png" },
+  { id: 8, name: "Skin 1004 Sunscreen", price: "$12.5", image: "public/sunscreen/1004.png" },
   
 ];
 
@@ -45,7 +45,7 @@ export default function ProductSection() {
                 <motion.img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-100 object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <motion.div
                   initial={{ opacity: 0 }}

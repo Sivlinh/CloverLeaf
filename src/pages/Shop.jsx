@@ -8,7 +8,7 @@ export default function Shop() {
 
   const [products] = useState([
     // 🌿 Cleanser (1–5)
-    { id: 1, title: "ANUA Deep Cleansing", price: 15.0, category: "Cleanser", rating: 4.5, images: ["public/Cleanser/Anua-removebg-preview (1).png"] },
+    { id: 1, title: "ANUA Deep Cleansing", price: 7.0, category: "Cleanser", rating: 4.5, images: ["public/Cleanser/Anua-removebg-preview (1).png"] },
     { id: 2, title: "Hydrating Gel Cleanser", price: 12.5, category: "Cleanser", rating: 4.8, images: ["public/Cleanser/Hydrating_Gel_Cleanser-removebg-preview.png"] },
     { id: 3, title: "Brightening Cleanser", price: 11.99, category: "Cleanser", rating: 4.2, images: ["public/Cleanser/Anua-HeartleafPoreControlCleansingOil-removebg-preview.png"] },
     { id: 4, title: "Deep Pore Cleanser", price: 13.99, category: "Cleanser", rating: 4.7, images: ["public/Cleanser/Deep_Pore_Cleanser-removebg-preview.png"] },
@@ -22,18 +22,18 @@ export default function Shop() {
     { id: 10, title: "Vitamin Toner", price: 12.0, category: "Toner", rating: 4.8, images: ["public/Toner/CeraVe_Hydrating_Toner.png"] },
 
     // 💧 Serum (11–15)
-    { id: 11, title: "Vitamin C Serum", price: 19.99, category: "Serum", rating: 4.9, images: ["/images/serum1.png"] },
-    { id: 12, title: "Hyaluronic Serum", price: 17.5, category: "Serum", rating: 4.6, images: ["/images/serum2.png"] },
-    { id: 13, title: "Niacinamide Serum", price: 18.99, category: "Serum", rating: 4.5, images: ["/images/serum3.png"] },
-    { id: 14, title: "Anti-Aging Serum", price: 20.0, category: "Serum", rating: 4.9, images: ["/images/serum4.png"] },
-    { id: 15, title: "Bright Boost Serum", price: 22.0, category: "Serum", rating: 4.7, images: ["/images/serum5.png"] },
+    { id: 11, title: "Skin 1004 Serum", price: 12.99, category: "Serum", rating: 4.9, images: ["public/seroum/1004.png"] },
+    { id: 12, title: "Anua Serum", price: 13.5, category: "Serum", rating: 4.6, images: ["public/seroum/anua.png"] },
+    { id: 13, title: "Niacinamide Serum APLB", price: 11.99, category: "Serum", rating: 4.5, images: ["public/seroum/aplb.png"] },
+    { id: 14, title: "Skin 1004 Serum Pink", price: 16.0, category: "Serum", rating: 4.9, images: ["public/seroum/pink1004.png"] },
+    { id: 15, title: "Bright Boost Serum Anua", price: 22.0, category: "Serum", rating: 4.7, images: ["public/seroum/redAnua.png"] },
 
     // ☀️ Sunscreen (16–20)
-    { id: 16, title: "Daily UV Defense", price: 15.5, category: "Sunscreen", rating: 4.4, images: ["/images/sunscreen1.png"] },
-    { id: 17, title: "Aqua Sun Shield", price: 14.99, category: "Sunscreen", rating: 4.5, images: ["/images/sunscreen2.png"] },
-    { id: 18, title: "Matte Finish SPF 50", price: 16.5, category: "Sunscreen", rating: 4.8, images: ["/images/sunscreen3.png"] },
-    { id: 19, title: "Light Moist SPF 30", price: 13.5, category: "Sunscreen", rating: 4.3, images: ["/images/sunscreen4.png"] },
-    { id: 20, title: "Sensitive Skin SPF", price: 15.0, category: "Sunscreen", rating: 4.7, images: ["/images/sunscreen5.png"] },
+    { id: 16, title: "Daily UV Defense Skin1004", price: 12.5, category: "Sunscreen", rating: 4.4, images: ["public/sunscreen/1004.png"] },
+    { id: 17, title: "APLB Sun Shield", price: 10.99, category: "Sunscreen", rating: 4.5, images: ["public/sunscreen/aplb.png"] },
+    { id: 18, title: "Matte Finish SPF 50 IsnTree", price: 9.5, category: "Sunscreen", rating: 4.8, images: ["public/sunscreen/isntree.png"] },
+    { id: 19, title: "Mary & May", price: 13.5, category: "Sunscreen", rating: 4.3, images: ["public/sunscreen/Mary.png"] },
+    { id: 20, title: "Medicube Sunscreenn SPF", price: 13.0, category: "Sunscreen", rating: 4.7, images: ["public/sunscreen/medicube.png"] },
 
     // 💦 Moisturizer (21–25)
     { id: 21, title: "Aloe Vera Moisturizer", price: 12.99, category: "Moisturizer", rating: 4.8, images: ["public/Moisturizer/ALoe.png"] },
@@ -66,16 +66,16 @@ export default function Shop() {
     // ✨ Highlighter (41–45)
     { id: 41, title: "Golden Glow Highlighter", price: 5.6, category: "Highlighter", rating: 4.7, images: ["public/Highliter/1.png"] },
     { id: 42, title: "Jumbo Highlighter White Stick", price: 7.5, category: "Highlighter", rating: 4.6, images: ["public/Highliter/2.png"] },
-    { id: 43, title: "Soft Glow Stick", price: 10.5, category: "Highlighter", rating: 4.5, images: ["/images/high3.png"] },
-    { id: 44, title: "Radiant Highlighter", price: 13.0, category: "Highlighter", rating: 4.8, images: ["/images/high4.png"] },
-    { id: 45, title: "Diamond Shine", price: 14.0, category: "Highlighter", rating: 4.9, images: ["/images/high5.png"] },
+    { id: 43, title: "Soft Glow Stick", price: 10.5, category: "Highlighter", rating: 4.5, images: ["public/Highliter/3.png"] },
+    { id: 44, title: "Radiant Highlighter", price: 13.0, category: "Highlighter", rating: 4.8, images: ["public/Highliter/4.png"] },
+    { id: 45, title: "Diamond Shine", price: 14.0, category: "Highlighter", rating: 4.9, images: ["public/Highliter/5.png"] },
 
     // 💋 Lip Balm (46–50)
-    { id: 46, title: "Vanilla Lip Balm", price: 5.5, category: "Lip Balm", rating: 4.4, images: ["/images/lip1.png"] },
-    { id: 47, title: "Strawberry Lip Balm", price: 6.0, category: "Lip Balm", rating: 4.5, images: ["/images/lip2.png"] },
-    { id: 48, title: "Coconut Lip Balm", price: 5.8, category: "Lip Balm", rating: 4.6, images: ["/images/lip3.png"] },
-    { id: 49, title: "Mint Lip Balm", price: 6.2, category: "Lip Balm", rating: 4.3, images: ["/images/lip4.png"] },
-    { id: 50, title: "Honey Lip Balm", price: 5.9, category: "Lip Balm", rating: 4.7, images: ["/images/lip5.png"] },
+    { id: 46, title: "Strawberry Lip Balm", price: 5.5, category: "Lip Balm", rating: 4.4, images: ["public/Lip/romand1.png"] },
+    { id: 47, title: "Vanilla Lip Balm", price: 5.5, category: "Lip Balm", rating: 4.5, images: ["public/Lip/romand2.png"] },
+    { id: 48, title: "Coconut Lip Balm", price: 5.5, category: "Lip Balm", rating: 4.6, images: ["public/Lip/romand4.png"] },
+    { id: 49, title: "Mint Lip Balm", price: 5.5, category: "Lip Balm", rating: 4.3, images: ["public/Lip/romand5.png"] },
+    { id: 50, title: "Honey Lip Balm", price: 5.5, category: "Lip Balm", rating: 4.7, images: ["public/Lip/ronamd3.png"] },
   ]);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -157,7 +157,7 @@ export default function Shop() {
               onClick={() => handleBuy(item)}
               className="w-full bg-gradient-to-r from-[#5a8dee] to-[#007bff] hover:from-[#007bff] hover:to-[#5a8dee] text-white py-2.5 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300"
             >
-              Add to Cart
+              Buy
             </button>
           </div>
         </div>
@@ -168,7 +168,7 @@ export default function Shop() {
     {selectedProduct && (
       <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
         <div className="bg-white rounded-2xl p-8 shadow-2xl w-[90%] max-w-md text-center">
-          <h2 className="text-xl font-bold text-[#0a1a2f] mb-4">Confirm Add to Cart</h2>
+          <h2 className="text-xl font-bold text-[#0a1a2f] mb-4">Confirm Buy</h2>
           <p className="text-gray-600 mb-2">
             <strong>Product:</strong> {selectedProduct.title}
           </p>
