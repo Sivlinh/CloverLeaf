@@ -6,7 +6,7 @@ export default function About() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">About Cloverleaf</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">About Cloverleaf</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             We’re more than a skincare brand — we’re your daily reminder to care for yourself. 
             At Cloverleaf, we believe good skin is about confidence, not perfection.

@@ -80,10 +80,20 @@ export default function Shop() {
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [orderCode, setOrderCode] = useState("");
+  const searchQuery = searchParams.get("search")?.toLowerCase() || "";
 
-  const filteredProducts = selectedCategory && selectedCategory !== 'All Products'
-    ? products.filter(product => product.category === selectedCategory)
-    : products;
+
+ const filteredProducts = products.filter((product) => {
+  const matchesCategory =
+    !selectedCategory || selectedCategory === "All Products"
+      ? true
+      : product.category === selectedCategory;
+
+  const matchesSearch = product.title.toLowerCase().includes(searchQuery);
+
+  return matchesCategory && matchesSearch;
+});
+
 
   const generateOrderCode = () =>
     "SKN-" + Math.random().toString(36).substring(2, 8).toUpperCase();
@@ -124,9 +134,16 @@ export default function Shop() {
 
  return (
  <div   className="  min-h-screen bg- flex flex-col items-center py-10">
-   <h1 className="text-2xl   text-[#1e385b] mb-10 font-serif">
+   {/* <h1 className="text-2xl   text-[#1e385b] mb-10 font-serif">
        About {selectedCategory && selectedCategory !== 'All Products' ? selectedCategory : 'All Products'}
-   </h1>
+   </h1> */}
+      
+     <h1 className="text-3xl font-bold text-gray-800 mb-4">
+        {selectedCategory && selectedCategory !== "All Products"
+          ? ` ${selectedCategory} Collection `
+          : "All Skincare Products"}
+      </h1>
+      <div className="w-[100px] h-1 bg-gray-800 border rounded-full mb-20 mt-0"></div>
 
    <div className="w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
      {filteredProducts.map((item) => (

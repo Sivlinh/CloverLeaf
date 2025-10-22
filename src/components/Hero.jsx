@@ -5,10 +5,9 @@ export default function Hero() {
   const navigate = useNavigate();
 
   const images = [
-    '/bg.webp',
-    '/bg2.webp',
-    '/pg4.jpg',
-    '/pg5.jpg',
+    'public/treegirl.png',
+    './public/face.png',
+    
   ];
 
   const [index, setIndex] = useState(0);
@@ -44,20 +43,20 @@ export default function Hero() {
 
   return (
     <div
-      className="relative h-screen bg-cover bg-center bg-no-repeat transition-all duration-1000 ease-in-out"
+      className="relative h-screen mt-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 ease-in-out"
       style={{ backgroundImage: `url(${images[index]})` }}
     >
       <div className="absolute inset-0 bg-black bg-opacity-40"></div>
 
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
-        <h1 className="text-5xl md:text-6xl font-bold mb-6">
+        <h1 className="text-5xl  md:text-6xl font-bold mb-6">
           Skincare isn't vanity, it's self-respect.
         </h1>
         <p className="text-xl md:text-2xl mb-8 max-w-2xl">
-          Stop wishing for perfect skin — start glowing today with products made for you.
+          Stop wishing for perfect skin  start glowing today with products made for you.
         </p>
 
-        <div className="w-24 h-1 bg-white mb-8"></div>
+        
 
         <div className="flex flex-wrap justify-center gap-4 md:gap-6">
           {categories.map((category) => (

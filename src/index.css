@@ -2,16 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 
+ #bg-color{
+  background: #1d69b5;
+background: linear-gradient(244deg, rgba(29, 105, 181, 1) 0%, rgba(233, 235, 240, 1) 77%);
+}  */
+
 
 
 /* #bg-color{
-  background: #1d69b5;
-background: linear-gradient(244deg, rgba(29, 105, 181, 1) 0%, rgba(233, 235, 240, 1) 77%);
+background: #7ab5f0;
+background: radial-gradient(circle, rgb(170, 212, 255) 14%, rgba(255, 255, 255, 1) 77%);
 } */
 
-
-
-#bg-color{
-background: #7ab5f0;
-background: radial-gradient(circle, rgba(122, 181, 240, 1) 14%, rgba(255, 255, 255, 1) 77%);
-}
