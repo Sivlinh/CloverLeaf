@@ -19,7 +19,7 @@ export default function Nav() {
   const toggleSearch = () => setShowSearch(!showSearch);
   const isActiveLink = (path) => location.pathname === path;
 
-  // 🌟 Search function (navigates to shop with query)
+  // 🌟 Search function
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim() !== "") {
@@ -64,8 +64,7 @@ export default function Nav() {
             </div>
 
             {/* Right Icons */}
-            <div className="flex items-center space-x-4">
-              
+            <div className="flex items-center space-x-4 relative">
               {/* Search Button */}
               <button
                 onClick={toggleSearch}
@@ -88,52 +87,44 @@ export default function Nav() {
                   />
                 </svg>
               </button>
-{/* 
-               Cool Search Popup */}
-              {showSearch && (
-                <form
-                  onSubmit={handleSearch}
-                  className="absolute top-16 right-8 bg-white shadow-xl rounded-lg border border-gray-300 w-[320px] animate-fadeIn"
+
+              {/* Inline Search Box inside Navbar */}
+              <form
+                onSubmit={handleSearch}
+                className={`flex items-center bg-white/70 backdrop-blur-md border border-gray-300 rounded-full px-3 py-1 transition-all duration-300 shadow-sm overflow-hidden ${
+                  showSearch ? "w-[250px] opacity-100" : "w-0 opacity-0"
+                }`}
+              >
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search products..."
+                  className="flex-1 bg-transparent px-2 text-gray-700 placeholder-gray-500 focus:outline-none text-sm"
+                />
+                <button
+                  type="submit"
+                  className="p-1 text-gray-700 hover:text-blue-500 transition-all duration-200"
                 >
-                  <div className="flex items-center px-3">
-                    <input
-                      type="text"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      placeholder="Search for products..."
-                      className="flex-1 px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none text-sm"
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-5 h-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m21 21-5.197-5.197m0 0A7.5
+                      7.5 0 1 0 5.196 5.196a7.5
+                      7.5 0 0 0 10.607 10.607Z"
                     />
-                    <button
-                      type="submit"
-                      className="p-2 text-gray-600 hover:text-blue-500 transition-all duration-200"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-5 h-5"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="m21 21-5.197-5.197m0 0A7.5
-                          7.5 0 1 0 5.196 5.196a7.5
-                          7.5 0 0 0 10.607 10.607Z"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </form>
-              )} 
+                  </svg>
+                </button>
+              </form>
 
-
-
-
-
-
-              
               {/* Cart */}
               <Link
                 to="/cart"
@@ -164,9 +155,6 @@ export default function Nav() {
                 <span className="absolute -top-1 -right-0 bg-blue-500 text-white text-xs rounded-full h-3 w-3 flex items-center justify-center"></span>
               </Link>
 
-            
-  
-                      
               {/* Profile */}
               <Link
                 to="/profile"
@@ -263,3 +251,4 @@ export default function Nav() {
     </div>
   );
 }
+
