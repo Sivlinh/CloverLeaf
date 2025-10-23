@@ -5,6 +5,7 @@ export default function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -16,19 +17,19 @@ export default function Nav() {
   ];
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const toggleSearch = () => setShowSearch(!showSearch);
+  const toggleSearch = () => {
+    setShowSearch(!showSearch);
+    setIsSearchExpanded(!showSearch);
+  };
   const isActiveLink = (path) => location.pathname === path;
 
   // 🌟 Search function (navigates to shop with query)
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim() !== "") {
-
-     
       navigate(`/shop?search=${encodeURIComponent(searchTerm)}`);
-      navigate(`/shop?search=${encodeURIComponent(searchTerm)}`);
-
       setShowSearch(false);
+      setIsSearchExpanded(false);
       setSearchTerm("");
     }
   };
@@ -92,45 +93,45 @@ export default function Nav() {
                   />
                 </svg>
               </button>
-{/* 
-               Cool Search Popup */}
-              {showSearch && (
-                <form
-                  onSubmit={handleSearch}
-                  className="absolute top-16 right-8 bg-white shadow-xl rounded-lg border border-gray-300 w-[320px] animate-fadeIn"
-                >
-                  <div className="flex items-center px-3">
-                    <input
-                      type="text"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      placeholder="Search for products..."
-                      className="flex-1 px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none text-sm"
-                    />
-                    <button
-                      type="submit"
-                      className="p-2 text-gray-600 hover:text-blue-500 transition-all duration-200"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-5 h-5"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="m21 21-5.197-5.197m0 0A7.5
-                          7.5 0 1 0 5.196 5.196a7.5
-                          7.5 0 0 0 10.607 10.607Z"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </form>
-              )} 
+             {/* Cool Search Input with Animation */}
+             <div className={`absolute top-16 right-8 bg-white shadow-xl rounded-full border border-gray-300 overflow-hidden transition-all duration-500 ease-in-out ${
+               isSearchExpanded ? 'w-[320px] opacity-100' : 'w-0 opacity-0'
+             }`}>
+               <form
+                 onSubmit={handleSearch}
+                 className="flex items-center"
+               >
+                 <input
+                   type="text"
+                   value={searchTerm}
+                   onChange={(e) => setSearchTerm(e.target.value)}
+                   placeholder="Search for products..."
+                   className="flex-1 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none text-sm bg-transparent"
+                   autoFocus={isSearchExpanded}
+                 />
+                 <button
+                   type="submit"
+                   className="p-3 text-gray-600 hover:text-blue-500 transition-all duration-200 bg-transparent"
+                 >
+                   <svg
+                     xmlns="http://www.w3.org/2000/svg"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     strokeWidth={1.5}
+                     stroke="currentColor"
+                     className="w-5 h-5"
+                   >
+                     <path
+                       strokeLinecap="round"
+                       strokeLinejoin="round"
+                       d="m21 21-5.197-5.197m0 0A7.5
+                       7.5 0 1 0 5.196 5.196a7.5
+                       7.5 0 0 0 10.607 10.607Z"
+                     />
+                   </svg>
+                 </button>
+               </form>
+             </div>
 
 
 

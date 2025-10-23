@@ -40,7 +40,7 @@ export default function You() {
       setUser(foundUser);
       setIsLoggedIn(true);
     } else {
-      alert("❌ User not found! Please check your name and email.");
+      // alert("❌ User not found! Please check your name and email.");
     }
   };
 

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
-
+import { Link } from "react-router-dom";
 export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState("info");
 
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -21,6 +23,15 @@ export default function Cart() {
     setCartItems(updated);
     localStorage.setItem("cart", JSON.stringify(updated));
   };
+
+  // When quantity changes, ensure the item is selected so totals update
+  useEffect(() => {
+    // if there are no selected items, nothing to do
+    if (!cartItems || cartItems.length === 0) return;
+    // make sure selectedItems references valid ids only
+    setSelectedItems((prev) => prev.filter((id) => cartItems.some((i) => i.id === id)));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartItems]);
 
   const handleSelect = (id) => {
     setSelectedItems((prev) =>
@@ -43,19 +54,48 @@ export default function Cart() {
 
   const handleCheckout = () => {
     if (selectedItems.length === 0) {
-      alert("Please select at least one product to buy.");
+      setMessage("Please select at least one product to buy.");
+      setMessageType("error");
       return;
     }
-    alert(`✅ Purchase Successful! Total: $${totalAmount.toFixed(2)}`);
+    setMessage(`✅ Purchase Successful! Total: $${totalAmount.toFixed(3)}`);
+    setMessageType("success");
     const remaining = cartItems.filter((item) => !selectedItems.includes(item.id));
     setCartItems(remaining);
     setSelectedItems([]);
     localStorage.setItem("cart", JSON.stringify(remaining));
   };
 
+  // auto-clear message after a short timeout
+  useEffect(() => {
+    if (!message) return;
+    const t = setTimeout(() => setMessage(null), 4000);
+    return () => clearTimeout(t);
+  }, [message]);
+
   return (
     <div className="min-h-screen bg-[#f9fcff] p-8">
-      <h1 className="text-2xl font-semibold mb-8 text-[#1e385b]">🛒 Your Cart</h1>
+      {/* Inline message banner (replaces alert()) */}
+      {message && (
+        <div
+          className={`max-w-4xl mx-auto mb-6 p-4 rounded-lg flex items-start justify-between border ${
+            messageType === "success"
+              ? "bg-green-50 border-green-200 text-green-800"
+              : messageType === "error"
+              ? "bg-red-50 border-red-200 text-red-800"
+              : "bg-blue-50 border-blue-200 text-blue-800"
+          }`}
+        >
+          <div className="flex-1 pr-4">{message}</div>
+          <button
+            onClick={() => setMessage(null)}
+            className="ml-4 text-sm font-medium underline opacity-80"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
+      <h1 className="text-2xl font-semibold mb-8 text-[#1e385b]"> Your Cart</h1>
 
       {cartItems.length === 0 ? (
         <p className="text-gray-500">Your cart is empty.</p>
@@ -88,6 +128,7 @@ export default function Cart() {
                     <h3 className="font-medium text-[#0a1a2f] text-lg">{item.title}</h3>
                     <p className="text-sm text-gray-500">{item.category}</p>
                     <p className="text-[#007bff] font-bold">${item.price}</p>
+                    <p className="text-sm text-gray-500">Subtotal: <span className="text-[#007bff] font-semibold">${(item.price * item.quantity).toFixed(2)}</span></p>
                   </div>
 
                   {/* Quantity Control */}
@@ -132,6 +173,11 @@ export default function Cart() {
           </div>
         </>
       )}
+       <div className="max-w-4xl mx-auto py-16 px-4">
+          <Link to="/shop" className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold shadow-md hover:bg-blue-400 transition">
+           ← Back to Shop
+         </Link>
+         </div>
     </div>
   );
 }
