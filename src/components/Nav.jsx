@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function Nav() {
@@ -6,8 +6,37 @@ export default function Nav() {
   const [showSearch, setShowSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Update cart count from localStorage
+  useEffect(() => {
+    const updateCartCount = () => {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      setCartCount(cart.length);
+    };
+
+    updateCartCount();
+
+    // Listen for storage changes (when cart is updated from other components)
+    const handleStorageChange = (e) => {
+      if (e.key === "cart") {
+        updateCartCount();
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    // Custom event listener for cart updates within the same tab
+    const handleCartUpdate = () => updateCartCount();
+    window.addEventListener("cartUpdated", handleCartUpdate);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("cartUpdated", handleCartUpdate);
+    };
+  }, []);
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -18,8 +47,25 @@ export default function Nav() {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleSearch = () => {
-    setShowSearch(!showSearch);
-    setIsSearchExpanded(!showSearch);
+    setShowSearch((s) => !s);
+    setIsSearchExpanded((s) => !s);
+  };
+  // hover behavior: expand on hover, collapse after small delay when leaving
+  const hoverTimer = useRef(null);
+  const openSearch = () => {
+    clearTimeout(hoverTimer.current);
+    setShowSearch(true);
+    setIsSearchExpanded(true);
+  };
+  const closeSearchWithDelay = () => {
+    clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => {
+      // only close if input isn't focused
+      if (document.activeElement !== searchInputRef.current) {
+        setShowSearch(false);
+        setIsSearchExpanded(false);
+      }
+    }, 300);
   };
   const isActiveLink = (path) => location.pathname === path;
 
@@ -33,6 +79,15 @@ export default function Nav() {
       setSearchTerm("");
     }
   };
+
+  // focus the search input when expanded for keyboard users
+  const searchInputRef = useRef(null);
+  useEffect(() => {
+    if (isSearchExpanded) {
+      // small timeout to allow animation to complete
+      setTimeout(() => searchInputRef.current?.focus(), 80);
+    }
+  }, [isSearchExpanded]);
 
   return (
     <div>
@@ -69,20 +124,27 @@ export default function Nav() {
             </div>
 
             {/* Right Icons */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 ">
               
               {/* Search Button */}
+              <div onMouseEnter={openSearch} onMouseLeave={closeSearchWithDelay} className="rounded-[25px]">
               <button
                 onClick={toggleSearch}
-                className="p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-md transition-all duration-300"
+                aria-expanded={isSearchExpanded}
+                aria-label={isSearchExpanded ? 'Close search' : 'Open search'}
+                title="Search products"
+                className="group p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-300 transition-all duration-200 rounded-[25px]"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
+                  role="img"
+                  aria-hidden="true"
+                  focusable="false"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6"
+                  className="w-6 h-6 group-hover:scale-110 transition-transform duration-200"
                 >
                   <path
                     strokeLinecap="round"
@@ -93,16 +155,22 @@ export default function Nav() {
                   />
                 </svg>
               </button>
+              </div>
              {/* Cool Search Input with Animation */}
-             <div className={`absolute top-16 right-8 bg-white shadow-xl rounded-full border border-gray-300 overflow-hidden transition-all duration-500 ease-in-out ${
-               isSearchExpanded ? 'w-[320px] opacity-100' : 'w-0 opacity-0'
-             }`}>
+             <div
+               onMouseEnter={openSearch}
+               onMouseLeave={closeSearchWithDelay}
+               className={`absolute top-16 right-8 bg-white shadow-xl rounded-[25px] border border-gray-300 overflow-hidden transition-all duration-300 ease-in-out ${
+                 isSearchExpanded ? 'w-[320px] opacity-100' : 'w-0 opacity-0'
+               }`}
+             >
                <form
                  onSubmit={handleSearch}
                  className="flex items-center"
                >
                  <input
                    type="text"
+                   ref={searchInputRef}
                    value={searchTerm}
                    onChange={(e) => setSearchTerm(e.target.value)}
                    placeholder="Search for products..."
@@ -142,7 +210,7 @@ export default function Nav() {
               {/* Cart */}
               <Link
                 to="/cart"
-                className="relative p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-md transition-all duration-300"
+                className="relative p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-[25px] transition-all duration-300 group"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -150,7 +218,7 @@ export default function Nav() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6"
+                  className="w-6 h-6 group-hover:scale-110 transition-transform duration-200"
                 >
                   <path
                     strokeLinecap="round"
@@ -166,7 +234,11 @@ export default function Nav() {
                     .375.375 0 0 1 .75 0Z"
                   />
                 </svg>
-                <span className="absolute -top-1 -right-0 bg-blue-500 text-white text-xs rounded-full h-3 w-3 flex items-center justify-center"></span>
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-gradient-to-r from-[#d8554e] to-[#d8554e] text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg ">
+                    {cartCount > 99 ? '99+' : cartCount}
+                  </span>
+                )}
               </Link>
 
             
@@ -175,7 +247,7 @@ export default function Nav() {
               {/* Profile */}
               <Link
                 to="/profile"
-                className="p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-md transition-all duration-300"
+                className="group p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-[25px] transition-all duration-300"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -183,7 +255,7 @@ export default function Nav() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6"
+                  className="w-6 h-6 group-hover:scale-110 transition-transform duration-200"
                 >
                   <path
                     strokeLinecap="round"

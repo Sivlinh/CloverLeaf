@@ -15,19 +15,21 @@ export default function ProductDetail() {
   };
 
   const handleAddToCart = (item) => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+   const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    // prevent duplicate product
-    const exists = cart.find((p) => p.id === item.id);
-    if (exists) {
-      // alert("❤️ This product is already in your cart!");
-      return;
-    }
-    
-    cart.push(item);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    // alert(`🛒 Added "${item.title}" to your cart!`);
-  };
+   // prevent duplicate product
+   const exists = cart.find((p) => p.id === item.id);
+   if (exists) {
+     // alert("❤️ This product is already in your cart!");
+     return;
+   }
+
+   cart.push(item);
+   localStorage.setItem("cart", JSON.stringify(cart));
+   // Dispatch custom event to update cart count in Nav
+   window.dispatchEvent(new Event("cartUpdated"));
+   // alert(`🛒 Added "${item.title}" to your cart!`);
+ };
 
   const handleBuy = (item) => {
     setSelectedProduct(item);
@@ -72,7 +74,7 @@ export default function ProductDetail() {
           to="/shop"
           className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#5a8dee] to-[#007bff] text-white rounded-full font-semibold shadow-lg hover:from-[#007bff] hover:to-[#5a8dee] transition-all duration-300 mb-8"
         >
-          ← Back to Shop
+          ← Go to Shop
         </Link>
 
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">

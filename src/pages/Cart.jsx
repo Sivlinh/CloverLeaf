@@ -22,6 +22,8 @@ export default function Cart() {
     );
     setCartItems(updated);
     localStorage.setItem("cart", JSON.stringify(updated));
+    // Dispatch custom event to update cart count in Nav
+    window.dispatchEvent(new Event("cartUpdated"));
   };
 
   // When quantity changes, ensure the item is selected so totals update
@@ -44,6 +46,8 @@ export default function Cart() {
     setCartItems(updated);
     setSelectedItems(selectedItems.filter((x) => x !== id));
     localStorage.setItem("cart", JSON.stringify(updated));
+    // Dispatch custom event to update cart count in Nav
+    window.dispatchEvent(new Event("cartUpdated"));
   };
 
   const selectedProducts = cartItems.filter((item) => selectedItems.includes(item.id));
@@ -64,6 +68,8 @@ export default function Cart() {
     setCartItems(remaining);
     setSelectedItems([]);
     localStorage.setItem("cart", JSON.stringify(remaining));
+    // Dispatch custom event to update cart count in Nav
+    window.dispatchEvent(new Event("cartUpdated"));
   };
 
   // auto-clear message after a short timeout
@@ -73,8 +79,53 @@ export default function Cart() {
     return () => clearTimeout(t);
   }, [message]);
 
+  // dynamically adjust checkout bar bottom offset so it doesn't overlap the footer
+  const [bottomOffset, setBottomOffset] = useState(16);
+  useEffect(() => {
+    const footer = () => document.querySelector('footer');
+
+    function updateOffset() {
+      const f = footer();
+      if (!f) {
+        setBottomOffset(16);
+        return;
+      }
+      const rect = f.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      // if footer's top is within the viewport, raise the bar above it
+      if (rect.top < viewportHeight) {
+        const overlap = viewportHeight - rect.top;
+        // add a small gap (16px)
+        setBottomOffset(overlap + 16);
+      } else {
+        setBottomOffset(16);
+      }
+    }
+
+    // update on scroll and resize
+    window.addEventListener('scroll', updateOffset, { passive: true });
+    window.addEventListener('resize', updateOffset);
+
+    // observe footer size/position changes
+    let ro;
+    const fEl = footer();
+    if (fEl && window.ResizeObserver) {
+      ro = new ResizeObserver(updateOffset);
+      ro.observe(fEl);
+    }
+
+    // initial run
+    updateOffset();
+
+    return () => {
+      window.removeEventListener('scroll', updateOffset);
+      window.removeEventListener('resize', updateOffset);
+      if (ro && fEl) ro.unobserve(fEl);
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen bg-[#f9fcff] p-8">
+  <div className="min-h-screen bg-[#f9fcff] p-8 pb-64">
       {/* Inline message banner (replaces alert()) */}
       {message && (
         <div
@@ -158,22 +209,25 @@ export default function Cart() {
             ))}
           </div>
 
-          {/* Total Section */}
-          <div className="mt-10 bg-white shadow-lg rounded-2xl p-6 flex justify-between items-center">
-            <p className="text-lg font-semibold text-[#0a1a2f]">
-              Total ({selectedItems.length} items):{" "}
-              <span className="text-[#007bff]">${totalAmount.toFixed(2)}</span>
-            </p>
-            <button
-              onClick={handleCheckout}
-              className="bg-gradient-to-r from-[#5a8dee] to-[#007bff]  hover:to-[#5a8dee] text-white px-8 py-2.5 rounded-full font-medium shadow-md hover:shadow-lg transition-all"
-            >
-              Checkout
-            </button>
+          {/* Total Section - fixed to bottom */}
+          <div className="fixed left-0 right-0 flex justify-center pointer-events-none" style={{ bottom: bottomOffset }}>
+            <div className="w-full max-w-4xl mx-auto bg-white shadow-lg rounded-2xl p-4 md:p-6 flex justify-between items-center pointer-events-auto">
+              <p className="text-lg font-semibold text-[#0a1a2f]">
+                Total ({selectedItems.length} items): <span className="text-[#007bff]">${totalAmount.toFixed(2)}</span>
+              </p>
+
+              <button
+                onClick={handleCheckout}
+                className="bg-gradient-to-r from-[#5a8dee] to-[#007bff]  hover:to-[#5a8dee] text-white px-6 md:px-8 py-2.5 rounded-full font-medium shadow-md hover:shadow-lg transition-all"
+              >
+                Checkout
+              </button>
+            </div>
           </div>
         </>
       )}
-       <div className="max-w-4xl mx-auto py-16 px-4">
+      
+       <div className=" max-w-4xl mx-auto py-16 px-4">
           <Link to="/shop" className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold shadow-md hover:bg-blue-400 transition">
            ← Back to Shop
          </Link>

@@ -30,10 +30,10 @@ export default function Footer() {
         <div>
           <h3 className="font-semibold text-lg mb-3">Quick Links</h3>
           <ul className="space-y-2 text-sm">
-            <li><a href="/"  className="hover:text-green-600">Home</a></li>
-            <li><a href="/about" className="hover:text-green-600">About</a></li>
-            <li><a href="/contact" className="hover:text-green-600">Contact</a></li>
-            <li><a href="/shop" className="hover:text-green-600">Shop</a></li>
+            <li><a href="/"  className="hover:text-blue-400">Home</a></li>
+            <li><a href="/about" className="hover:text-blue-400">About</a></li>
+            <li><a href="/contact" className="hover:text-blue-400">Contact</a></li>
+            <li><a href="/shop" className="hover:text-blue-400">Shop</a></li>
           </ul>
         </div>
 
@@ -41,10 +41,10 @@ export default function Footer() {
         <div>
           <h3 className="font-semibold text-lg mb-3">Customer Care</h3>
           <ul className="space-y-2 text-sm">
-            <li><a href="#" className="hover:text-green-600">FAQs</a></li>
-            <li><a href="#" className="hover:text-green-600">Shipping & Returns</a></li>
-            <li><a href="#" className="hover:text-green-600">Privacy Policy</a></li>
-            <li><a href="#" className="hover:text-green-600">Terms of Service</a></li>
+            <li><a href="#" className="hover:text-blue-400">FAQs</a></li>
+            <li><a href="#" className="hover:text-blue-400">Shipping & Returns</a></li>
+            <li><a href="#" className="hover:text-blue-400">Privacy Policy</a></li>
+            <li><a href="#" className="hover:text-blue-400">Terms of Service</a></li>
           </ul>
         </div>
 
@@ -52,9 +52,9 @@ export default function Footer() {
         <div>
           <h3 className="font-semibold text-lg mb-3">Follow Us</h3>
           <div className="flex space-x-4 text-xl">
-            <a href="#" className="hover:text-green-600"><FaFacebookF /></a>
-            <a href="#" className="hover:text-green-600"><FaInstagram /></a>
-            <a href="#" className="hover:text-green-600"><FaTiktok /></a>
+            <a href="#" className="hover:text-blue-400"><FaFacebookF /></a>
+            <a href="#" className="hover:text-blue-400"><FaInstagram /></a>
+            <a href="#" className="hover:text-blue-400"><FaTiktok /></a>
           </div>
 
           {/* Optional Newsletter */}
@@ -65,11 +65,12 @@ export default function Footer() {
             </form>
           </div>
 
-          {/* <p className="mt-6 text-sm flex justify-content-center text-gray-500">
+        
+      
+       <p className="mt-6 text-sm flex justify-content-center text-white">
             © 2025 Cloverleaf. All rights reserved.
-          </p> */}
-        </div>
-
+          </p>
+          </div>
       </div>
     </footer>
   );

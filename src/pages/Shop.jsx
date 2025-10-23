@@ -8,6 +8,14 @@ export default function Shop() {
   const selectedCategory = searchParams.get('category');
   const searchQuery = searchParams.get('search');
   const [productsState] = useState(products);
+  const [addedIds, setAddedIds] = useState(() => {
+    try {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      return cart.map((p) => p.id);
+    } catch (e) {
+      return [];
+    }
+  });
 
 
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -65,18 +73,35 @@ export default function Shop() {
   };
 const handleAddToCart = (item) => {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
- 
-//  prevent duplicate product
   const exists = cart.find((p) => p.id === item.id);
   if (exists) {
-    // alert("❤️ This product is already in your cart!");
+    // remove it
+    const updated = cart.filter((p) => p.id !== item.id);
+    localStorage.setItem("cart", JSON.stringify(updated));
+    setAddedIds(updated.map((p) => p.id));
+    window.dispatchEvent(new Event("cartUpdated"));
     return;
   }
-  cart.push(item);
+  // add it
+  cart.push({ ...item, quantity: 1 });
   localStorage.setItem("cart", JSON.stringify(cart));
-  // alert(`🛒 Added "${item.title}" to your cart!`);
+  setAddedIds(cart.map((p) => p.id));
+  window.dispatchEvent(new Event("cartUpdated"));
 };
+
+  // keep addedIds in sync when other components update the cart
+  useEffect(() => {
+    const handler = () => {
+      try {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        setAddedIds(cart.map((p) => p.id));
+      } catch (e) {
+        setAddedIds([]);
+      }
+    };
+    window.addEventListener("cartUpdated", handler);
+    return () => window.removeEventListener("cartUpdated", handler);
+  }, []);
 
  return (
   
@@ -102,8 +127,9 @@ const handleAddToCart = (item) => {
               className="w-full h-60 object-contain p-6 bg-gradient-to-b from-[#f9fcff] to-[#eef5ff]"
             />
             <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-md rounded-full p-2 shadow-sm">
-             <FaHeart onClick={(e) => { e.preventDefault(); handleAddToCart(item); }}
-             className="text-gray-400 hover:text-red-500 transition-all cursor-pointer"/>
+             <FaHeart
+               onClick={(e) => { e.stopPropagation(); e.preventDefault(); handleAddToCart(item); }}
+               className={`${addedIds.includes(item.id) ? 'text-red-500' : 'text-gray-400 hover:text-red-500'} transition-colors duration-10 cursor-pointer`} />
 
             </div>
 
