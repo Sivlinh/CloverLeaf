@@ -31,6 +31,7 @@ export default function Nav() {
 
   return (
     <div>
+      {/* Navbar */}
       <nav className="fixed top-0 left-0 w-full z-50 bg-white/20 backdrop-blur-xl border-b border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
           <div className="flex justify-between items-center h-16">
@@ -87,43 +88,6 @@ export default function Nav() {
                   />
                 </svg>
               </button>
-
-              {/* Inline Search Box inside Navbar */}
-              <form
-                onSubmit={handleSearch}
-                className={`flex items-center bg-white/70 backdrop-blur-md border border-gray-300 rounded-full px-3 py-1 transition-all duration-300 shadow-sm overflow-hidden ${
-                  showSearch ? "w-[250px] opacity-100" : "w-0 opacity-0"
-                }`}
-              >
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search products..."
-                  className="flex-1 bg-transparent px-2 text-gray-700 placeholder-gray-500 focus:outline-none text-sm"
-                />
-                <button
-                  type="submit"
-                  className="p-1 text-gray-700 hover:text-blue-500 transition-all duration-200"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-5 h-5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m21 21-5.197-5.197m0 0A7.5
-                      7.5 0 1 0 5.196 5.196a7.5
-                      7.5 0 0 0 10.607 10.607Z"
-                    />
-                  </svg>
-                </button>
-              </form>
 
               {/* Cart */}
               <Link
@@ -247,8 +211,36 @@ export default function Nav() {
         </div>
       </nav>
 
+      {/* ✅ Sliding Search Overlay */}
+      {showSearch && (
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-end z-50 transition-all duration-500">
+          <div className="w-80 bg-white h-full shadow-lg transform translate-x-0 transition-all duration-500 p-6 flex flex-col">
+            <button
+              onClick={toggleSearch}
+              className="self-end mb-4 text-gray-600 hover:text-black"
+            >
+              ✕
+            </button>
+            <form onSubmit={handleSearch} className="flex flex-col gap-3">
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search products..."
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                type="submit"
+                className="bg-blue-500 text-white rounded-lg py-2 hover:bg-blue-600 transition-all"
+              >
+                Search
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
       <div className="h-16"></div>
     </div>
   );
 }
-
