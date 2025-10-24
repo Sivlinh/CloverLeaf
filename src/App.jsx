@@ -10,26 +10,34 @@ import Hero from "./components/Hero";
 import Shop from "./pages/Shop";
 import Search from "./pages/Search";
 import React from "react";
-
+import ProductDetail from "./pages/ProductDetail";
+import DetailShop from "./pages/DetailShop";
+import Slide from "./pages/Slide";
 
 export default function App() {
   return (
     <div className="App" id="bg-color" >
       <Nav />
       <Hero />
+      
+     
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/about" element={<About />} />
        
         <Route path="/contact" element={<Contact />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/shop" element={<Shop />} />
+        <Route part="/detail/:id" element={<DetailShop />} />
 
         <Route path="/cart" element={<Cart />} />
         <Route path="/search" element={<Search />} />
 
       </Routes>
+      
+       {/* <Slide/> */}
       <Footer />
     </div>
   );

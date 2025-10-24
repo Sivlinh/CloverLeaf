@@ -15,3 +15,12 @@ background: #7ab5f0;
 background: radial-gradient(circle, rgb(170, 212, 255) 14%, rgba(255, 255, 255, 1) 77%);
 } */
 
+footer {
+  background: gray;
+}
+  
+
+
+#bodybg{
+  background-color: #fffaf5;
+}

@@ -1,12 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Update cart count from localStorage
+  useEffect(() => {
+    const updateCartCount = () => {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      setCartCount(cart.length);
+    };
+
+    updateCartCount();
+
+    // Listen for storage changes (when cart is updated from other components)
+    const handleStorageChange = (e) => {
+      if (e.key === "cart") {
+        updateCartCount();
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    // Custom event listener for cart updates within the same tab
+    const handleCartUpdate = () => updateCartCount();
+    window.addEventListener("cartUpdated", handleCartUpdate);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("cartUpdated", handleCartUpdate);
+    };
+  }, []);
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -16,22 +46,51 @@ export default function Nav() {
   ];
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const toggleSearch = () => setShowSearch(!showSearch);
+  const toggleSearch = () => {
+    setShowSearch((s) => !s);
+    setIsSearchExpanded((s) => !s);
+  };
+  // hover behavior: expand on hover, collapse after small delay when leaving
+  const hoverTimer = useRef(null);
+  const openSearch = () => {
+    clearTimeout(hoverTimer.current);
+    setShowSearch(true);
+    setIsSearchExpanded(true);
+  };
+  const closeSearchWithDelay = () => {
+    clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => {
+      // only close if input isn't focused
+      if (document.activeElement !== searchInputRef.current) {
+        setShowSearch(false);
+        setIsSearchExpanded(false);
+      }
+    }, 300);
+  };
   const isActiveLink = (path) => location.pathname === path;
 
-  // 🌟 Search function
+  // 🌟 Search function (navigates to shop with query)
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim() !== "") {
       navigate(`/shop?search=${encodeURIComponent(searchTerm)}`);
       setShowSearch(false);
+      setIsSearchExpanded(false);
       setSearchTerm("");
     }
   };
 
+  // focus the search input when expanded for keyboard users
+  const searchInputRef = useRef(null);
+  useEffect(() => {
+    if (isSearchExpanded) {
+      // small timeout to allow animation to complete
+      setTimeout(() => searchInputRef.current?.focus(), 80);
+    }
+  }, [isSearchExpanded]);
+
   return (
     <div>
-      {/* Navbar */}
       <nav className="fixed top-0 left-0 w-full z-50 bg-white/20 backdrop-blur-xl border-b border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
           <div className="flex justify-between items-center h-16">
@@ -65,34 +124,83 @@ export default function Nav() {
             </div>
 
             {/* Right Icons */}
-            <div className="flex items-center space-x-4 relative">
-              {/* Search Button */}
-              <button
-                onClick={toggleSearch}
-                className="p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-md transition-all duration-300"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m21 21-5.197-5.197m0 0A7.5
-                    7.5 0 1 0 5.196 5.196a7.5
-                    7.5 0 0 0 10.607 10.607Z"
-                  />
-                </svg>
-              </button>
+            <div className="flex items-center space-x-4 ">
+              
+             <div className="relative flex items-center space-x-3">
+  {/* Search Button */}
+  <div onMouseEnter={openSearch} onMouseLeave={closeSearchWithDelay}>
+    <button
+      onClick={toggleSearch}
+      aria-expanded={isSearchExpanded}
+      aria-label={isSearchExpanded ? 'Close search' : 'Open search'}
+      title="Search products"
+      className="group p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-300 transition-all duration-200 rounded-[25px]"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="w-6 h-6 group-hover:scale-110 transition-transform duration-200"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="m21 21-5.197-5.197m0 0A7.5
+          7.5 0 1 0 5.196 5.196a7.5
+          7.5 0 0 0 10.607 10.607Z"
+        />
+      </svg>
+    </button>
+  </div>
 
-              {/* Cart */}
+  {/* Search Input (now inside navbar) */}
+  <div
+    onMouseEnter={openSearch}
+    onMouseLeave={closeSearchWithDelay}
+    className={`absolute top-1/2 right-0 -translate-y-1/2 bg-white shadow-xl rounded-[25px] border border-gray-300 overflow-hidden transition-all duration-300 ease-in-out ${
+      isSearchExpanded ? 'w-[320px] opacity-100' : 'w-0 opacity-0'
+    }`}
+  >
+    <form onSubmit={handleSearch} className="flex items-center">
+      <input
+        type="text"
+        ref={searchInputRef}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="Search for products..."
+        className="flex-1 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none text-sm bg-transparent"
+        autoFocus={isSearchExpanded}
+      />
+      <button
+        type="submit"
+        className="p-3 text-gray-600 hover:text-blue-500 transition-all duration-200 bg-transparent"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-5 h-5"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m21 21-5.197-5.197m0 0A7.5
+            7.5 0 1 0 5.196 5.196a7.5
+            7.5 0 0 0 10.607 10.607Z"
+          />
+        </svg>
+      </button>
+    </form>
+  </div>
+</div>
+             {/* Cart */}
               <Link
                 to="/cart"
-                className="relative p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-md transition-all duration-300"
+                className="relative p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-[25px] transition-all duration-300 group"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -100,7 +208,7 @@ export default function Nav() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6"
+                  className="w-6 h-6 group-hover:scale-110 transition-transform duration-200"
                 >
                   <path
                     strokeLinecap="round"
@@ -116,13 +224,20 @@ export default function Nav() {
                     .375.375 0 0 1 .75 0Z"
                   />
                 </svg>
-                <span className="absolute -top-1 -right-0 bg-blue-500 text-white text-xs rounded-full h-3 w-3 flex items-center justify-center"></span>
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-gradient-to-r from-[#d8554e] to-[#d8554e] text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg ">
+                    {cartCount > 99 ? '99+' : cartCount}
+                  </span>
+                )}
               </Link>
 
+            
+  
+                      
               {/* Profile */}
               <Link
                 to="/profile"
-                className="p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-md transition-all duration-300"
+                className="group p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-[25px] transition-all duration-300"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -130,7 +245,7 @@ export default function Nav() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6"
+                  className="w-6 h-6 group-hover:scale-110 transition-transform duration-200"
                 >
                   <path
                     strokeLinecap="round"
@@ -210,35 +325,6 @@ export default function Nav() {
           </div>
         </div>
       </nav>
-
-      {/* ✅ Sliding Search Overlay */}
-      {showSearch && (
-        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-end z-50 transition-all duration-500">
-          <div className="w-80 bg-white h-full shadow-lg transform translate-x-0 transition-all duration-500 p-6 flex flex-col">
-            <button
-              onClick={toggleSearch}
-              className="self-end mb-4 text-gray-600 hover:text-black"
-            >
-              ✕
-            </button>
-            <form onSubmit={handleSearch} className="flex flex-col gap-3">
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search products..."
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                type="submit"
-                className="bg-blue-500 text-white rounded-lg py-2 hover:bg-blue-600 transition-all"
-              >
-                Search
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
 
       <div className="h-16"></div>
     </div>
