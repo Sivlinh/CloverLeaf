@@ -17,12 +17,16 @@ export default function Shop() {
     }
   });
 
-
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [orderCode, setOrderCode] = useState("");
 
+  // ✅ Filter products by category (supports array or string)
   let filteredProducts = selectedCategory && selectedCategory !== 'All Products'
-    ? products.filter(product => product.category === selectedCategory)
+    ? products.filter(product => 
+        Array.isArray(product.category)
+          ? product.category.includes(selectedCategory)
+          : product.category === selectedCategory
+      )
     : products;
 
   // Apply search filter if search query exists
@@ -41,7 +45,6 @@ export default function Shop() {
   };
 
   const handleConfirm = () => {
-    // alert(`✅ Aready Buy!\nProduct: ${selectedProduct.title}\nCode: ${orderCode}`);
     setSelectedProduct(null);
   };
 
@@ -57,37 +60,35 @@ export default function Shop() {
 
     return (
       <div className="flex justify-center items-center mb-2">
-        
         {[...Array(fullStars)].map((_, i) => (
-          
           <FaStar key={`full-${i}`} className="text-yellow-400 text-sm" />
         ))}
         {halfStar && <FaStar className="text-yellow-300 text-sm opacity-70" />}
         {[...Array(emptyStars)].map((_, i) => (
           <FaStar key={`empty-${i}`} className="text-gray-300 text-sm" />
         ))}
-        
         <span className="text-gray-500 text-xs ml-1">({rating.toFixed(1)})</span>
       </div>
     );
   };
-const handleAddToCart = (item) => {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const exists = cart.find((p) => p.id === item.id);
-  if (exists) {
-    // remove it
-    const updated = cart.filter((p) => p.id !== item.id);
-    localStorage.setItem("cart", JSON.stringify(updated));
-    setAddedIds(updated.map((p) => p.id));
+
+  const handleAddToCart = (item) => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const exists = cart.find((p) => p.id === item.id);
+    if (exists) {
+      // remove it
+      const updated = cart.filter((p) => p.id !== item.id);
+      localStorage.setItem("cart", JSON.stringify(updated));
+      setAddedIds(updated.map((p) => p.id));
+      window.dispatchEvent(new Event("cartUpdated"));
+      return;
+    }
+    // add it
+    cart.push({ ...item, quantity: 1 });
+    localStorage.setItem("cart", JSON.stringify(cart));
+    setAddedIds(cart.map((p) => p.id));
     window.dispatchEvent(new Event("cartUpdated"));
-    return;
-  }
-  // add it
-  cart.push({ ...item, quantity: 1 });
-  localStorage.setItem("cart", JSON.stringify(cart));
-  setAddedIds(cart.map((p) => p.id));
-  window.dispatchEvent(new Event("cartUpdated"));
-};
+  };
 
   // keep addedIds in sync when other components update the cart
   useEffect(() => {
@@ -103,94 +104,102 @@ const handleAddToCart = (item) => {
     return () => window.removeEventListener("cartUpdated", handler);
   }, []);
 
- return (
-  
- <div id="bodybg"  className="  min-h-screen bg- flex flex-col items-center py-10">
-  <h1 className="text-2xl    text-gray-800  mb-10 font-serif">
-      {searchQuery ? `Search Results for "${searchQuery}"` : `About ${selectedCategory && selectedCategory !== 'All Products' ? selectedCategory : 'All Products'}`}
-  </h1>
-   
+  return (
+    <div id="bodybg" className="min-h-screen flex flex-col items-center py-10">
+      <h1 id="fontcolor" className="text-2xl text-gray-800 mb-10 font-serif">
+        {searchQuery
+          ? `Search Results for "${searchQuery}"`
+          : ` About  ${selectedCategory && selectedCategory !== 'All Products'
+              ? selectedCategory
+              : 'All Products'}  Collection`}
+      </h1>
 
-   <div className="w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-     {filteredProducts.length > 0 ? (
-       filteredProducts.map((item) => (
+      <div className="w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((item) => (
+            <Link
+              key={item.id}
+              to={`/product/${item.id}`}
+              className="bg-white rounded-3xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden cursor-pointer"
+            >
+              <div className="relative">
+                <img
+                  src={item.images[0]}
+                  alt={item.title}
+                  className="w-full h-60 object-contain p-6 bg-gradient-to-b from-[#f9fcff] to-[#eef5ff]"
+                />
+                <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-md rounded-full p-2 shadow-sm">
+                  <FaHeart
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      handleAddToCart(item);
+                    }}
+                    className={`${addedIds.includes(item.id)
+                      ? 'text-red-500'
+                      : 'text-gray-400 hover:text-red-500'
+                      } transition-colors duration-200 cursor-pointer`}
+                  />
+                </div>
+              </div>
 
-        <Link
-          key={item.id}
-          to={`/product/${item.id}`}
-          className="bg-white rounded-3xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden cursor-pointer"
-        >
-          <div className="relative">
-            <img
-              src={item.images[0]}
-              alt={item.title}
-              className="w-full h-60 object-contain p-6 bg-gradient-to-b from-[#f9fcff] to-[#eef5ff]"
-            />
-            <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-md rounded-full p-2 shadow-sm">
-             <FaHeart
-               onClick={(e) => { e.stopPropagation(); e.preventDefault(); handleAddToCart(item); }}
-               className={`${addedIds.includes(item.id) ? 'text-red-500' : 'text-gray-400 hover:text-red-500'} transition-colors duration-10 cursor-pointer`} />
+              <div className="p-6 flex flex-col items-center text-center">
+                <h3 className="font-semibold text-lg text-[#0a1a2f] mb-1 line-clamp-2">
+                  {item.title}
+                </h3>
+                {renderStars(item.rating)}
+                <p className="text-gray-400 text-sm mb-2">
+                  {Array.isArray(item.category) ? item.category.join(", ") : item.category}
+                </p>
+                <p className="text-[#0a1a2f] font-bold text-xl mb-4">
+                  ${item.price}
+                </p>
 
+                <button
+                  onClick={(e) => { e.preventDefault(); handleBuy(item); }}
+                  className="w-full bg-[#372514] hover:bg-[#523426] text-white px-6 py-3 font-semibold rounded-md transition mx-auto md:mx-0">
+                  Buy
+                </button>
+              </div>
+            </Link>
+          ))
+        ) : (
+          <div className="col-span-full text-center py-16">
+            <p className="text-gray-500 text-xl mb-4">No products found</p>
+            <p className="text-gray-400">Try adjusting your search terms</p>
+          </div>
+        )}
+      </div>
+
+      {/* Popup */}
+      {selectedProduct && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 shadow-2xl w-[90%] max-w-md text-center">
+            <h2 className="text-xl font-bold text-[#0a1a2f] mb-4">Confirm Buy</h2>
+            <p className="text-gray-600 mb-2">
+              <strong>Product:</strong> {selectedProduct.title}
+            </p>
+            <p className="text-gray-600 mb-4">
+              <strong>Order Code:</strong> {orderCode}
+            </p>
+
+            <div className="flex justify-center gap-4 mt-6">
+              <button
+                onClick={handleConfirm}
+                className="bg-[#007bff] hover:bg-[#5a8dee] text-white px-6 py-2 rounded-full shadow"
+              >
+                Confirm
+              </button>
+              <button
+                onClick={handleCancel}
+                className="bg-gray-300 hover:bg-gray-400 text-[#0a1a2f] px-6 py-2 rounded-full shadow"
+              >
+                Cancel
+              </button>
             </div>
-
-          </div>
-
-          <div className="p-6 flex flex-col items-center text-center">
-            <h3 className="font-semibold text-lg text-[#0a1a2f] mb-1 line-clamp-2">
-              {item.title}
-            </h3>
-            {renderStars(item.rating)}
-            <p className="text-gray-400 text-sm mb-2">{item.category}</p>
-            <p className="text-[#0a1a2f] font-bold text-xl mb-4">${item.price}</p>
-
-           <button
-  onClick={(e) => { e.preventDefault(); handleBuy(item); }}
-  className="w-full bg-[#372514] hover:bg-[#523426] text-white px-6 py-3 font-semibold rounded-md transition  mx-auto md:mx-0">
-  Buy
-</button>
-
-          </div>
-        </Link>
-
-      ))
-     ) : (
-       <div className="col-span-full text-center py-16">
-         <p className="text-gray-500 text-xl mb-4">No products found</p>
-         <p className="text-gray-400">Try adjusting your search terms</p>
-       </div>
-     )}
-    </div>
-
-    {/* Popup */}
-    {selectedProduct && (
-       
-      <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-        <div className="bg-white rounded-2xl p-8 shadow-2xl w-[90%] max-w-md text-center">
-          <h2 className="text-xl font-bold text-[#0a1a2f] mb-4">Confirm Buy</h2>
-          <p className="text-gray-600 mb-2">
-            <strong>Product:</strong> {selectedProduct.title}
-          </p>
-          <p className="text-gray-600 mb-4">
-            <strong>Order Code:</strong> {orderCode}
-          </p>
-            
-          <div className="flex justify-center gap-4 mt-6">
-            <button
-              onClick={handleConfirm}
-              className="bg-[#007bff] hover:bg-[#5a8dee] text-white px-6 py-2 rounded-full shadow"
-            >
-              Confirm
-            </button>
-            <button
-              onClick={handleCancel}
-              className="bg-gray-300 hover:bg-gray-400 text-[#0a1a2f] px-6 py-2 rounded-full shadow"
-            >
-              Cancel
-            </button>
           </div>
         </div>
-      </div>
-    )}
-  </div>
-);
+      )}
+    </div>
+  );
 }

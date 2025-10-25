@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const products = [
   { id: 1, name: "Anua Deep Cleansing", price: "$7.0", image: "/Cleanser/Anua-removebg-preview (1).png" },
@@ -9,42 +9,47 @@ const products = [
   { id: 30, name: "Beauty of Joseon", price: "$13.5", image: "/Face mask/beauty.png" },
 ];
 
+// ✨ Updated slides (image-based + category links)
 const slides = [
   {
-    title: "Soothe and Protect",
-    text: "Discover our soothing creams that provide a protective barrier, locking in moisture and shielding your skin from environmental stressors.",
-    button: "Explore Creams",
-    video: "/hero3.mp4",
+    title: "Top 10 Trending Picks",
+    text: "Discover our most loved skincare products that redefine self-care and confidence.",
+    button: "Shop Top Picks",
+    image: "/hero3.png",
+    category: "Top",
   },
   {
-    title: "Connect with an Artisan",
-    text: "Keep your skin hydrated all day long with our natural, plant-based moisturizers.",
-    button: "Shop Now",
-    video: "/lip.mp4",
+    title: "Glow & Glam Make-Up",
+    text: "Express yourself with our vibrant make-up essentials — bold, soft, or natural, your choice.",
+    button: "Shop Make-Up",
+    image: "/makeup1.png",
+    category: "Make Up",
   },
   {
-    title: "Nourish Your Skin",
-    text: "Experience the perfect blend of nature and science with our nourishing facial oils that hydrate and rejuvenate.",
-    button: "Discover More",
-    video: "/hero5.mp4",
+    title: "HydraSkin Moisture",
+    text: "Unlock deep hydration with silky moisturizers made to nourish, protect, and glow from within.",
+    button: "Shop Moisturizers",
+    image: "/hero5.png",
+    category: "Moisturizer",
   },
 ];
 
 export default function Home() {
   const [index, setIndex] = useState(0);
+  const navigate = useNavigate();
 
-  // Auto-slide every 5 seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % slides.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
+  // ✅ Removed auto-slide (manual only)
+  const prevSlide = () => {
+    setIndex((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  const nextSlide = () => {
+    setIndex((prev) => (prev + 1) % slides.length);
+  };
 
   return (
-    <div id="bodybg" className="w-full">
-
-      {/* Hero Slider with Videos */}
+    <div id="bodybg" className="w-full mt-10">
+      {/* Hero Slider with Images */}
       <div className="relative w-full h-[80vh] md:h-[90vh] overflow-hidden">
         {slides.map((slide, i) => (
           <div
@@ -57,36 +62,35 @@ export default function Home() {
             <div className="flex flex-col justify-center w-full md:w-1/2 px-8 md:px-16 py-10 md:py-0 text-center md:text-left z-20">
               <h2 className="text-3xl md:text-5xl font-serif font-bold mb-4">{slide.title}</h2>
               <p className="text-base md:text-lg mb-6">{slide.text}</p>
-              <button className="bg-[#D2A679] hover:bg-[#A9745B] text-white px-6 py-3 font-semibold rounded-md transition w-fit mx-auto md:mx-0">
+              <button
+                onClick={() => navigate(`/shop?category=${encodeURIComponent(slide.category)}`)}
+                className="bg-[#D2A679] hover:bg-[#A9745B] text-white px-6 py-3 font-semibold rounded-md transition w-fit mx-auto md:mx-0"
+              >
                 {slide.button}
               </button>
             </div>
 
-            {/* Right side - video */}
+            {/* Right side - image */}
             <div className="w-full md:w-1/2 h-[300px] md:h-full relative">
-              <video
-                src={slide.video}
+              <img
+                src={slide.image}
+                alt={slide.title}
                 className="w-full h-full object-cover"
-                autoPlay
-                loop
-                muted
-                playsInline
               />
-              {/* Overlay for better text visibility */}
-              <div className="absolute inset-0 bg-[#D2A679]/30"></div>
+              <div className="absolute inset-0"></div>
             </div>
           </div>
         ))}
 
-        {/* Navigation arrows */}
+        {/* Navigation arrows (manual only) */}
         <button
-          onClick={() => setIndex((index - 1 + slides.length) % slides.length)}
+          onClick={prevSlide}
           className="absolute left-3 md:left-5 top-1/2 -translate-y-1/2 text-3xl md:text-4xl text-white bg-black/40 px-3 py-1 rounded-full hover:bg-black/70 z-30"
         >
           ‹
         </button>
         <button
-          onClick={() => setIndex((index + 1) % slides.length)}
+          onClick={nextSlide}
           className="absolute right-3 md:right-5 top-1/2 -translate-y-1/2 text-3xl md:text-4xl text-white bg-black/40 px-3 py-1 rounded-full hover:bg-black/70 z-30"
         >
           ›
@@ -106,7 +110,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Bestselling Products Section */}
+      {/* Bestselling Products Section (unchanged) */}
       <section id="shop" className="py-16 bg-[#fffaf5]">
         <div className="max-w-6xl mx-auto px-4">
           <motion.h2

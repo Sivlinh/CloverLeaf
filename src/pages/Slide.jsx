@@ -1,27 +1,36 @@
 import React, { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
-  const slides = [
-    {
-      title: "Soothe and Protect",
-      text: "Discover our soothing creams that provide a protective barrier, locking in moisture and shielding your skin from environmental stressors.",
-      button: "Explore Creams",
-      image: "/hero3.png",
-    },
-    {
-      title: "Connect withan Artisan   ",
-      text: "Keep your skin hydrated all day long with our natural, plant-based moisturizers.",
-      button: "Shop Now",
-      image: "/lip.png",
-    },
-    {
-      title: "Nourish Your Skin",
-      text: "Experience the perfect blend of nature and science with our nourishing facial oils that hydrate and rejuvenate.",
-      button: "Discover More",
-      image: "/hero5.png",
-    },
-  ];
+  const navigate = useNavigate();
+
+  // 💖 Each slide has its own cool theme & category
+  const slide1 = {
+    title: "Top 10 Beauty Picks",
+    text: "Discover our most loved skincare products that redefine self-care and confidence.",
+    button: "Shop Top Picks",
+    image: "/hero3.png",
+    category: "Top 10",
+  };
+
+  const slide2 = {
+    title: "Glow & Glam Make-Up",
+    text: "Express yourself with our vibrant collection of make-up essentials — bold, soft, or natural, your choice.",
+    button: "Shop Make-Up",
+    image: "/lip.png",
+    category: "Make Up",
+  };
+
+  const slide3 = {
+    title: "HydraSkin Moisture",
+    text: "Unlock deep hydration with silky moisturizers made to nourish, protect, and glow from within.",
+    button: "Shop Moisturizers",
+    image: "/hero5.png",
+    category: "Moisturizer",
+  };
+
+  // 🌿 Combine slides
+  const slides = [slide1, slide2, slide3];
 
   const [index, setIndex] = useState(0);
 
@@ -32,6 +41,11 @@ export default function Home() {
     }, 5000);
     return () => clearInterval(timer);
   }, [slides.length]);
+
+  // 🔗 Navigate to Shop with category filter
+  const goToCategory = (category) => {
+    navigate(`/shop?category=${encodeURIComponent(category)}`);
+  };
 
   return (
     <div className="relative w-full h-[80vh] md:h-[90vh] overflow-hidden bg-black text-white">
@@ -44,11 +58,16 @@ export default function Home() {
         >
           {/* Left side - text */}
           <div className="flex flex-col justify-center w-full md:w-1/2 px-8 md:px-16 py-10 md:py-0 text-center md:text-left">
-            <h2 className="text-3xl md:text-5xl font-semibold mb-4">
+            <h2 className="text-4xl md:text-6xl font-bold mb-4 tracking-wide drop-shadow-lg">
               {slide.title}
             </h2>
-            <p className="text-base md:text-lg mb-6">{slide.text}</p>
-            <button className="bg-white text-black px-6 py-3 font-semibold rounded-md hover:bg-gray-200 transition w-fit mx-auto md:mx-0">
+            <p className="text-lg md:text-xl italic opacity-90 mb-6">
+              {slide.text}
+            </p>
+            <button
+              onClick={() => goToCategory(slide.category)}
+              className="bg-white text-black px-6 py-3 font-semibold rounded-md hover:bg-gray-200 hover:scale-105 transition-transform duration-300 w-fit mx-auto md:mx-0"
+            >
               {slide.button}
             </button>
           </div>

@@ -16,28 +16,23 @@ import Slide from "./pages/Slide";
 
 export default function App() {
   return (
-    <div className="App" id="bg-color" >
+    <div className="App" id="bodybg">
       <Nav />
       <Hero />
-      
-     
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/about" element={<About />} />
-       
         <Route path="/contact" element={<Contact />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/shop" element={<Shop />} />
-        <Route part="/detail/:id" element={<DetailShop />} />
-
-        <Route path="/cart" element={<Cart />} />
+        <Route path="/detail/:id" element={<DetailShop />} />
         <Route path="/search" element={<Search />} />
-
       </Routes>
-      
-       {/* <Slide/> */}
+
+      {/* <Slide /> */}
       <Footer />
     </div>
   );

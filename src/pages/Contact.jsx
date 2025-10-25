@@ -3,9 +3,9 @@ import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-blue-50 py-12">
+    <div  id="bodybg" className="min-h-screen  py-12">
       <div className="max-w-5xl mx-auto px-6">
-        <h1 className="text-3xl md:text-4xl font-bold text-center text-black/80 mb-4">
+        <h1 id="fontcolor" className="text-3xl md:text-4xl font-bold text-center text-black/80 mb-4">
           Get in Touch
         </h1>
         <p className="text-center text-gray-600 mb-10">
@@ -84,7 +84,7 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-400 transition"
+                className="w-full bg-[#372514] hover:bg-[#523426] text-white py-2 rounded-lg transition"
               >
                 Send Message
               </button>

@@ -24,3 +24,17 @@ footer {
 #bodybg{
   background-color: #fffaf5;
 }
+ #btn{
+  background-color:#372514 ;
+  color: white;
+ }
+
+ #btn:hover{
+  background-color:#523426 ;
+  color: white;
+ }
+ #fontcolor{
+  /* color: rgb(33, 20, 20); */
+  color: #372514;
+  
+ }

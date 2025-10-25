@@ -5,15 +5,10 @@ export default function Hero() {
   const navigate = useNavigate();
 
   const images = [
-
     'public/treegirl.png',
     'public/face.png',
-     'public/hero6.png',
+    'public/hero6.png',
     'public/bubble.png',
-
-    
-
-  
   ];
 
   const [index, setIndex] = useState(0);
@@ -55,14 +50,12 @@ export default function Hero() {
       <div className="absolute inset-0 bg-black bg-opacity-40"></div>
 
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
-        <h1 className="text-5xl  md:text-6xl font-bold mb-6">
+        <h1 className="text-5xl md:text-6xl font-bold mb-6">
           Skincare isn't vanity, it's self-respect.
         </h1>
         <p className="text-xl md:text-2xl mb-8 max-w-2xl">
-          Stop wishing for perfect skin  start glowing today with products made for you.
+          Stop wishing for perfect skin — start glowing today with products made for you.
         </p>
-
-        
 
         <div className="flex flex-wrap justify-center gap-4 md:gap-6">
           {categories.map((category) => (
