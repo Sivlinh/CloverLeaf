@@ -3,7 +3,7 @@ import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
 
 export default function ContactPage() {
   return (
-    <div  id="bodybg" className="min-h-screen  py-12">
+    <div  id="bodybg" className="min-h-screen bg-[#fffaf5] py-12">
       <div className="max-w-5xl mx-auto px-6">
         <h1 id="fontcolor" className="text-3xl md:text-4xl font-bold text-center text-black/80 mb-4">
           Get in Touch

@@ -75,7 +75,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+    <div className="min-h-screen bg-[#fffaf5]">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -158,7 +158,7 @@ export default function Profile() {
 
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                className="w-full bg-green-900 text-white py-3 rounded-lg font-semibold hover:bg-green-800 transition-colors"
               >
                 Sign In
               </button>
@@ -191,7 +191,7 @@ export default function Profile() {
               <p className="text-gray-600">{user.email}</p>
               <button
                 onClick={handleEditProfile}
-                className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="mt-4 px-6 py-2 bg-green-900 text-white rounded-lg hover:bg-green-800 transition-colors"
               >
                 {isEditing ? "Save Changes" : "Edit Profile"}
               </button>
@@ -254,7 +254,7 @@ export default function Profile() {
                 <div className="text-center">
                   <a
                     href="/shop"
-                    className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="inline-block px-6 py-3 bg-green-900 text-white rounded-lg hover:bg-green-800 transition-colors"
                   >
                     Continue Shopping
                   </a>

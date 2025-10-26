@@ -125,7 +125,7 @@ export default function Cart() {
   }, []);
 
   return (
-  <div className="min-h-screen bg-[#f9fcff] p-8 pb-64">
+  <div className="min-h-screen bg-[#fffaf5] p-8 pb-64">
       {/* Inline message banner (replaces alert()) */}
       {message && (
         <div
@@ -218,7 +218,7 @@ export default function Cart() {
 
               <button
                 onClick={handleCheckout}
-                className="bg-gradient-to-r from-[#5a8dee] to-[#007bff]  hover:to-[#5a8dee] text-white px-6 md:px-8 py-2.5 rounded-full font-medium shadow-md hover:shadow-lg transition-all"
+                className="bg-gradient-to-r from-[#035a19] to-[#0b751b]  hover:to-[#166a25] text-white px-6 md:px-8 py-2.5 rounded-full font-medium shadow-md hover:shadow-lg transition-all"
               >
                 Checkout
               </button>
@@ -228,7 +228,7 @@ export default function Cart() {
       )}
       
        <div className=" max-w-4xl mx-auto py-16 px-4">
-          <Link to="/shop" className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold shadow-md hover:bg-blue-400 transition">
+          <Link to="/shop" className="px-8 py-3 bg-green-900 text-white rounded-lg font-semibold shadow-md hover:bg-green-800 transition">
            ← Back to Shop
          </Link>
          </div>

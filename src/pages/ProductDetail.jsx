@@ -52,7 +52,7 @@ export default function ProductDetail() {
     const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
 
     return (
-      <div className="flex justify-center items-center mb-4">
+      <div id="bodybg" className="flex bg-justify-center items-center mb-4">
         {[...Array(fullStars)].map((_, i) => (
           <FaStar key={`full-${i}`} className="text-yellow-400 text-lg" />
         ))}
@@ -68,7 +68,7 @@ export default function ProductDetail() {
   if (!product) return <p className="text-center mt-10">Product not found.</p>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f9fcff] to-[#eef5ff] py-16 px-4">
+    <div id="bodybg" className="min-h-screen bg-[#fffaf5] py-16 px-4">
       <div className="max-w-6xl mx-auto">
         <Link
           to="/shop" 

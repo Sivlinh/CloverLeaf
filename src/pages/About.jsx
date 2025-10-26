@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function About() {
   return (
-    <div id="bodybg" className="min-h-screen bg-gray-50 py-16">
+    <div id="bodybg" className="min-h-screen bg-[#fffaf5] py-16">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">

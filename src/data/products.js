@@ -40,7 +40,7 @@ const products = [
   { id: 39, title: "Than Tone Blush Romand", price: 6.0, category: "Blush", rating: 4.4, images: ["/Blush/romand.png"], description: "Matte blush with long-lasting pigment." },
   { id: 40, title: "Matte Finish Blush Ampouel", price: 10.0, category: "Blush", rating: 4.6, images: ["/Blush/am.png"], description: "Matte finish blush for a polished look." },
   { id: 41, title: "Golden Glow Highlighter", price: 5.6, category: ["Top,Highlighter"], rating: 4.7, images: ["/Highliter/1.png"], description: "Subtle golden highlighter for an all-over glow." },
-  { id: 42, title: "Jumbo Highlighter White Stick", price: 7.5, category: "Highlighter", rating: 4.6, images: ["/Highliter/2.png"], description: "Creamy highlighter stick for precise application." },
+  { id: 42, title: "Jumbo Highlighter Stick", price: 7.5, category: "Highlighter", rating: 4.6, images: ["/Highliter/2.png"], description: "Creamy highlighter stick for precise application." },
   { id: 43, title: "Soft Glow Stick", price: 10.5, category: "Highlighter", rating: 4.5, images: ["/Highliter/3.png"], description: "Soft glow highlighter for natural radiance." },
   { id: 44, title: "Radiant Highlighter", price: 13.0, category:["Top", "Highlighter"], rating: 4.8, images: ["/Highliter/4.png"], description: "Intense highlighter for special occasions." },
   { id: 45, title: "Diamond Shine", price: 14.0, category: "Highlighter", rating: 4.9, images: ["/Highliter/5.png"], description: "Ultra-reflective highlighter for dramatic shine." },

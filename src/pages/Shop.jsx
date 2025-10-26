@@ -105,7 +105,7 @@ export default function Shop() {
   }, []);
 
   return (
-    <div id="bodybg" className="min-h-screen flex flex-col items-center py-10">
+    <div id="bodybg" className="min-h-screen flex flex-col items-center py-10 bg-[#fffaf5]">
       <h1 id="fontcolor" className="text-2xl text-gray-800 mb-10 font-serif">
         {searchQuery
           ? `Search Results for "${searchQuery}"`
@@ -157,7 +157,8 @@ export default function Shop() {
 
                 <button
                   onClick={(e) => { e.preventDefault(); handleBuy(item); }}
-                  className="w-full bg-[#372514] hover:bg-[#523426] text-white px-6 py-3 font-semibold rounded-md transition mx-auto md:mx-0">
+                 className="flex-1 bg-green-900 hover:bg-green-800 text-white py-2 px-8 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300"
+>
                   Buy
                 </button>
               </div>

@@ -21,7 +21,7 @@ export default function Shop() {
   };
 
   return (
-    <div className="bg-white min-h-screen py-12 px-6 md:px-12">
+    <div className="bg-[#fffaf5] min-h-screen py-12 px-6 md:px-12">
       <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">Our Products</h1>
 
       {/* 🔍 Search Bar */}
