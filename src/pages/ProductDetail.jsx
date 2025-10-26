@@ -71,8 +71,8 @@ export default function ProductDetail() {
     <div className="min-h-screen bg-gradient-to-br from-[#f9fcff] to-[#eef5ff] py-16 px-4">
       <div className="max-w-6xl mx-auto">
         <Link
-          to="/shop"
-          className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#5a8dee] to-[#007bff] text-white rounded-full font-semibold shadow-lg hover:from-[#007bff] hover:to-[#5a8dee] transition-all duration-300 mb-8"
+          to="/shop" 
+          className="inline-flex items-center px-6 py-3 flex-1 w bg-green-900 hover:bg-green-800 text-white  rounded-full font-semibold shadow-lg transition-all duration-300 mb-8"
         >
           ← Go to Shop
         </Link>
@@ -99,13 +99,13 @@ export default function ProductDetail() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
                   onClick={() => handleBuy(product)}
-                  className="flex-1 bg-gradient-to-r from-[#5a8dee] to-[#007bff] hover:from-[#007bff] hover:to-[#5a8dee] text-white py-4 px-8 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="flex-1 w-full bg-green-900 hover:bg-green-800 text-white  py-4 px-8 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   Buy Now
                 </button>
                 <button
                   onClick={() => handleAddToCart(product)}
-                  className="flex-1 bg-gradient-to-r from-[#5a8dee] to-[#007bff] hover:from-[#007bff] hover:to-[#5a8dee] text-white py-4 px-8 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
+                  className= "flex-1 w-full bg-green-900 hover:bg-green-800 text-white  py-4 px-8 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
                 >
                   <FaHeart className="text-lg" />
                   Add to Cart
@@ -127,7 +127,7 @@ export default function ProductDetail() {
               <p className="text-gray-600 mb-4"><strong>Order Code:</strong> {orderCode}</p>
             </div>
             <div className="flex gap-4">
-              <button
+              <button id="btn"
                 onClick={handleConfirm}
                 className="flex-1 bg-gradient-to-r from-[#5a8dee] to-[#007bff] hover:from-[#007bff] hover:to-[#5a8dee] text-white py-3 px-6 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
               >

@@ -22,7 +22,7 @@ const slides = [
     title: "Glow & Glam Make-Up",
     text: "Express yourself with our vibrant make-up essentials — bold, soft, or natural, your choice.",
     button: "Shop Make-Up",
-    image: "/makeup1.png",
+    image: "public/makeupface.png",
     category: "Make Up",
   },
   {
@@ -48,9 +48,9 @@ export default function Home() {
   };
 
   return (
-    <div id="bodybg" className="w-full mt-10">
+    <div id="bodybg" className="w-full mt-16">
       {/* Hero Slider with Images */}
-      <div className="relative w-full h-[80vh] md:h-[90vh] overflow-hidden">
+      <div  className="relative  shadow-sm  w-full h-[80vh] md:h-[90vh] overflow-hidden">
         {slides.map((slide, i) => (
           <div
             key={i}
@@ -62,16 +62,17 @@ export default function Home() {
             <div className="flex flex-col justify-center w-full md:w-1/2 px-8 md:px-16 py-10 md:py-0 text-center md:text-left z-20">
               <h2 className="text-3xl md:text-5xl font-serif font-bold mb-4">{slide.title}</h2>
               <p className="text-base md:text-lg mb-6">{slide.text}</p>
-              <button
-                onClick={() => navigate(`/shop?category=${encodeURIComponent(slide.category)}`)}
-               id="btn"  className="bg-[#D2A679] hover:bg-[#A9745B] text-white px-6 py-3 font-semibold rounded-md transition w-fit mx-auto md:mx-0"
-              >
-                {slide.button}
-              </button>
+             <button
+  onClick={() => navigate(`/shop?category=${encodeURIComponent(slide.category)}`)}
+  className="bg-green-900 hover:bg-green-800 text-white py-2 px-5 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300 w-fit mx-auto md:mx-0"
+>
+  {slide.button}
+</button>
+
             </div>
 
             {/* Right side - image */}
-            <div className="w-full md:w-1/2 h-[300px] md:h-full relative">
+            <div className="w-full md:w-[40%] h-[250px] md:h-[80vh] relative">
               <img
                 src={slide.image}
                 alt={slide.title}
@@ -158,7 +159,7 @@ export default function Home() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               href="/shop"
-              id="btn" className="px-8 py-3 bg-[#D2A679] hover:bg-[#A9745B] text-white rounded-lg font-semibold shadow-md transition"
+               className="flex-1 w-full bg-green-900 hover:bg-green-800 text-white  py-4 px-8 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
             >
               View All Products
             </motion.a>

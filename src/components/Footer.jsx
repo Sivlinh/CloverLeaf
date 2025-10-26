@@ -4,7 +4,7 @@ import Home from "../pages/Home";
 export default function Footer() {
   return (
     <footer id="footer" className=" text-white py-10 mt-16">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="max-w-7xl h-90%  mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
 
         {/* Logo & Description */}
         <div>
@@ -67,7 +67,11 @@ export default function Footer() {
           </div>
       </div>
 
-     
+      <div>
+        
+
+      </div>
+
     </footer>
   );
 }

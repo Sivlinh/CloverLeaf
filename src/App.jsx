@@ -14,6 +14,7 @@ import ProductDetail from "./pages/ProductDetail";
 import DetailShop from "./pages/DetailShop";
 import Slide from "./pages/Slide";
 
+
 export default function App() {
   return (
     <div className="App" id="bodybg">
@@ -33,6 +34,8 @@ export default function App() {
       </Routes>
 
       {/* <Slide /> */}
+      
+
       <Footer />
     </div>
   );
