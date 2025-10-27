@@ -11,7 +11,7 @@ const members = [
     orders: 12,
   },
   {
-    name: "SivLinh",
+    name: "Sivlinh",
     email: "sivlinh@gmail.com",
     avatar: "public/Blush/R.jpg",
     joinDate: "2025-03-22",
@@ -29,7 +29,7 @@ const members = [
 export default function Profile() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+  const [name, setName] = useState();
   const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState("");
@@ -60,7 +60,7 @@ export default function Profile() {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setEmail("");
-    setName("");
+    setName();
     setUser(null);
     setIsEditing(false);
   };
@@ -91,7 +91,7 @@ export default function Profile() {
             {isLoggedIn && (
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                className="px-4 py-2 bg-red-500 text-white rounded-[25px] hover:bg-red-600 transition-colors"
               >
                 Logout
               </button>
@@ -109,16 +109,22 @@ export default function Profile() {
             className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8"
           >
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h2>
-              <p className="text-gray-600">Sign in to your Cloverleaf account</p>
+              <h2 className="text-3xl font-bold text-gray-800 mb-2">
+                Welcome Back
+              </h2>
+              <p className="text-gray-600">
+                Sign in to your Cloverleaf account
+              </p>
             </div>
 
             <form onSubmit={handleLogin} className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Full Name
+                </label>
                 <input
                   type="text"
-                  placeholder="Enter your full name"
+                  placeholder="Enter your name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
@@ -126,7 +132,9 @@ export default function Profile() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email Address
+                </label>
                 <input
                   type="email"
                   placeholder="Enter your email"
@@ -137,7 +145,9 @@ export default function Profile() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Password
+                </label>
                 <input
                   type="password"
                   placeholder="Enter your password"
@@ -148,17 +158,25 @@ export default function Profile() {
 
               <div className="flex items-center justify-between">
                 <label className="flex items-center">
-                  <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                  <span className="ml-2 text-sm text-gray-600">Remember me</span>
+                  <input
+                    type="checkbox"
+                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <span className="ml-2 text-sm text-gray-600">
+                    Remember me
+                  </span>
                 </label>
-                <a href="#" className="text-sm text-blue-600 hover:text-blue-700">
+                <a
+                  href="#"
+                  className="text-sm text-blue-600 hover:text-blue-700"
+                >
                   Forgot password?
                 </a>
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-green-900 text-white py-3 rounded-lg font-semibold hover:bg-green-800 transition-colors"
+                className="w-full bg-green-800 text-white py-2 rounded-2xl font-semibold hover:bg-green-900 transition-colors"
               >
                 Sign In
               </button>
@@ -167,7 +185,10 @@ export default function Profile() {
             <div className="mt-8 text-center">
               <p className="text-gray-600">
                 Don't have an account?{" "}
-                <a href="#" className="text-blue-600 hover:text-blue-700 font-medium">
+                <a
+                  href="#"
+                  className="text-blue-600 hover:text-blue-700 font-medium"
+                >
                   Create one
                 </a>
               </p>
@@ -187,11 +208,13 @@ export default function Profile() {
                 alt={user.name}
                 className="w-24 h-24 mx-auto rounded-full border-4 border-blue-100 shadow-md mb-4"
               />
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">{user.name}</h2>
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                {user.name}
+              </h2>
               <p className="text-gray-600">{user.email}</p>
               <button
                 onClick={handleEditProfile}
-                className="mt-4 px-6 py-2 bg-green-900 text-white rounded-lg hover:bg-green-800 transition-colors"
+                className="mt-4 px-6 py-2 bg-green-900 text-white rounded-[25px] hover:bg-green-800 transition-colors"
               >
                 {isEditing ? "Save Changes" : "Edit Profile"}
               </button>
@@ -212,7 +235,9 @@ export default function Profile() {
                       className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   ) : (
-                    <p className="text-gray-800 py-3 px-4 bg-gray-50 rounded-lg">{user.name}</p>
+                    <p className="text-gray-800 py-3 px-4 bg-gray-50 rounded-lg">
+                      {user.name}
+                    </p>
                   )}
                 </div>
 
@@ -228,7 +253,9 @@ export default function Profile() {
                       className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   ) : (
-                    <p className="text-gray-800 py-3 px-4 bg-gray-50 rounded-lg">{user.email}</p>
+                    <p className="text-gray-800 py-3 px-4 bg-gray-50 rounded-lg">
+                      {user.email}
+                    </p>
                   )}
                 </div>
 
@@ -236,25 +263,35 @@ export default function Profile() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Member Since
                   </label>
-                  <p className="text-gray-800 py-3 px-4 bg-gray-50 rounded-lg">{user.joinDate}</p>
+                  <p className="text-gray-800 py-3 px-4 bg-gray-50 rounded-lg">
+                    {user.joinDate}
+                  </p>
                 </div>
               </div>
 
               <div className="space-y-6">
                 <div className="bg-blue-50 rounded-lg p-6">
-                  <h3 className="font-semibold text-gray-800 mb-2">Total Orders</h3>
-                  <p className="text-3xl font-bold text-blue-600">{user.orders}</p>
+                  <h3 className="font-semibold text-gray-800 mb-2">
+                    Total Orders
+                  </h3>
+                  <p className="text-3xl font-bold text-blue-600">
+                    {user.orders}
+                  </p>
                 </div>
 
                 <div className="bg-blue-50 rounded-lg p-6">
-                  <h3 className="font-semibold text-gray-800 mb-2">Loyalty Points</h3>
-                  <p className="text-3xl font-bold text-blue-600">{user.orders * 10}</p>
+                  <h3 className="font-semibold text-gray-800 mb-2">
+                    Loyalty Points
+                  </h3>
+                  <p className="text-3xl font-bold text-blue-600">
+                    {user.orders * 10}
+                  </p>
                 </div>
 
                 <div className="text-center">
                   <a
                     href="/shop"
-                    className="inline-block px-6 py-3 bg-green-900 text-white rounded-lg hover:bg-green-800 transition-colors"
+                    className="inline-block px-4 py-2 bg-green-900 text-white rounded-[25px] hover:bg-green-800 transition-colors"
                   >
                     Continue Shopping
                   </a>

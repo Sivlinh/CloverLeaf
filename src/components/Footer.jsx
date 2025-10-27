@@ -55,18 +55,20 @@ export default function Footer() {
             <a href="#" className="hover:text-blue-400"><FaTiktok /></a>
           </div>
 
+        
+
           {/* Optional Newsletter */}
           <div className="mt-6">
             <p className="text-sm mb-2">Subscribe for updates</p>
-            <form className="flex">
-              
-            </form>
-
+            
+     
 
           </div>
+
           </div>
+        
       </div>
-
+      
       <div>
         
 

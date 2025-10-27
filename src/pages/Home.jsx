@@ -64,7 +64,7 @@ export default function Home() {
               <p className="text-base md:text-lg mb-6">{slide.text}</p>
              <button
   onClick={() => navigate(`/shop?category=${encodeURIComponent(slide.category)}`)}
-  className="bg-green-900 hover:bg-green-800 text-white py-2 px-5 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300 w-fit mx-auto md:mx-0"
+  className="bg-green-900 hover:bg-green-800 text-white py-2 px-5 rounded-2xl font-medium shadow-md hover:shadow-lg transition-all duration-300 w-fit mx-auto md:mx-0"
 >
   {slide.button}
 </button>
@@ -159,7 +159,7 @@ export default function Home() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               href="/shop"
-               className="flex-1 w-full bg-green-900 hover:bg-green-800 text-white  py-4 px-8 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+               className="flex-1 w-full bg-green-900 hover:bg-green-800 text-white  py-2 px-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
             >
               View All Products
             </motion.a>

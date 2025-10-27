@@ -88,7 +88,7 @@ export default function Nav() {
   return (
     <div>
       <nav className="fixed top-0 left-0 w-full z-50 bg-white/20 backdrop-blur-xl border-b border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
+        <div className=" max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
           <div className="flex justify-between items-center h-16">
             {/* 🪴 Logo */}
             <div className="flex-shrink-0">
@@ -259,7 +259,7 @@ export default function Nav() {
               <div className="md:hidden">
                 <button
                   onClick={toggleMenu}
-                  className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500 transition-all duration-300"
+                  className="inline-flex items-center justify-center p-2 rounded-2xl text-gray-700 hover:text-gray-900 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500 transition-all duration-300"
                 >
                   {isMenuOpen ? (
                     <svg

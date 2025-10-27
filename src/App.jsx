@@ -12,7 +12,6 @@ import Search from "./pages/Search";
 import React from "react";
 import ProductDetail from "./pages/ProductDetail";
 import DetailShop from "./pages/DetailShop";
-import Slide from "./pages/Slide";
 
 
 export default function App() {
@@ -33,7 +32,7 @@ export default function App() {
         <Route path="/search" element={<Search />} />
       </Routes>
 
-      {/* <Slide /> */}
+     
       
 
       <Footer />

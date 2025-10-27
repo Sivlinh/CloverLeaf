@@ -52,7 +52,7 @@ export default function ProductDetail() {
     const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
 
     return (
-      <div id="bodybg" className="flex bg-justify-center items-center mb-4">
+      <div  className="flex bg-justify-center items-center mb-4">
         {[...Array(fullStars)].map((_, i) => (
           <FaStar key={`full-${i}`} className="text-yellow-400 text-lg" />
         ))}
@@ -71,10 +71,10 @@ export default function ProductDetail() {
     <div id="bodybg" className="min-h-screen bg-[#fffaf5] py-16 px-4">
       <div className="max-w-6xl mx-auto">
         <Link
-          to="/shop" 
-          className="inline-flex items-center px-6 py-3 flex-1 w bg-green-900 hover:bg-green-800 text-white  rounded-full font-semibold shadow-lg transition-all duration-300 mb-8"
+          to="/" 
+          className="inline-flex items-center px-4 py-2 flex-1 w bg-green-900 hover:bg-green-800 text-white  rounded-full font-semibold shadow-lg transition-all duration-300 mb-8"
         >
-          ← Go to Shop
+          ← Go to Home
         </Link>
 
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
@@ -99,13 +99,13 @@ export default function ProductDetail() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
                   onClick={() => handleBuy(product)}
-                  className="flex-1 w-full bg-green-900 hover:bg-green-800 text-white  py-4 px-8 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="flex-1 w-full bg-green-900 hover:bg-green-800 text-white  py-2 px-2 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   Buy Now
                 </button>
                 <button
                   onClick={() => handleAddToCart(product)}
-                  className= "flex-1 w-full bg-green-900 hover:bg-green-800 text-white  py-4 px-8 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
+                  className= "flex-1 w-full bg-green-900 hover:bg-green-800 text-white  py-2 px-2 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
                 >
                   <FaHeart className="text-lg" />
                   Add to Cart
