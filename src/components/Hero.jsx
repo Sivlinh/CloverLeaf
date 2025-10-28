@@ -62,7 +62,7 @@ export default function Hero() {
             <button
               key={category}
               onClick={() => navigate(`/shop?category=${encodeURIComponent(category)}`)}
-              className="px-4 py-2 bg-white bg-opacity-20 backdrop-blur-sm rounded-full text-white hover:bg-opacity-30 transition-all duration-300 border border-white border-opacity-30"
+              className="px-4 py-2 bg-white bg-opacity-20 backdrop-blur-sm rounded-full text-white hover:bg-opacity-30 hover:scale-105 transition-all duration-300 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
             >
               {category}
             </button>

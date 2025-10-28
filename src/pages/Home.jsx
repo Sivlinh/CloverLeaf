@@ -50,7 +50,7 @@ export default function Home() {
   return (
     <div id="bodybg" className="w-full mt-16">
       {/* Hero Slider with Images */}
-      <div  className="relative  shadow-sm  w-full h-[80vh] md:h-[90vh] overflow-hidden">
+      <div  className="relative  shadow-sm  w-full h-[80vh] md:h-[90vh] overflow-hidden animate-fade-in">
         {slides.map((slide, i) => (
           <div
             key={i}
@@ -63,10 +63,10 @@ export default function Home() {
               <h2 className="text-3xl md:text-5xl font-serif font-bold mb-4">{slide.title}</h2>
               <p className="text-base md:text-lg mb-6">{slide.text}</p>
              <button
-  onClick={() => navigate(`/shop?category=${encodeURIComponent(slide.category)}`)}
-  className="bg-green-900 hover:bg-green-800 text-white py-2 px-5 rounded-2xl font-medium shadow-md hover:shadow-lg transition-all duration-300 w-fit mx-auto md:mx-0"
+ onClick={() => navigate(`/shop?category=${encodeURIComponent(slide.category)}`)}
+ className="bg-green-900 hover:bg-green-800 text-white py-2 px-5 rounded-2xl font-medium shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 w-fit mx-auto md:mx-0 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
 >
-  {slide.button}
+ {slide.button}
 </button>
 
             </div>
@@ -112,7 +112,7 @@ export default function Home() {
       </div>
 
       {/* Bestselling Products Section (unchanged) */}
-      <section id="shop" className="py-16 bg-[#fffaf5]">
+      <section id="shop" className="py-16 bg-[#fffaf5] animate-slide-up">
         <div className="max-w-6xl mx-auto px-4">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
@@ -159,7 +159,7 @@ export default function Home() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               href="/shop"
-               className="flex-1 w-full bg-green-900 hover:bg-green-800 text-white  py-2 px-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+               className="flex-1 w-full bg-green-900 hover:bg-green-800 text-white py-2 px-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
             >
               View All Products
             </motion.a>

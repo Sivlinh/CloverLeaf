@@ -105,8 +105,8 @@ export default function Shop() {
   }, []);
 
   return (
-    <div id="bodybg" className="min-h-screen flex flex-col items-center py-10 bg-[#fffaf5]">
-      <h1 id="fontcolor" className="text-2xl text-gray-800 mb-10 font-serif">
+    <div id="bodybg" className="min-h-screen flex flex-col items-center py-10 bg-[#fffaf5] animate-fade-in">
+      <h1 id="fontcolor" className="text-2xl text-gray-800 mb-10 font-semibold">
         {searchQuery
           ? `Search Results for "${searchQuery}"`
           : ` About  ${selectedCategory && selectedCategory !== 'All Products'
@@ -120,7 +120,7 @@ export default function Shop() {
             <Link
               key={item.id}
               to={`/product/${item.id}`}
-              className="bg-white rounded-3xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden cursor-pointer"
+              className="bg-white rounded-3xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 overflow-hidden cursor-pointer"
             >
               <div className="relative">
                 <img
@@ -143,7 +143,7 @@ export default function Shop() {
                 </div>
               </div>
 
-              <div className="p-6 flex flex-col items-center text-center">
+              <div className="p-2 flex flex-col items-center text-center">
                 <h3 className="font-semibold text-lg text-[#0a1a2f] mb-1 line-clamp-2">
                   {item.title}
                 </h3>
@@ -151,13 +151,13 @@ export default function Shop() {
                 <p className="text-gray-400 text-sm mb-2">
                   {Array.isArray(item.category) ? item.category.join(", ") : item.category}
                 </p>
-                <p className="text-[#0a1a2f] font-bold text-xl mb-4">
+                <p className="text-[#0a1a2f] font-bold text-xl mb-2">
                   ${item.price}
                 </p>
 
                 <button
                   onClick={(e) => { e.preventDefault(); handleBuy(item); }}
-                 className="flex-1 bg-gray-500  hover:bg-gray-400 text-white py-2 px-8 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300"
+                 className="flex-1 bg-green-900 hover:bg-green-800 text-white py-2 px-8 rounded-full text-sm font-medium shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
 >
                   Buy
                 </button>
@@ -187,13 +187,13 @@ export default function Shop() {
             <div className="flex justify-center gap-4 mt-6">
               <button
                 onClick={handleConfirm}
-                className="bg-[#007bff] hover:bg-[#5a8dee] text-white px-6 py-2 rounded-full shadow"
+                className="bg-green-900 hover:bg-green-800 text-white px-6 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
               >
                 Confirm
               </button>
               <button
                 onClick={handleCancel}
-                className="bg-gray-300 hover:bg-gray-400 text-[#0a1a2f] px-6 py-2 rounded-full shadow"
+                className="bg-gray-500 hover:bg-gray-400 text-white px-6 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
               >
                 Cancel
               </button>
