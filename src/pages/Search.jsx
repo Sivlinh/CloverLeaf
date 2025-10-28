@@ -75,7 +75,7 @@ export default function Shop() {
           ))
         ) : (
           <p className="text-center text-gray-500 text-lg col-span-full">
-            No products found 
+            No products found !
           </p>
         )}
       </div>

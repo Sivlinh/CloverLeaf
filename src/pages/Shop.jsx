@@ -157,7 +157,7 @@ export default function Shop() {
 
                 <button
                   onClick={(e) => { e.preventDefault(); handleBuy(item); }}
-                 className="flex-1 bg-green-900 hover:bg-green-800 text-white py-2 px-8 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300"
+                 className="flex-1 bg-gray-500  hover:bg-gray-400 text-white py-2 px-8 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300"
 >
                   Buy
                 </button>

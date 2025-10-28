@@ -1,301 +1,160 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-// Member data (3 members only)
-const members = [
-  {
-    name: "SamPhors",
-    email: "samphors@gmail.com",
-    avatar: "public/Blush/OIP.webp",
-    joinDate: "2025-01-15",
-    orders: 12,
-  },
-  {
-    name: "Sivlinh",
-    email: "sivlinh@gmail.com",
-    avatar: "public/Blush/R.jpg",
-    joinDate: "2025-03-22",
-    orders: 8,
-  },
-  {
-    name: "Nova",
-    email: "nova@gmail.com",
-    avatar: "public/Blush/OIP (1).webp",
-    joinDate: "2025-05-10",
-    orders: 15,
-  },
-];
-
 export default function Profile() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState();
   const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState("");
-  const [editEmail, setEditEmail] = useState("");
+  const [editPhone, setEditPhone] = useState("");
+  const [editAvatar, setEditAvatar] = useState(null);
 
-  // Handle login
-  const handleLogin = (e) => {
-    e.preventDefault();
+  // ✅ Load user from localStorage when page loads
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+  }, []);
 
-    // find user in member list
-    const foundUser = members.find(
-      (m) =>
-        m.email.toLowerCase() === email.toLowerCase() &&
-        m.name.toLowerCase() === name.toLowerCase()
-    );
-
-    if (foundUser) {
-      setUser(foundUser);
-      setIsLoggedIn(true);
-      setEditName(foundUser.name);
-      setEditEmail(foundUser.email);
+  // ✅ Save user to localStorage when it changes
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
     } else {
-      // alert("❌ User not found! Please check your name and email.");
+      localStorage.removeItem("user");
+    }
+  }, [user]);
+
+  // Handle account creation
+  const handleCreateAccount = (e) => {
+    e.preventDefault();
+    const name = e.target.name.value.trim();
+    const phone = e.target.phone.value.trim();
+    if (!name || !phone) return;
+
+    const newUser = {
+      name,
+      phone,
+      avatar: "https://via.placeholder.com/100",
+      joinDate: new Date().toISOString().split("T")[0],
+      orders: 0,
+    };
+    setUser(newUser);
+    setEditName(name);
+    setEditPhone(phone);
+  };
+
+  // Handle image upload
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setEditAvatar(imageUrl);
+      setUser({ ...user, avatar: imageUrl });
     }
   };
 
-  // Handle logout
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setEmail("");
-    setName();
-    setUser(null);
+  // Save edited info
+  const handleSave = () => {
+    const updatedUser = {
+      ...user,
+      name: editName,
+      phone: editPhone,
+      avatar: editAvatar || user.avatar,
+    };
+    setUser(updatedUser);
     setIsEditing(false);
   };
 
-  // Handle edit profile
-  const handleEditProfile = () => {
-    if (isEditing) {
-      // Save changes
-      setUser({ ...user, name: editName, email: editEmail });
-    }
-    setIsEditing(!isEditing);
-  };
+  const handleLogout = () => setUser(null);
 
   return (
     <div className="min-h-screen bg-[#fffaf5]">
-      {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white shadow-sm border-b"
       >
-        <div className="max-w-4xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <img src="public/image.png" alt="Logo" className="h-10" />
-              <h1 className="text-2xl font-bold text-gray-800">My Profile</h1>
-            </div>
-            {isLoggedIn && (
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-red-500 text-white rounded-[25px] hover:bg-red-600 transition-colors"
-              >
-                Logout
-              </button>
-            )}
-          </div>
+        <div className="max-w-4xl mx-auto px-4 py-6 flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-gray-800">My Profile</h1>
+          {user && (
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 bg-red-500 text-white rounded-[25px] hover:bg-red-600 transition"
+            >
+              Logout
+            </button>
+          )}
         </div>
       </motion.div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        {!isLoggedIn ? (
-          // Login Form - Simple and Clean
-          <motion.div
+      <div className="max-w-4xl mx-auto px-4 py-10">
+        {!user ? (
+          // Create account form
+          <motion.form
+            onSubmit={handleCreateAccount}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8"
+            className="bg-white p-8 rounded-2xl shadow-lg max-w-md mx-auto"
           >
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                Welcome Back
-              </h2>
-              <p className="text-gray-600">
-                Sign in to your Cloverleaf account
-              </p>
+            <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+              Create Your Account
+            </h2>
+            <div className="mb-4">
+              <label className="block mb-2 text-sm font-medium">Full Name</label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Enter your name"
+                className="w-full border rounded-lg px-4 py-2"
+                required
+              />
             </div>
-
-            <form onSubmit={handleLogin} className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="Enter your name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  placeholder="Enter your password"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                  required
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                  />
-                  <span className="ml-2 text-sm text-gray-600">
-                    Remember me
-                  </span>
-                </label>
-                <a
-                  href="#"
-                  className="text-sm text-blue-600 hover:text-blue-700"
-                >
-                  Forgot password?
-                </a>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-green-800 text-white py-2 rounded-2xl font-semibold hover:bg-green-900 transition-colors"
-              >
-                Sign In
-              </button>
-            </form>
-
-            <div className="mt-8 text-center">
-              <p className="text-gray-600">
-                Don't have an account?{" "}
-                <a
-                  href="#"
-                  className="text-blue-600 hover:text-blue-700 font-medium"
-                >
-                  Create one
-                </a>
-              </p>
+            <div className="mb-6">
+              <label className="block mb-2 text-sm font-medium">Phone Number</label>
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Enter your phone number"
+                className="w-full border rounded-lg px-4 py-2"
+                required
+              />
             </div>
-          </motion.div>
+            <button
+              type="submit"
+              className="w-full bg-green-800 text-white py-2 rounded-2xl hover:bg-green-900 transition"
+            >
+              Create Account
+            </button>
+          </motion.form>
         ) : (
-          // Profile Display - Simple and Clean
+          // Profile
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-2xl shadow-xl p-8"
+            className="bg-white p-8 rounded-2xl shadow-lg"
           >
-            {/* Profile Header */}
-            <div className="text-center mb-8">
+            <div className="text-center mb-6">
               <img
                 src={user.avatar}
-                alt={user.name}
+                alt="avatar"
                 className="w-24 h-24 mx-auto rounded-full border-4 border-blue-100 shadow-md mb-4"
               />
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                {user.name}
-              </h2>
-              <p className="text-gray-600">{user.email}</p>
-              <button
-                onClick={handleEditProfile}
-                className="mt-4 px-6 py-2 bg-green-900 text-white rounded-[25px] hover:bg-green-800 transition-colors"
-              >
-                {isEditing ? "Save Changes" : "Edit Profile"}
-              </button>
-            </div>
-
-            {/* Profile Info */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Full Name
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={editName}
-                      onChange={(e) => setEditName(e.target.value)}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  ) : (
-                    <p className="text-gray-800 py-3 px-4 bg-gray-50 rounded-lg">
-                      {user.name}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="email"
-                      value={editEmail}
-                      onChange={(e) => setEditEmail(e.target.value)}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  ) : (
-                    <p className="text-gray-800 py-3 px-4 bg-gray-50 rounded-lg">
-                      {user.email}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Member Since
-                  </label>
-                  <p className="text-gray-800 py-3 px-4 bg-gray-50 rounded-lg">
-                    {user.joinDate}
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                <div className="bg-blue-50 rounded-lg p-6">
-                  <h3 className="font-semibold text-gray-800 mb-2">
-                    Total Orders
-                  </h3>
-                  <p className="text-3xl font-bold text-blue-600">
-                    {user.orders}
-                  </p>
-                </div>
-
-                <div className="bg-blue-50 rounded-lg p-6">
-                  <h3 className="font-semibold text-gray-800 mb-2">
-                    Loyalty Points
-                  </h3>
-                  <p className="text-3xl font-bold text-blue-600">
-                    {user.orders * 10}
-                  </p>
-                </div>
-
-                <div className="text-center">
-                  <a
-                    href="/shop"
-                    className="inline-block px-4 py-2 bg-green-900 text-white rounded-[25px] hover:bg-green-800 transition-colors"
-                  >
-                    Continue Shopping
-                  </a>
-                </div>
+              {isEditing && (
+                <input type="file" accept="image/*" onChange={handleImageChange} />
+              )}
+              <h2 className="text-xl font-bold text-gray-800">{user.name}</h2>
+              <p className="text-gray-600">{user.phone}</p>
+              <p className="text-gray-500 text-sm mt-2">
+                Member since {user.joinDate}
+              </p>
+              <div className="mt-4 space-x-2">
+                <button
+                  onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
+                  className="px-4 py-2 bg-green-800 text-white rounded-[25px] hover:bg-green-900 transition"
+                >
+                  {isEditing ? "Save" : "Edit Profile"}
+                </button>
               </div>
             </div>
           </motion.div>
