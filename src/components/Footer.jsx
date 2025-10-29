@@ -5,7 +5,7 @@ export default function Footer() {
   const socialIconClasses = "hover:scale-110 transition-transform duration-200";
   
   return (
-    <footer id="footer" className="text-white py-10 mt-16 bg-[#a19386]">
+    <footer id="footer" className="text-white py-10 mt-16 bg-[#4a3d30]">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
         
         {/* Logo & Description */}

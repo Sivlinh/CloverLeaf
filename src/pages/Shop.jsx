@@ -126,7 +126,7 @@ export default function Shop() {
                 <img
                   src={item.images[0]}
                   alt={item.title}
-                  className="w-full h-60 object-contain p-6 bg-gradient-to-b from-[#f9fcff] to-[#eef5ff]"
+                  className="w-full h-60 object-contain p-6 bg-gradient-to-b from-[#fbc191] to-[#cef2de3a]"
                 />
                 <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-md rounded-full p-2 shadow-sm">
                   <FaHeart
@@ -144,7 +144,7 @@ export default function Shop() {
               </div>
 
               <div className="p-2 flex flex-col items-center text-center">
-                <h3 className="font-semibold text-lg text-[#0a1a2f] mb-1 line-clamp-2">
+                <h3 className="font-semibold text-lg text-[#08172b] mb-1 line-clamp-2">
                   {item.title}
                 </h3>
                 {renderStars(item.rating)}
@@ -157,7 +157,7 @@ export default function Shop() {
 
                 <button
                   onClick={(e) => { e.preventDefault(); handleBuy(item); }}
-                 className="flex-1 bg-green-900 hover:bg-green-800 text-white py-2 px-8 rounded-full text-sm font-medium shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                 className="flex-1 bg-amber-900 hover:bg-amber-800 text-white py-2 px-12 rounded-full text-sm font-medium shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
 >
                   Buy
                 </button>
@@ -187,7 +187,7 @@ export default function Shop() {
             <div className="flex justify-center gap-4 mt-6">
               <button
                 onClick={handleConfirm}
-                className="bg-green-900 hover:bg-green-800 text-white px-6 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                className="bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
               >
                 Confirm
               </button>

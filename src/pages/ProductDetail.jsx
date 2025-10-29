@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { FaStar, FaHeart } from "react-icons/fa";
+import { FaStar, FaHeart, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import products from "../data/products";
 
 export default function ProductDetail() {
@@ -8,6 +8,7 @@ export default function ProductDetail() {
   const product = products.find((p) => p.id === parseInt(id));
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [orderCode, setOrderCode] = useState("");
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Generate random order code
   const generateOrderCode = () => {
@@ -43,6 +44,22 @@ export default function ProductDetail() {
 
   const handleCancel = () => {
     setSelectedProduct(null);
+  };
+
+  const nextImage = () => {
+    if (product && product.images && product.images.length > 1) {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === product.images.length - 1 ? 0 : prevIndex + 1
+      );
+    }
+  };
+
+  const prevImage = () => {
+    if (product && product.images && product.images.length > 1) {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === 0 ? product.images.length - 1 : prevIndex - 1
+      );
+    }
   };
 
   // ⭐ Function to render stars
@@ -82,12 +99,32 @@ export default function ProductDetail() {
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
           <div className="flex flex-col lg:flex-row">
             {/* Product Image */}
-            <div className="lg:w-1/2 p-8 bg-gradient-to-br from-[#f9fcff] to-[#eef5ff] flex items-center justify-center">
+            <div className="lg:w-1/2 p-8 bg-gradient-to-br from-[#f9fcff] to-[#eef5ff] flex items-center justify-center relative">
               <img
-                src={product.images[0]}
+                src={product.images[currentImageIndex]}
                 alt={product.title}
                 className="w-full max-w-md h-96 object-contain rounded-2xl shadow-lg"
+                onError={(e) => {
+                  console.error('Image failed to load:', e.target.src);
+                  e.target.src = '/placeholder.png'; // Fallback image
+                }}
               />
+              {product.images && product.images.length > 1 && (
+                <>
+                  <button
+                    onClick={prevImage}
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 rounded-full p-2 shadow-lg transition-all duration-300"
+                  >
+                    <FaChevronLeft className="text-gray-700" />
+                  </button>
+                  <button
+                    onClick={nextImage}
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 rounded-full p-2 shadow-lg transition-all duration-300"
+                  >
+                    <FaChevronRight className="text-gray-700" />
+                  </button>
+                </>
+              )}
             </div>
 
             {/* Product Details */}
