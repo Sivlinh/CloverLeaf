@@ -14,6 +14,10 @@ export default function Profile() {
   const [topUpAmount, setTopUpAmount] = useState("");
   const [showQR, setShowQR] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [qrData, setQrData] = useState(null);
+  const [paymentTimer, setPaymentTimer] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes
+  const [isCheckingPayment, setIsCheckingPayment] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
   const [favorites, setFavorites] = useState([]);
   const [orderHistory, setOrderHistory] = useState([]);
@@ -144,23 +148,96 @@ export default function Profile() {
   };
 
   // ✅ Handle ABA top-up
-  const handleTopUp = () => {
+  const handleTopUp = async () => {
     const amount = parseFloat(topUpAmount);
     if (isNaN(amount) || amount <= 0) return;
-    setShowQR(true);
+
+    try {
+      const response = await fetch('http://127.0.0.1:5000/api/generate-qr', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: amount,
+          currency: 'USD',
+          description: 'Wallet Top Up'
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setQrData(data);
+        setShowQR(true);
+        setTimeLeft(300); // 5 minutes
+        startPaymentTimer(data.md5);
+      } else {
+        alert('Failed to generate QR code: ' + data.error);
+      }
+    } catch (error) {
+      console.error('Error generating QR:', error);
+      alert('Failed to connect to payment service');
+    }
   };
 
-  // ✅ Simulate payment
-  const handleConfirmPayment = () => {
-    const amount = parseFloat(topUpAmount);
-    setShowSuccess(true);
-    setTimeout(() => {
-      setUser({ ...user, wallet: user.wallet + amount });
-      setShowSuccess(false);
-      setTopUpAmount("");
-      setShowQR(false);
-      setShowTopUp(false);
-    }, 2000);
+  // ✅ Start payment timer and checking
+  const startPaymentTimer = (md5) => {
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          setPaymentTimer(null);
+          setShowQR(false);
+          setQrData(null);
+          alert('Payment timeout. Please try again.');
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    setPaymentTimer(timer);
+
+    // Start checking payment status
+    const checkTimer = setInterval(async () => {
+      if (isCheckingPayment) return;
+      setIsCheckingPayment(true);
+
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/api/check-payment?md5=${md5}`);
+        const data = await response.json();
+
+        if (data.status === 'PAID') {
+          clearInterval(timer);
+          clearInterval(checkTimer);
+          setPaymentTimer(null);
+          setShowSuccess(true);
+          setTimeout(() => {
+            setUser({ ...user, wallet: user.wallet + parseFloat(topUpAmount) });
+            setShowSuccess(false);
+            setTopUpAmount("");
+            setShowQR(false);
+            setQrData(null);
+            setShowTopUp(false);
+          }, 2000);
+        }
+      } catch (error) {
+        console.error('Error checking payment:', error);
+      } finally {
+        setIsCheckingPayment(false);
+      }
+    }, 3000); // Check every 3 seconds
+  };
+
+  // ✅ Cancel payment
+  const handleCancelPayment = () => {
+    if (paymentTimer) {
+      clearInterval(paymentTimer);
+      setPaymentTimer(null);
+    }
+    setShowQR(false);
+    setQrData(null);
+    setTimeLeft(300);
   };
 
   const stats = user ? getStats() : { totalOrders: 0, totalSpent: 0, avgRating: 0 };
@@ -515,27 +592,26 @@ export default function Profile() {
                           <h3 className="text-lg font-semibold text-gray-800 text-center mb-2">
                             Scan with ABA App
                           </h3>
-                          <p className="text-center text-sm text-gray-600 mb-3">
-                            Amount: ${topUpAmount}
+                          <p className="text-center text-sm text-gray-600 mb-2">
+                            Amount: ${qrData?.amount || topUpAmount}
                           </p>
-                          <img
-                            src={`https://api.qrserver.com/v1/create-qr-code/?data=ABA%20Payment%20-%20${topUpAmount}%20USD&size=200x200`}
-                            alt="ABA QR"
-                            className="mx-auto mb-4 border rounded-lg"
-                          />
+                          <p className="text-center text-sm text-gray-600 mb-3">
+                            Time left: {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
+                          </p>
+                          {qrData?.qr_image && (
+                            <img
+                              src={qrData.qr_image}
+                              alt="ABA QR Code"
+                              className="mx-auto mb-4 border rounded-lg w-48"
+                            />
+                          )}
                           {!showSuccess ? (
-                            <div className="flex justify-end space-x-2 w-full">
+                            <div className="flex justify-center space-x-2 w-full">
                               <button
-                                onClick={() => setShowTopUp(false)}
-                                className="px-3 py-2 bg-gray-200 rounded-lg"
+                                onClick={handleCancelPayment}
+                                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
                               >
                                 Cancel
-                              </button>
-                              <button
-                                onClick={handleConfirmPayment}
-                                className="px-4 py-2 bg-green-800 text-white rounded-lg hover:bg-green-900 transition"
-                              >
-                                Confirm Payment
                               </button>
                             </div>
                           ) : (

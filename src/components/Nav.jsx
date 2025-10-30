@@ -24,7 +24,7 @@ export default function Nav() {
   const hoverTimer = useRef(null);
   const searchInputRef = useRef(null);
 
-  // Memoized cart update function to prevent unnecessary re-renders
+  // Update cart count from localStorage
   const updateCartCount = useCallback(() => {
     try {
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -35,30 +35,21 @@ export default function Nav() {
     }
   }, []);
 
-  // 🛒 Update cart count from localStorage with error handling
   useEffect(() => {
     updateCartCount();
-
-    // Listen for cart updates from other tabs or components
     const handleStorageChange = (e) => {
       if (e.key === "cart") updateCartCount();
     };
-
     window.addEventListener("storage", handleStorageChange);
     window.addEventListener("cartUpdated", updateCartCount);
-
     return () => {
       window.removeEventListener("storage", handleStorageChange);
       window.removeEventListener("cartUpdated", updateCartCount);
     };
   }, [updateCartCount]);
 
-  // Memoized navigation links to prevent re-creation on every render
   const navLinks = useMemo(() => NAV_LINKS, []);
-
   const toggleMenu = useCallback(() => setIsMenuOpen((prev) => !prev), []);
-
-  // 🔍 Search bar behavior with useCallback for performance
   const toggleSearch = useCallback(() => {
     setShowSearch((prev) => !prev);
     setIsSearchExpanded((prev) => !prev);
@@ -80,18 +71,20 @@ export default function Nav() {
     }, SEARCH_CLOSE_DELAY);
   }, []);
 
-  const handleSearch = useCallback((e) => {
-    e.preventDefault();
-    const trimmedTerm = searchTerm.trim();
-    if (trimmedTerm) {
-      navigate(`/shop?search=${encodeURIComponent(trimmedTerm)}`);
-      setShowSearch(false);
-      setIsSearchExpanded(false);
-      setSearchTerm("");
-    }
-  }, [searchTerm, navigate]);
+  const handleSearch = useCallback(
+    (e) => {
+      e.preventDefault();
+      const trimmedTerm = searchTerm.trim();
+      if (trimmedTerm) {
+        navigate(`/shop?search=${encodeURIComponent(trimmedTerm)}`);
+        setShowSearch(false);
+        setIsSearchExpanded(false);
+        setSearchTerm("");
+      }
+    },
+    [searchTerm, navigate]
+  );
 
-  // Focus search input when expanded
   useEffect(() => {
     if (isSearchExpanded) {
       const timer = setTimeout(() => {
@@ -101,23 +94,20 @@ export default function Nav() {
     }
   }, [isSearchExpanded]);
 
-  // Memoized active link check
-  const isActiveLink = useCallback((path) => location.pathname === path, [location.pathname]);
+  const isActiveLink = useCallback(
+    (path) => location.pathname === path,
+    [location.pathname]
+  );
 
   return (
-    <div>
-<<<<<<< HEAD
-<nav className="fixed top-0 left-0 w-full z-50 bg-gradient-to-b from-white/30 via-white/20 to-transparent backdrop-blur-xl border-b border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)] transition-all duration-500">
-
-        <div className=" max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
-=======
+    <>
+      {/* 🌿 Navigation Bar */}
       <nav
-        className="fixed top-0 left-0 w-full z-50 bg-white/20 backdrop-blur-xl border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
+        className="fixed top-0 left-0 w-full z-50 bg-gradient-to-b from-white/30 via-white/20 to-transparent backdrop-blur-xl border-b border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)] transition-all duration-500"
         role="navigation"
         aria-label="Main navigation"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
->>>>>>> 05a75971ce422a8e9b339ca147fe161c152de1af
           <div className="flex justify-between items-center h-16">
             {/* 🪴 Logo */}
             <div className="flex-shrink-0">
@@ -139,30 +129,28 @@ export default function Nav() {
             </div>
 
             {/* 🌐 Desktop Navigation */}
-            <nav className="hidden md:block" aria-label="Desktop navigation">
-              <ul className="ml-10 flex items-baseline space-x-4" role="menubar">
+            <div className="hidden md:block">
+              <ul className="ml-10 flex items-baseline space-x-4">
                 {navLinks.map((link) => (
-                  <li key={link.href} role="none">
+                  <li key={link.href}>
                     <Link
                       to={link.href}
-                      role="menuitem"
-                      className={`px-3 py-2 rounded-3xl text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300 ${
+                      className={`px-3 py-2 rounded-3xl text-sm font-medium transition-all duration-300 ${
                         isActiveLink(link.href)
                           ? "text-gray-800 bg-white/30 shadow-sm"
                           : "text-gray-800 hover:text-gray-900 hover:bg-white/20"
                       }`}
-                      aria-current={isActiveLink(link.href) ? "page" : undefined}
                     >
                       {link.label}
                     </Link>
                   </li>
                 ))}
               </ul>
-            </nav>
+            </div>
 
-            {/* 🔍 Cart, Search, Profile, and Menu */}
+            {/* 🔍 Search, Cart, Profile, Menu */}
             <div className="flex items-center space-x-4">
-              {/* Search Icon & Input */}
+              {/* Search */}
               <div className="relative flex items-center space-x-3">
                 <div onMouseEnter={openSearch} onMouseLeave={closeSearchWithDelay}>
                   <button
@@ -170,7 +158,7 @@ export default function Nav() {
                     aria-expanded={isSearchExpanded}
                     aria-label={isSearchExpanded ? "Close search" : "Open search"}
                     title="Search products"
-                    className="group p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-300 transition-all duration-200 rounded-[25px]"
+                    className="group p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200 rounded-[25px]"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -179,7 +167,6 @@ export default function Nav() {
                       strokeWidth={1.5}
                       stroke="currentColor"
                       className="w-6 h-6 group-hover:scale-110 transition-transform duration-200"
-                      aria-hidden="true"
                     >
                       <path
                         strokeLinecap="round"
@@ -197,13 +184,8 @@ export default function Nav() {
                   className={`absolute top-1/2 right-0 -translate-y-1/2 bg-white shadow-xl rounded-[25px] border border-gray-300 overflow-hidden transition-all duration-300 ease-in-out ${
                     isSearchExpanded ? "w-[320px] opacity-100" : "w-0 opacity-0"
                   }`}
-                  role="search"
-                  aria-label="Product search"
                 >
                   <form onSubmit={handleSearch} className="flex items-center">
-                    <label htmlFor="search-input" className="sr-only">
-                      Search for products
-                    </label>
                     <input
                       id="search-input"
                       type="text"
@@ -216,8 +198,7 @@ export default function Nav() {
                     />
                     <button
                       type="submit"
-                      className="p-3 text-gray-600 hover:text-blue-500 transition-all duration-200 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-300 rounded"
-                      aria-label="Submit search"
+                      className="p-3 text-gray-600 hover:text-blue-500 transition-all duration-200 bg-transparent focus:outline-none"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -226,7 +207,6 @@ export default function Nav() {
                         strokeWidth={1.5}
                         stroke="currentColor"
                         className="w-5 h-5"
-                        aria-hidden="true"
                       >
                         <path
                           strokeLinecap="round"
@@ -239,11 +219,10 @@ export default function Nav() {
                 </div>
               </div>
 
-              {/* 🛍️ Cart Icon */}
+              {/* Cart */}
               <Link
                 to="/cart"
-                className="relative p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-[25px] transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-blue-300"
-                aria-label={`Shopping cart with ${cartCount} items`}
+                className="relative p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-[25px] transition-all duration-300 group"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -252,7 +231,6 @@ export default function Nav() {
                   strokeWidth={1.5}
                   stroke="currentColor"
                   className="w-6 h-6 group-hover:scale-110 transition-transform duration-200"
-                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -261,20 +239,16 @@ export default function Nav() {
                   />
                 </svg>
                 {cartCount > 0 && (
-                  <span
-                    className="absolute -top-2 -right-2 bg-[#d8554e] text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg"
-                    aria-label={`${cartCount} items in cart`}
-                  >
+                  <span className="absolute -top-2 -right-2 bg-[#d8554e] text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg">
                     {cartCount > 99 ? "99+" : cartCount}
                   </span>
                 )}
               </Link>
 
-              {/* 👤 Profile */}
+              {/* Profile */}
               <Link
                 to="/profile"
-                className="group p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-[25px] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                aria-label="Go to profile"
+                className="group p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-[25px] transition-all duration-300"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -283,7 +257,6 @@ export default function Nav() {
                   strokeWidth={1.5}
                   stroke="currentColor"
                   className="w-6 h-6 group-hover:scale-110 transition-transform duration-200"
-                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -293,7 +266,7 @@ export default function Nav() {
                 </svg>
               </Link>
 
-              {/* ☰ Mobile Menu */}
+              {/* Mobile Menu */}
               <div className="md:hidden">
                 <button
                   onClick={toggleMenu}
@@ -308,7 +281,6 @@ export default function Nav() {
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
-                      aria-hidden="true"
                     >
                       <path
                         strokeLinecap="round"
@@ -324,7 +296,6 @@ export default function Nav() {
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
-                      aria-hidden="true"
                     >
                       <path
                         strokeLinecap="round"
@@ -340,35 +311,32 @@ export default function Nav() {
           </div>
 
           {/* 📱 Mobile Menu */}
-          <nav
-            className={`${isMenuOpen ? "block" : "hidden"} md:hidden`}
-            aria-label="Mobile navigation"
-          >
-            <ul className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white/20 backdrop-blur-lg rounded-lg mt-2 border border-white/30 shadow-md" role="menu">
-              {navLinks.map((link) => (
-                <li key={link.href} role="none">
-                  <Link
-                    to={link.href}
-                    onClick={() => setIsMenuOpen(false)}
-                    role="menuitem"
-                    className={`block px-3 py-2 rounded-md text-base font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300 ${
-                      isActiveLink(link.href)
-                        ? "text-gray-900 bg-white/40"
-                        : "text-gray-800 hover:text-gray-900 hover:bg-white/30"
-                    }`}
-                    aria-current={isActiveLink(link.href) ? "page" : undefined}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          {isMenuOpen && (
+            <div className="md:hidden mt-2 bg-white/20 backdrop-blur-lg rounded-lg border border-white/30 shadow-md">
+              <ul className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                {navLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      to={link.href}
+                      onClick={() => setIsMenuOpen(false)}
+                      className={`block px-3 py-2 rounded-md text-base font-medium transition-all duration-300 ${
+                        isActiveLink(link.href)
+                          ? "text-gray-900 bg-white/40"
+                          : "text-gray-800 hover:text-gray-900 hover:bg-white/30"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </nav>
 
       {/* Spacer for fixed nav */}
       <div className="h-16" aria-hidden="true"></div>
-    </div>
+    </>
   );
 }

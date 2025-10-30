@@ -1,5 +1,5 @@
 const products = [
-  { id: 1, title: "Aaua Deep Cleansing", price: 7.0, category: "Cleanser", rating: 4.5, images: ["/Cleanser/Anua-removebg-preview (1).png"], description: "Gentle deep cleansing formula that removes impurities and soothes the skin." },
+  { id: 1, title: "Aaua Deep Cleansing", price: 0.01, category: "Cleanser", rating: 4.5, images: ["/Cleanser/Anua-removebg-preview (1).png"], description: "Gentle deep cleansing formula that removes impurities and soothes the skin." },
   { id: 2, title: "Hydrating Gel Cleanser", price: 12.5, category: ["Top","Cleanser"], rating: 4.8, images: ["/Cleanser/Hydrating_Gel_Cleanser-removebg-preview.png"], description: "Lightweight gel cleanser that hydrates while cleansing; great for oily and combination skin." },
   { id: 3, title: "Brightening Cleanser", price: 11.99, category: "Cleanser", rating: 4.2, images: ["/Cleanser/Anua-HeartleafPoreControlCleansingOil-removebg-preview.png"], description: "Brightening cleanser with gentle exfoliation to reveal a radiant complexion." },
   { id: 4, title: "Deep Pore Cleanser", price: 13.99, category: ["Top","Cleanser"], rating: 4.7, images: ["/Cleanser/Deep_Pore_Cleanser-removebg-preview.png"], description: "Powerful pore-clearing cleanser that unclogs and refines pores." },
