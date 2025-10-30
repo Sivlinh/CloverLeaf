@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { FaStar, FaShoppingCart } from "react-icons/fa";
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams, Link, useNavigate } from "react-router-dom";
 import products from "../data/products";
 
 export default function Shop() {
-  const [searchParams] = useSearchParams();
-  const selectedCategory = searchParams.get('category');
-  const searchQuery = searchParams.get('search');
-  const [productsState] = useState(products);
-  const [addedIds, setAddedIds] = useState(() => {
-    try {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
-      return cart.map((p) => p.id);
-    } catch (e) {
-      return [];
-    }
-  });
+   const [searchParams] = useSearchParams();
+   const navigate = useNavigate();
+   const selectedCategory = searchParams.get('category');
+   const searchQuery = searchParams.get('search');
+   const [productsState] = useState(products);
+   const [user, setUser] = useState(null);
+   const [addedIds, setAddedIds] = useState(() => {
+     try {
+       const cart = JSON.parse(localStorage.getItem("cart")) || [];
+       return cart.map((p) => p.id);
+     } catch (e) {
+       return [];
+     }
+   });
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [orderCode, setOrderCode] = useState("");
@@ -41,11 +43,21 @@ export default function Shop() {
     "SKN-" + Math.random().toString(36).substring(2, 8).toUpperCase();
 
   const handleBuy = (item) => {
+    if (!user) {
+      // alert("Please log in or sign up to purchase this product.");
+      navigate("/profile");
+      return;
+    }
     setSelectedProduct(item);
     setOrderCode(generateOrderCode());
   };
 
   const handleConfirm = () => {
+    if (!user) {
+      // alert("Please log in or sign up to confirm your purchase.");
+      navigate("/profile");
+      return;
+    }
     setSelectedProduct(null);
   };
 
@@ -105,8 +117,11 @@ export default function Shop() {
     return () => window.removeEventListener("cartUpdated", handler);
   }, []);
 
-  // Load reviews data for all products
+  // Load user and reviews data for all products
   useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) setUser(JSON.parse(savedUser));
+
     const reviews = {};
     products.forEach(product => {
       const productReviews = localStorage.getItem(`reviews_${product.id}`);
@@ -156,7 +171,7 @@ export default function Shop() {
                 </div>
               </div>
 
-              <div className="p-2 flex flex-col items-center text-center">
+              <div className="p-4 flex flex-col items-center text-center">
                 <h3 className="font-semibold text-lg text-[#08172b] mb-1 line-clamp-2">
                   {item.title}
                 </h3>
@@ -202,7 +217,7 @@ export default function Shop() {
             <div className="flex justify-center gap-4 mt-6">
               <button
                 onClick={handleConfirm}
-                className="bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
               >
                 Confirm
               </button>

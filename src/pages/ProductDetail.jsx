@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { FaStar, FaShoppingCart, FaChevronLeft, FaChevronRight, FaUser } from "react-icons/fa";
 import products from "../data/products";
 
 export default function ProductDetail() {
-   const { id } = useParams();
-   const product = products.find((p) => p.id === parseInt(id));
-   const [selectedProduct, setSelectedProduct] = useState(null);
-   const [orderCode, setOrderCode] = useState("");
-   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-   const [reviews, setReviews] = useState([]);
-   const [newReview, setNewReview] = useState({ rating: 5, comment: "" });
-   const [user, setUser] = useState(null);
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const product = products.find((p) => p.id === parseInt(id));
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [orderCode, setOrderCode] = useState("");
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [reviews, setReviews] = useState([]);
+    const [newReview, setNewReview] = useState({ rating: 5, comment: "" });
+    const [user, setUser] = useState(null);
 
    // Load user and reviews
    useEffect(() => {
@@ -45,11 +46,21 @@ export default function ProductDetail() {
   };
 
   const handleBuy = (item) => {
+    if (!user) {
+      // alert(`Please log in or sign up to purchase this product.`);
+      navigate("/profile");
+      return;
+    }
     setSelectedProduct(item);
     setOrderCode(generateOrderCode());
   };
 
   const handleConfirm = () => {
+    if (!user) {
+      // alert("Please log in or sign up to confirm your purchase.");
+      navigate("/profile");
+      return;
+    }
     // alert(`✅ Order Confirmed!\nProduct: ${selectedProduct.title}\nPrice: $${selectedProduct.price}\nOrder Code: ${orderCode}`);
     setSelectedProduct(null);
   };
@@ -62,7 +73,7 @@ export default function ProductDetail() {
   const handleSubmitReview = (e) => {
     e.preventDefault();
     if (!user) {
-      alert("Please log in to submit a review.");
+      // alert("Please log in to submit a review.");
       return;
     }
     if (!newReview.comment.trim()) return;
@@ -184,12 +195,6 @@ export default function ProductDetail() {
               <p className="text-3xl font-bold text-[#007bff] mb-6">
                 ${product.price}
               </p>
-              <div className="mb-4">
-                <div className="flex items-center gap-2 mb-2">
-                  {renderStars(reviews.length > 0 ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length : product.rating)}
-                  <span className="text-gray-600 text-sm">({reviews.length} reviews)</span>
-                </div>
-              </div>
               <p className="text-gray-700 text-lg leading-relaxed mb-8">
                 {product.description}
               </p>
@@ -339,3 +344,4 @@ export default function ProductDetail() {
     </div>
   );
 }
+
