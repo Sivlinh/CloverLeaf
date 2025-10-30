@@ -49,7 +49,7 @@ export default function Home() {
   };
 
   return (
-    <div id="bodybg" className="w-full mb-10 mt-16 bg-[#fffaf5]">
+    <div className="w-full mb-10 mt-16 bg-[#fffaf5]">
       {/* Hero Slider with Images */}
       <div  className="relative  shadow-sm  w-full h-[80vh] md:h-[90vh] overflow-hidden animate-fade-in">
         {slides.map((slide, i) => (
@@ -110,9 +110,10 @@ export default function Home() {
           ))}
         </div>
       </div>
+     
+     {/* Gentle care every day */}
 
-
-      <section className="py-15 bg-gradient-to-b   from-[#fffaf5] to-[#f4f1ec]">
+      <section id="bodybg" className="py-20 bg-[#fffaf5] mb-10">
     <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -121,6 +122,9 @@ export default function Home() {
             className="text-3xl font-bold text-center  mb-8 text-[#3e2f24]"
           >
             <h1 className="font-serif">Gentle care every day</h1>
+             <h3 className="font-extralight text-lg">
+              Our most-loved products, trusted by thousands for their transformative results
+            </h3>
            
           </motion.h2>
   
@@ -135,14 +139,13 @@ export default function Home() {
   transition={{ duration: 0.8 }}
   viewport={{ once: true }}
   className="col-span-1 rounded-3xl shadow-lg overflow-hidden relative hover:shadow-2xl transition-all duration-500"
+  style={{
+    backgroundImage: 'url(public/treeback.png)',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+  }}
 >
-  {/* 🖼️ Background Image */}
-  <img
-    src="public/treeback.png"  // ← replace with your image path
-    alt="Skincare Daily Routine"
-    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-  />
-
   {/* Overlay for readability */}
   <div className="absolute inset-0 bg-white/80 backdrop-blur-sm"></div>
 
@@ -263,7 +266,7 @@ export default function Home() {
 </section>
 
       {/* Bestselling Products Section (unchanged) */}
-      <section id="shop" className="py-16 bg-[#fffaf5] animate-slide-up">
+      <section id="shop" className="py-26 bg-[#fffaf5] animate-slide-up">
         <div className="max-w-6xl mx-auto px-4">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
