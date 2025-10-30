@@ -7,9 +7,9 @@ export default function Footer() {
         
         {/* Logo & Description */}
         <div>
-          <div className="ml-2 text-black text-xl font-bold flex items-center justify-center md:justify-start">
+          <div className="text-black text-xl font-bold flex items-center justify-center md:justify-start">
             <img 
-              src="public/logo_shop.png" 
+              src="/logo_shop.png" 
               alt="Logo" 
               className="h-12 w-12"
             />
@@ -52,14 +52,13 @@ export default function Footer() {
             <a href="#" className="hover:text-blue-400"><FaTiktok /></a>
           </div>
 
-          {/* Optional Newsletter */}
           <div className="mt-6">
             <p className="text-sm mb-2">Subscribe for updates</p>
             <form className="flex justify-center md:justify-start">
               <input 
                 type="email" 
                 placeholder="Enter your email" 
-                className="px-3 py-2 rounded-l-md text-black text-sm focus:outline-none"
+                className="px-3 py-2 rounded-l-md text-black text-sm focus:outline-none w-full max-w-xs"
               />
               <button 
                 type="submit" 

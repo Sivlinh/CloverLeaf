@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-// Constants for better maintainability
+// Constants
 const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/shop", label: "Shop" },
@@ -29,8 +29,7 @@ export default function Nav() {
     try {
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
       setCartCount(cart.length);
-    } catch (error) {
-      console.error("Error parsing cart from localStorage:", error);
+    } catch {
       setCartCount(0);
     }
   }, []);
@@ -50,6 +49,7 @@ export default function Nav() {
 
   const navLinks = useMemo(() => NAV_LINKS, []);
   const toggleMenu = useCallback(() => setIsMenuOpen((prev) => !prev), []);
+
   const toggleSearch = useCallback(() => {
     setShowSearch((prev) => !prev);
     setIsSearchExpanded((prev) => !prev);
@@ -101,7 +101,7 @@ export default function Nav() {
 
   return (
     <>
-      {/* 🌿 Navigation Bar */}
+      {/* Navigation Bar */}
       <nav
         className="fixed top-0 left-0 w-full z-50 bg-gradient-to-b from-white/30 via-white/20 to-transparent backdrop-blur-xl border-b border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)] transition-all duration-500"
         role="navigation"
@@ -109,7 +109,7 @@ export default function Nav() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
           <div className="flex justify-between items-center h-16">
-            {/* 🪴 Logo */}
+            {/* Logo */}
             <div className="flex-shrink-0">
               <Link
                 to="/"
@@ -117,7 +117,7 @@ export default function Nav() {
                 aria-label="Go to homepage"
               >
                 <img
-                  src="logo_shop.png"
+                  src="/logo_shop.png"
                   alt="Cloverleaf Logo"
                   className="h-12 w-12"
                   loading="lazy"
@@ -128,27 +128,29 @@ export default function Nav() {
               </Link>
             </div>
 
-            {/* 🌐 Desktop Navigation */}
-            <div className="hidden md:block">
-              <ul className="ml-10 flex items-baseline space-x-4">
+            {/* Desktop Navigation */}
+            <nav className="hidden md:block" aria-label="Desktop navigation">
+              <ul className="ml-10 flex items-baseline space-x-4" role="menubar">
                 {navLinks.map((link) => (
-                  <li key={link.href}>
+                  <li key={link.href} role="none">
                     <Link
                       to={link.href}
+                      role="menuitem"
                       className={`px-3 py-2 rounded-3xl text-sm font-medium transition-all duration-300 ${
                         isActiveLink(link.href)
                           ? "text-gray-800 bg-white/30 shadow-sm"
                           : "text-gray-800 hover:text-gray-900 hover:bg-white/20"
                       }`}
+                      aria-current={isActiveLink(link.href) ? "page" : undefined}
                     >
                       {link.label}
                     </Link>
                   </li>
                 ))}
               </ul>
-            </div>
+            </nav>
 
-            {/* 🔍 Search, Cart, Profile, Menu */}
+            {/* Cart, Search, Profile, Mobile Menu */}
             <div className="flex items-center space-x-4">
               {/* Search */}
               <div className="relative flex items-center space-x-3">
@@ -177,7 +179,6 @@ export default function Nav() {
                   </button>
                 </div>
 
-                {/* Animated Search Input */}
                 <div
                   onMouseEnter={openSearch}
                   onMouseLeave={closeSearchWithDelay}
@@ -199,6 +200,7 @@ export default function Nav() {
                     <button
                       type="submit"
                       className="p-3 text-gray-600 hover:text-blue-500 transition-all duration-200 bg-transparent focus:outline-none"
+                      aria-label="Submit search"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -223,6 +225,7 @@ export default function Nav() {
               <Link
                 to="/cart"
                 className="relative p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-[25px] transition-all duration-300 group"
+                aria-label={`Shopping cart with ${cartCount} items`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -249,6 +252,7 @@ export default function Nav() {
               <Link
                 to="/profile"
                 className="group p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-[25px] transition-all duration-300"
+                aria-label="User profile"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -266,7 +270,7 @@ export default function Nav() {
                 </svg>
               </Link>
 
-              {/* Mobile Menu */}
+              {/* Mobile Menu Toggle */}
               <div className="md:hidden">
                 <button
                   onClick={toggleMenu}
@@ -282,12 +286,7 @@ export default function Nav() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   ) : (
                     <svg
@@ -297,12 +296,7 @@ export default function Nav() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 6h16M4 12h16M4 18h16"
-                      />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                   )}
                 </button>
@@ -310,28 +304,34 @@ export default function Nav() {
             </div>
           </div>
 
-          {/* 📱 Mobile Menu */}
-          {isMenuOpen && (
-            <div className="md:hidden mt-2 bg-white/20 backdrop-blur-lg rounded-lg border border-white/30 shadow-md">
-              <ul className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                {navLinks.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      to={link.href}
-                      onClick={() => setIsMenuOpen(false)}
-                      className={`block px-3 py-2 rounded-md text-base font-medium transition-all duration-300 ${
-                        isActiveLink(link.href)
-                          ? "text-gray-900 bg-white/40"
-                          : "text-gray-800 hover:text-gray-900 hover:bg-white/30"
-                      }`}
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          {/* Mobile Menu */}
+          <nav
+            className={`${isMenuOpen ? "block" : "hidden"} md:hidden`}
+            aria-label="Mobile navigation"
+          >
+            <ul
+              className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white/20 backdrop-blur-lg rounded-lg mt-2 border border-white/30 shadow-md"
+              role="menu"
+            >
+              {navLinks.map((link) => (
+                <li key={link.href} role="none">
+                  <Link
+                    to={link.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    role="menuitem"
+                    className={`block px-3 py-2 rounded-md text-base font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300 ${
+                      isActiveLink(link.href)
+                        ? "text-gray-900 bg-white/40"
+                        : "text-gray-800 hover:text-gray-900 hover:bg-white/30"
+                    }`}
+                    aria-current={isActiveLink(link.href) ? "page" : undefined}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </nav>
 

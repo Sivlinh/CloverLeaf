@@ -33,12 +33,10 @@ export default function App() {
         <Route path="/shop" element={<Shop />} />
         <Route path="/detail/:id" element={<DetailShop />} />
         <Route path="/search" element={<Search />} />
+
       </Routes>
-      <TestimonialsSection />
-
-
      
-      
+
 
       <Footer />
     </div>
