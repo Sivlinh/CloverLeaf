@@ -10,6 +10,8 @@ export default function Shop() {
    const searchQuery = searchParams.get('search');
    const [productsState] = useState(products);
    const [user, setUser] = useState(null);
+   const [message, setMessage] = useState(null);
+   const [messageType, setMessageType] = useState("info");
    const [addedIds, setAddedIds] = useState(() => {
      try {
        const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -44,8 +46,9 @@ export default function Shop() {
 
   const handleBuy = (item) => {
     if (!user) {
-      // alert("Please log in or sign up to purchase this product.");
-      navigate("/profile");
+      setMessage("Please log in or sign up to purchase this product.");
+      setMessageType("error");
+      setTimeout(() => navigate("/profile"), 2000);
       return;
     }
     setSelectedProduct(item);
@@ -54,11 +57,51 @@ export default function Shop() {
 
   const handleConfirm = () => {
     if (!user) {
-      // alert("Please log in or sign up to confirm your purchase.");
-      navigate("/profile");
+      setMessage("Please log in or sign up to confirm your purchase.");
+      setMessageType("error");
+      setTimeout(() => navigate("/profile"), 2000);
       return;
     }
+
+    const userWallet = user.wallet || 0;
+    if (userWallet < selectedProduct.price) {
+      setMessage(`Insufficient funds. You need $${(selectedProduct.price - userWallet).toFixed(2)} more. Please top up your wallet.`);
+      setMessageType("error");
+      setTimeout(() => navigate("/profile"), 3000);
+      return;
+    }
+
+    // Deduct from wallet
+    const updatedUser = { ...user, wallet: userWallet - selectedProduct.price };
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    const userIndex = users.findIndex(u => u.id === user.id);
+    if (userIndex !== -1) {
+      users[userIndex] = updatedUser;
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    setUser(updatedUser);
+
+    // Add to order history
+    const order = {
+      id: Date.now(),
+      productId: selectedProduct.id,
+      productName: selectedProduct.title,
+      price: selectedProduct.price,
+      date: new Date().toISOString(),
+      status: "Delivered",
+      orderCode: orderCode
+    };
+    const userOrdersKey = `orders_${user.id}`;
+    const existingOrders = JSON.parse(localStorage.getItem(userOrdersKey) || "[]");
+    existingOrders.unshift(order);
+    localStorage.setItem(userOrdersKey, JSON.stringify(existingOrders));
+
+    setMessage(`✅ Purchase Successful! ${selectedProduct.title} - $${selectedProduct.price}`);
+    setMessageType("success");
     setSelectedProduct(null);
+    window.dispatchEvent(new Event("walletUpdated"));
+    window.dispatchEvent(new Event("orderHistoryUpdated"));
   };
 
   const handleCancel = () => {
@@ -132,8 +175,33 @@ export default function Shop() {
     setReviewsData(reviews);
   }, []);
 
+  // auto-clear message
+  useEffect(() => {
+    if (!message) return;
+    const t = setTimeout(() => setMessage(null), 4000);
+    return () => clearTimeout(t);
+  }, [message]);
+
   return (
     <div id="bodybg" className="min-h-screen flex flex-col items-center py-10 bg-[#f5fcff] animate-fade-in">
+      {/* Inline message banner */}
+      {message && (
+        <div
+          className={`max-w-4xl mx-auto mb-6 p-4 rounded-lg flex items-start justify-between border ${
+            messageType === "success"
+              ? "bg-green-50 border-green-200 text-green-800"
+              : messageType === "error"
+              ? "bg-red-50 border-red-200 text-red-800"
+              : "bg-blue-50 border-blue-200 text-blue-800"
+          }`}
+        >
+          <div className="flex-1 pr-4">{message}</div>
+          <button onClick={() => setMessage(null)} className="ml-4 text-sm font-medium underline opacity-80">
+            Dismiss
+          </button>
+        </div>
+      )}
+
       <h1 id="fontcolor" className="text-2xl text-gray-800 mb-10 font-semibold">
         {searchQuery
           ? `Search Results for "${searchQuery}"`

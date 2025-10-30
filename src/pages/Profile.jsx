@@ -264,8 +264,8 @@ export default function Profile() {
        return;
      }
 
-     if (amount < 1) {
-       alert('Minimum top-up amount is $1');
+     if (amount < 0.001) {
+       alert('Minimum top-up amount is $0.001');
        return;
      }
 
@@ -526,10 +526,7 @@ export default function Profile() {
                       <FaWallet className="inline mr-1" />
                       ${stats.totalSpent.toFixed(2)} Spent
                     </div>
-                    <div className="bg-white/20 rounded-lg px-3 py-1">
-                      <FaStar className="inline mr-1" />
-                      {stats.avgRating.toFixed(1)} Avg Rating
-                    </div>
+                   
                   </div>
                 </div>
               </div>
