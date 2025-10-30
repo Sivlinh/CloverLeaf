@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-// Constants for better maintainability
+// Constants
 const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/shop", label: "Shop" },
@@ -24,41 +24,31 @@ export default function Nav() {
   const hoverTimer = useRef(null);
   const searchInputRef = useRef(null);
 
-  // Memoized cart update function to prevent unnecessary re-renders
   const updateCartCount = useCallback(() => {
     try {
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
       setCartCount(cart.length);
-    } catch (error) {
-      console.error("Error parsing cart from localStorage:", error);
+    } catch {
       setCartCount(0);
     }
   }, []);
 
-  // 🛒 Update cart count from localStorage with error handling
   useEffect(() => {
     updateCartCount();
-
-    // Listen for cart updates from other tabs or components
     const handleStorageChange = (e) => {
       if (e.key === "cart") updateCartCount();
     };
-
     window.addEventListener("storage", handleStorageChange);
     window.addEventListener("cartUpdated", updateCartCount);
-
     return () => {
       window.removeEventListener("storage", handleStorageChange);
       window.removeEventListener("cartUpdated", updateCartCount);
     };
   }, [updateCartCount]);
 
-  // Memoized navigation links to prevent re-creation on every render
   const navLinks = useMemo(() => NAV_LINKS, []);
-
   const toggleMenu = useCallback(() => setIsMenuOpen((prev) => !prev), []);
 
-  // 🔍 Search bar behavior with useCallback for performance
   const toggleSearch = useCallback(() => {
     setShowSearch((prev) => !prev);
     setIsSearchExpanded((prev) => !prev);
@@ -80,18 +70,20 @@ export default function Nav() {
     }, SEARCH_CLOSE_DELAY);
   }, []);
 
-  const handleSearch = useCallback((e) => {
-    e.preventDefault();
-    const trimmedTerm = searchTerm.trim();
-    if (trimmedTerm) {
-      navigate(`/shop?search=${encodeURIComponent(trimmedTerm)}`);
-      setShowSearch(false);
-      setIsSearchExpanded(false);
-      setSearchTerm("");
-    }
-  }, [searchTerm, navigate]);
+  const handleSearch = useCallback(
+    (e) => {
+      e.preventDefault();
+      const trimmedTerm = searchTerm.trim();
+      if (trimmedTerm) {
+        navigate(`/shop?search=${encodeURIComponent(trimmedTerm)}`);
+        setShowSearch(false);
+        setIsSearchExpanded(false);
+        setSearchTerm("");
+      }
+    },
+    [searchTerm, navigate]
+  );
 
-  // Focus search input when expanded
   useEffect(() => {
     if (isSearchExpanded) {
       const timer = setTimeout(() => {
@@ -101,25 +93,22 @@ export default function Nav() {
     }
   }, [isSearchExpanded]);
 
-  // Memoized active link check
-  const isActiveLink = useCallback((path) => location.pathname === path, [location.pathname]);
+  const isActiveLink = useCallback(
+    (path) => location.pathname === path,
+    [location.pathname]
+  );
 
   return (
     <div>
-<<<<<<< HEAD
-<nav className="fixed top-0 left-0 w-full z-50 bg-gradient-to-b from-white/30 via-white/20 to-transparent backdrop-blur-xl border-b border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)] transition-all duration-500">
-
-        <div className=" max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
-=======
+      {/* Main Nav */}
       <nav
-        className="fixed top-0 left-0 w-full z-50 bg-white/20 backdrop-blur-xl border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
+        className="fixed top-0 left-0 w-full z-50 bg-gradient-to-b from-white/30 via-white/20 to-transparent backdrop-blur-xl border-b border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)] transition-all duration-500"
         role="navigation"
         aria-label="Main navigation"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
->>>>>>> 05a75971ce422a8e9b339ca147fe161c152de1af
           <div className="flex justify-between items-center h-16">
-            {/* 🪴 Logo */}
+            {/* Logo */}
             <div className="flex-shrink-0">
               <Link
                 to="/"
@@ -138,7 +127,7 @@ export default function Nav() {
               </Link>
             </div>
 
-            {/* 🌐 Desktop Navigation */}
+            {/* Desktop Navigation */}
             <nav className="hidden md:block" aria-label="Desktop navigation">
               <ul className="ml-10 flex items-baseline space-x-4" role="menubar">
                 {navLinks.map((link) => (
@@ -160,9 +149,9 @@ export default function Nav() {
               </ul>
             </nav>
 
-            {/* 🔍 Cart, Search, Profile, and Menu */}
+            {/* Cart, Search, Profile, Mobile Menu */}
             <div className="flex items-center space-x-4">
-              {/* Search Icon & Input */}
+              {/* Search */}
               <div className="relative flex items-center space-x-3">
                 <div onMouseEnter={openSearch} onMouseLeave={closeSearchWithDelay}>
                   <button
@@ -190,7 +179,6 @@ export default function Nav() {
                   </button>
                 </div>
 
-                {/* Animated Search Input */}
                 <div
                   onMouseEnter={openSearch}
                   onMouseLeave={closeSearchWithDelay}
@@ -239,7 +227,7 @@ export default function Nav() {
                 </div>
               </div>
 
-              {/* 🛍️ Cart Icon */}
+              {/* Cart */}
               <Link
                 to="/cart"
                 className="relative p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-[25px] transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -270,7 +258,7 @@ export default function Nav() {
                 )}
               </Link>
 
-              {/* 👤 Profile */}
+              {/* Profile */}
               <Link
                 to="/profile"
                 className="group p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-[25px] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -293,7 +281,7 @@ export default function Nav() {
                 </svg>
               </Link>
 
-              {/* ☰ Mobile Menu */}
+              {/* Mobile Menu Toggle */}
               <div className="md:hidden">
                 <button
                   onClick={toggleMenu}
@@ -310,12 +298,7 @@ export default function Nav() {
                       stroke="currentColor"
                       aria-hidden="true"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   ) : (
                     <svg
@@ -326,12 +309,7 @@ export default function Nav() {
                       stroke="currentColor"
                       aria-hidden="true"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 6h16M4 12h16M4 18h16"
-                      />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                   )}
                 </button>
@@ -339,12 +317,15 @@ export default function Nav() {
             </div>
           </div>
 
-          {/* 📱 Mobile Menu */}
+          {/* Mobile Menu */}
           <nav
             className={`${isMenuOpen ? "block" : "hidden"} md:hidden`}
             aria-label="Mobile navigation"
           >
-            <ul className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white/20 backdrop-blur-lg rounded-lg mt-2 border border-white/30 shadow-md" role="menu">
+            <ul
+              className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white/20 backdrop-blur-lg rounded-lg mt-2 border border-white/30 shadow-md"
+              role="menu"
+            >
               {navLinks.map((link) => (
                 <li key={link.href} role="none">
                   <Link

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
+import { TestimonialsSection } from "./TestimonialsSection";
 
 const products = [
   { id: 1, name: "Anua Deep Cleansing", price: "$7.0", image: "/Cleanser/Anua-removebg-preview (1).png" },
@@ -110,66 +111,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Bestselling Products Section (unchanged) */}
-      <section id="shop" className="py-16 bg-[#fffaf5] animate-slide-up">
-        <div className="max-w-6xl mx-auto px-4">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-3xl font-bold text-center mb-8 text-[#3e2f24]"
-          >
-            <h1 className="font-serif">Bestselling Favorites</h1>
-            <h3 className="font-extralight text-lg">
-              Our most-loved products, trusted by thousands for their transformative results
-            </h3>
-          </motion.h2>
 
-          <div  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {products.map((product, index) => (
-              <Link to={`/product/${product.id}`} key={product.id}>
-                <motion.div
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  viewport={{ once: true }}
-                  className="group border rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-                >
-                  <div id="best-seller" className="overflow-hidden bg- relative">
-                    <motion.img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-100 object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-
-                  <div className="p-4 text-center">
-                    <h3 className="font-semibold text-lg text-gray-800">{product.name}</h3>
-                    <p className="text-gray-600 mt-1">{product.price}</p>
-                  </div>
-                </motion.div>
-              </Link>
-            ))}
-          </div>
-
-          {/* <div className="text-center mt-12">
-            <motion.a
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              href="/shop"
-               className="flex-1 w-full bg-green-900 hover:bg-green-800 text-white py-2 px-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-            >
-              View All Products
-            </motion.a>
-          </div> */}
-        </div>
-      </section>
-    
-{/* ✨ Skincare Inspiration Section 2 */}
- 
-     
-<section className="py-15 bg-gradient-to-b   from-[#fffaf5] to-[#f4f1ec]">
+      <section className="py-15 bg-gradient-to-b   from-[#fffaf5] to-[#f4f1ec]">
     <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -319,10 +262,69 @@ export default function Home() {
   </div>
 </section>
 
+      {/* Bestselling Products Section (unchanged) */}
+      <section id="shop" className="py-16 bg-[#fffaf5] animate-slide-up">
+        <div className="max-w-6xl mx-auto px-4">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-3xl font-bold text-center mb-8 text-[#3e2f24]"
+          >
+            <h1 className="font-serif">Bestselling Favorites</h1>
+            <h3 className="font-extralight text-lg">
+              Our most-loved products, trusted by thousands for their transformative results
+            </h3>
+          </motion.h2>
+
+          <div  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {products.map((product, index) => (
+              <Link to={`/product/${product.id}`} key={product.id}>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  viewport={{ once: true }}
+                  className="group border rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                >
+                  <div id="best-seller" className="overflow-hidden bg- relative">
+                    <motion.img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-100 object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+
+                  <div className="p-4 text-center">
+                    <h3 className="font-semibold text-lg text-gray-800">{product.name}</h3>
+                    <p className="text-gray-600 mt-1">{product.price}</p>
+                  </div>
+                </motion.div>
+              </Link>
+            ))}
+          </div>
+
+          {/* <div className="text-center mt-12">
+            <motion.a
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              href="/shop"
+               className="flex-1 w-full bg-green-900 hover:bg-green-800 text-white py-2 px-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+            >
+              View All Products
+            </motion.a>
+          </div> */}
+        </div>
+      </section>
+    
+{/* ✨ Skincare Inspiration Section 2 */}
+
+
+<TestimonialsSection />
 
 
 
-      
     </div>
   );
 }
