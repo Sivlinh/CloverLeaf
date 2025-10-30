@@ -228,7 +228,7 @@ export default function Cart() {
       )}
       
        <div className=" max-w-4xl mx-auto py-16 px-4">
-          <Link to="/shop" className="px-2 py-3 bg-green-900 hover:bg-green-800 text-white rounded-2xl font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+          <Link to="/shop" className="px-2 py-3 text-gray-800 rounded-2xl font-semibold shadow-lg hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
            ← Back to Shop
          </Link>
          </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaShoppingBag, FaHeart, FaStar, FaCog, FaHistory, FaCreditCard, FaMapMarkerAlt, FaUser, FaWallet } from "react-icons/fa";
+import { FaShoppingBag, FaStar, FaCog, FaHistory, FaCreditCard, FaMapMarkerAlt, FaUser, FaWallet } from "react-icons/fa";
 import products from "../data/products";
 
 export default function Profile() {
@@ -234,7 +234,7 @@ export default function Profile() {
             className="bg-white rounded-2xl shadow-lg overflow-hidden"
           >
             {/* Profile Header */}
-            <div className="bg-gradient-to-r from-green-600 to-green-800 text-white p-8">
+            <div className="bg-gradient-to-r from-gray-300 to-gray-500 text-white p-8">
               <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
                 <div className="relative">
                   <img
@@ -253,8 +253,8 @@ export default function Profile() {
                 </div>
                 <div className="text-center md:text-left flex-1">
                   <h2 className="text-2xl font-bold">{user.name}</h2>
-                  <p className="text-green-100">{user.phone}</p>
-                  <p className="text-green-200 text-sm mt-1">
+                  <p className="text-white-100">{user.phone}</p>
+                  <p className="text-wthie-200 text-sm mt-1">
                     Member since {user.joinDate}
                   </p>
                   <div className="flex flex-wrap gap-4 mt-4 justify-center md:justify-start">
@@ -281,7 +281,6 @@ export default function Profile() {
                 {[
                   { id: "profile", label: "Profile", icon: FaUser },
                   { id: "orders", label: "Orders", icon: FaHistory },
-                  { id: "favorites", label: "Favorites", icon: FaHeart },
                   { id: "wallet", label: "Wallet", icon: FaCreditCard },
                   { id: "settings", label: "Settings", icon: FaCog },
                 ].map((tab) => (
@@ -405,45 +404,11 @@ export default function Profile() {
                 </motion.div>
               )}
 
-              {activeTab === "favorites" && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
-                    <FaHeart /> Favorite Products
-                  </h3>
-                  {favorites.length > 0 ? (
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {products.filter(p => favorites.includes(p.id)).map((product) => (
-                        <div key={product.id} className="border rounded-lg p-4 hover:shadow-md transition">
-                          <img
-                            src={product.images[0]}
-                            alt={product.title}
-                            className="w-full h-32 object-contain mb-3 rounded"
-                          />
-                          <h4 className="font-medium text-gray-800 mb-1">{product.title}</h4>
-                          <p className="text-green-600 font-semibold">${product.price}</p>
-                          <button
-                            onClick={() => toggleFavorite(product.id)}
-                            className="mt-2 text-red-500 hover:text-red-600 transition"
-                          >
-                            <FaHeart className="inline mr-1" /> Remove from Favorites
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-12">
-                      <FaHeart className="mx-auto text-4xl text-gray-300 mb-4" />
-                      <p className="text-gray-500">No favorite products yet</p>
-                      <p className="text-sm text-gray-400">Products you like will appear here</p>
-                    </div>
-                  )}
-                </motion.div>
-              )}
 
               {activeTab === "wallet" && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   <div className="text-center">
-                    <div className="bg-gradient-to-r from-green-500 to-green-600 text-white p-8 rounded-2xl mb-6">
+                    <div className="bg-gradient-to-r y-100 text-gray-700 p-8 rounded-2xl mb-6">
                       <FaWallet className="mx-auto text-4xl mb-4" />
                       <h3 className="text-2xl font-bold mb-2">Wallet Balance</h3>
                       <p className="text-4xl font-bold">${user.wallet.toFixed(2)}</p>

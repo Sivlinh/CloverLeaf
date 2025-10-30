@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Nav from "./components/Nav";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -15,10 +15,12 @@ import DetailShop from "./pages/DetailShop";
 
 
 export default function App() {
+  const location = useLocation();
+
   return (
     <div className="App" id="bodybg">
       <Nav />
-      <Hero />
+      {!location.pathname.startsWith('/product/') && !location.pathname.startsWith('/detail/') && <Hero />}
 
       <Routes>
         <Route path="/" element={<Home />} />

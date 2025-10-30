@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaStar, FaHeart } from "react-icons/fa";
+import { FaStar, FaShoppingCart } from "react-icons/fa";
 import { useSearchParams, Link } from "react-router-dom";
 import products from "../data/products";
 
@@ -19,6 +19,7 @@ export default function Shop() {
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [orderCode, setOrderCode] = useState("");
+  const [reviewsData, setReviewsData] = useState({});
 
   // ✅ Filter products by category (supports array or string)
   let filteredProducts = selectedCategory && selectedCategory !== 'All Products'
@@ -104,8 +105,20 @@ export default function Shop() {
     return () => window.removeEventListener("cartUpdated", handler);
   }, []);
 
+  // Load reviews data for all products
+  useEffect(() => {
+    const reviews = {};
+    products.forEach(product => {
+      const productReviews = localStorage.getItem(`reviews_${product.id}`);
+      if (productReviews) {
+        reviews[product.id] = JSON.parse(productReviews);
+      }
+    });
+    setReviewsData(reviews);
+  }, []);
+
   return (
-    <div id="bodybg" className="min-h-screen flex flex-col items-center py-10 bg-[#fffaf5] animate-fade-in">
+    <div id="bodybg" className="min-h-screen flex flex-col items-center py-10 bg-[#f5fcff] animate-fade-in">
       <h1 id="fontcolor" className="text-2xl text-gray-800 mb-10 font-semibold">
         {searchQuery
           ? `Search Results for "${searchQuery}"`
@@ -126,18 +139,18 @@ export default function Shop() {
                 <img
                   src={item.images[0]}
                   alt={item.title}
-                  className="w-full h-60 object-contain p-6 bg-gradient-to-b from-[#fbc191] to-[#cef2de3a]"
+                  className="w-full h-60 object-contain p-6 bg-gradient-to-b "
                 />
                 <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-md rounded-full p-2 shadow-sm">
-                  <FaHeart
+                  <FaShoppingCart
                     onClick={(e) => {
                       e.stopPropagation();
                       e.preventDefault();
                       handleAddToCart(item);
                     }}
                     className={`${addedIds.includes(item.id)
-                      ? 'text-red-500'
-                      : 'text-gray-400 hover:text-red-500'
+                      ? 'text-green-500'
+                      : 'text-gray-400 hover:text-green-500'
                       } transition-colors duration-200 cursor-pointer`}
                   />
                 </div>
@@ -147,7 +160,9 @@ export default function Shop() {
                 <h3 className="font-semibold text-lg text-[#08172b] mb-1 line-clamp-2">
                   {item.title}
                 </h3>
-                {renderStars(item.rating)}
+                {renderStars(reviewsData[item.id] && reviewsData[item.id].length > 0
+                  ? reviewsData[item.id].reduce((sum, r) => sum + r.rating, 0) / reviewsData[item.id].length
+                  : item.rating)}
                 <p className="text-gray-400 text-sm mb-2">
                   {Array.isArray(item.category) ? item.category.join(", ") : item.category}
                 </p>
@@ -157,7 +172,7 @@ export default function Shop() {
 
                 <button
                   onClick={(e) => { e.preventDefault(); handleBuy(item); }}
-                 className="flex-1 bg-amber-900 hover:bg-amber-800 text-white py-2 px-12 rounded-full text-sm font-medium shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                 className="flex-1 bg-green-900 hover:bg-green-800 text-white py-2 px-12 rounded-full text-sm font-medium shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
 >
                   Buy
                 </button>

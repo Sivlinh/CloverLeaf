@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
+import { FaStar } from "react-icons/fa";
+import products from "../data/products";
 
-const products = [
+const homeProducts = [
   { id: 1, name: "Anua Deep Cleansing", price: "$7.0", image: "/Cleanser/Anua-removebg-preview (1).png" },
   { id: 11, name: "Serum Skin 1004", price: "$12.99", image: "/seroum/1004.png" },
   { id: 12, name: "Anua Serum", price: "$13.5", image: "/seroum/anua.png" },
   { id: 30, name: "Beauty of Joseon", price: "$13.5", image: "/Face mask/beauty.png" },
 ];
 
-// ✨ Updated slides (image-based + category links)
 const slides = [
   {
     title: "Top 10 Trending Picks",
@@ -22,7 +23,7 @@ const slides = [
     title: "Glow & Glam Make-Up",
     text: "Express yourself with our vibrant make-up essentials — bold, soft, or natural, your choice.",
     button: "Shop Make-Up",
-    image: "public/makeupface.png",
+    image: "/makeupface.png",
     category: "Make Up",
   },
   {
@@ -36,133 +37,161 @@ const slides = [
 
 export default function Home() {
   const [index, setIndex] = useState(0);
+  const [reviewsData, setReviewsData] = useState({});
   const navigate = useNavigate();
 
-  // ✅ Removed auto-slide (manual only)
-  const prevSlide = () => {
-    setIndex((prev) => (prev - 1 + slides.length) % slides.length);
-  };
+  const prevSlide = () => setIndex((prev) => (prev - 1 + slides.length) % slides.length);
+  const nextSlide = () => setIndex((prev) => (prev + 1) % slides.length);
 
-  const nextSlide = () => {
-    setIndex((prev) => (prev + 1) % slides.length);
+  useEffect(() => {
+    const reviews = {};
+    homeProducts.forEach((p) => {
+      const stored = localStorage.getItem(`reviews_${p.id}`);
+      if (stored) reviews[p.id] = JSON.parse(stored);
+    });
+    setReviewsData(reviews);
+  }, []);
+
+  const renderStars = (rating) => {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating - fullStars >= 0.5;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+    return (
+      <div className="flex justify-center items-center mb-1">
+        {[...Array(fullStars)].map((_, i) => (
+          <FaStar key={`f-${i}`} className="text-yellow-400 text-sm" />
+        ))}
+        {halfStar && <FaStar className="text-yellow-300 text-sm opacity-70" />}
+        {[...Array(emptyStars)].map((_, i) => (
+          <FaStar key={`e-${i}`} className="text-gray-300 text-sm" />
+        ))}
+        <span className="text-gray-500 text-xs ml-1">({rating.toFixed(1)})</span>
+      </div>
+    );
   };
 
   return (
-    <div id="bodybg" className="w-full mt-16">
-      {/* Hero Slider with Images */}
-      <div  className="relative  shadow-sm  w-full h-[80vh] md:h-[90vh] overflow-hidden animate-fade-in">
+    <div className="w-full mt-16">
+      {/* Hero Section */}
+      <div className="relative w-full h-[75vh] md:h-[90vh] overflow-hidden">
         {slides.map((slide, i) => (
-          <div
+          <motion.div
             key={i}
-            className={`absolute inset-0 flex flex-col md:flex-row transition-opacity duration-700 ${
-              i === index ? "opacity-100" : "opacity-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: i === index ? 1 : 0 }}
+            transition={{ duration: 0.8 }}
+            className={`absolute inset-0 flex flex-col md:flex-row items-center justify-between px-8 md:px-16 ${
+              i === index ? "z-20" : "z-10"
             }`}
           >
-            {/* Left side - text */}
-            <div className="flex flex-col justify-center w-full md:w-1/2 px-8 md:px-16 py-10 md:py-0 text-center md:text-left z-20">
-              <h2 className="text-3xl md:text-5xl font-serif font-bold mb-4">{slide.title}</h2>
-              <p className="text-base md:text-lg mb-6">{slide.text}</p>
-             <button
- onClick={() => navigate(`/shop?category=${encodeURIComponent(slide.category)}`)}
- className="bg-green-900 hover:bg-green-800 text-white py-2 px-5 rounded-2xl font-medium shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 w-fit mx-auto md:mx-0 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
->
- {slide.button}
-</button>
-
+            {/* Text */}
+            <div className="flex flex-col justify-center items-center md:items-start text-center md:text-left w-full md:w-1/2 space-y-5">
+              <h2 className="text-3xl md:text-5xl font-serif font-bold">{slide.title}</h2>
+              <p className="text-base md:text-lg text-gray-700">{slide.text}</p>
+              <button
+                onClick={() => navigate(`/shop?category=${encodeURIComponent(slide.category)}`)}
+                className="bg-green-900 hover:bg-green-800 text-white py-2 px-6 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-300"
+              >
+                {slide.button}
+              </button>
             </div>
 
-            {/* Right side - image */}
-            <div className="w-full md:w-[40%] h-[250px] md:h-[80vh] relative">
-              <img
-                src={slide.image}
-                alt={slide.title}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0"></div>
-            </div>
-          </div>
+            {/* Image */}
+            <img
+              src={slide.image}
+              alt={slide.title}
+              loading="lazy"
+              className="w-full md:w-[45%] h-[250px] md:h-[80vh] object-cover rounded-xl shadow-sm"
+            />
+          </motion.div>
         ))}
 
-        {/* Navigation arrows (manual only) */}
+        {/* Arrows */}
         <button
           onClick={prevSlide}
-          className="absolute left-3 md:left-5 top-1/2 -translate-y-1/2 text-3xl md:text-4xl text-white bg-black/40 px-3 py-1 rounded-full hover:bg-black/70 z-30"
+          className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 text-3xl text-white bg-black/40 px-3 py-1 rounded-full hover:bg-black/70 z-30"
         >
           ‹
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-3 md:right-5 top-1/2 -translate-y-1/2 text-3xl md:text-4xl text-white bg-black/40 px-3 py-1 rounded-full hover:bg-black/70 z-30"
+          className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 text-3xl text-white bg-black/40 px-3 py-1 rounded-full hover:bg-black/70 z-30"
         >
           ›
         </button>
 
-        {/* Dots indicator */}
-        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex space-x-3 z-30">
+        {/* Dots */}
+        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex space-x-2">
           {slides.map((_, i) => (
             <button
               key={i}
               onClick={() => setIndex(i)}
-              className={`w-3 h-3 rounded-full ${
+              className={`w-3 h-3 rounded-full transition-all ${
                 i === index ? "bg-white" : "bg-gray-500"
               }`}
-            ></button>
+            />
           ))}
         </div>
       </div>
 
-      {/* Bestselling Products Section (unchanged) */}
-      <section id="shop" className="py-16 bg-[#fffaf5] animate-slide-up">
-        <div className="max-w-6xl mx-auto px-4">
+      {/* Bestsellers */}
+      <section className="py-16 bg-[#fffaf5]">
+        <div className="max-w-6xl mx-auto px-4 text-center">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-3xl font-bold text-center mb-8 text-gray-800"
+            className="text-3xl font-serif font-bold text-gray-800 mb-2"
           >
-            <h1 className="font-serif">Bestselling Favorites</h1>
-            <h3 className="font-extralight text-lg">
-              Our most-loved products, trusted by thousands for their transformative results
-            </h3>
+            Bestselling Favorites
           </motion.h2>
+          <p className="text-gray-600 mb-10">
+            Our most-loved products, trusted by thousands for their transformative results.
+          </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {products.map((product, index) => (
-              <Link to={`/product/${product.id}`} key={product.id}>
-                <motion.div
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  viewport={{ once: true }}
-                  className="group border rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-                >
-                  <div className="overflow-hidden relative">
-                    <motion.img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-100 object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
+            {homeProducts.map((p, i) => {
+              const reviews = reviewsData[p.id] || [];
+              const avg =
+                reviews.length > 0
+                  ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+                  : products.find((x) => x.id === p.id)?.rating || 4.0;
 
-                  <div className="p-4 text-center">
-                    <h3 className="font-semibold text-lg text-gray-800">{product.name}</h3>
-                    <p className="text-gray-600 mt-1">{product.price}</p>
-                  </div>
-                </motion.div>
-              </Link>
-            ))}
+              return (
+                <Link to={`/product/${p.id}`} key={p.id}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.1, duration: 0.5 }}
+                    viewport={{ once: true }}
+                    className="group border rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                  >
+                    <img
+                      src={p.image}
+                      alt={p.name}
+                      loading="lazy"
+                      className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="p-4 text-center">
+                      <h3 className="font-semibold text-lg text-gray-800">{p.name}</h3>
+                      {renderStars(avg)}
+                      <p className="text-gray-600 mt-1">{p.price}</p>
+                    </div>
+                  </motion.div>
+                </Link>
+              );
+            })}
           </div>
 
-          <div className="text-center mt-12">
-            <motion.a
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              href="/shop"
-               className="flex-1 w-full bg-green-900 hover:bg-green-800 text-white py-2 px-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+          <div className="mt-12">
+            <Link
+              to="/shop"
+              className="bg-green-900 hover:bg-green-800 text-white py-2 px-6 rounded-full font-semibold shadow-md hover:shadow-lg transition-all duration-300"
             >
               View All Products
-            </motion.a>
+            </Link>
           </div>
         </div>
       </section>
