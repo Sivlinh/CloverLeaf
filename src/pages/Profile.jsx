@@ -4,30 +4,44 @@ import { FaShoppingBag, FaStar, FaCog, FaHistory, FaCreditCard, FaMapMarkerAlt, 
 import products from "../data/products";
 
 export default function Profile() {
-  const [user, setUser] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editName, setEditName] = useState("");
-  const [editPhone, setEditPhone] = useState("");
-  const [editAvatar, setEditAvatar] = useState(null);
-  const [editAddress, setEditAddress] = useState("");
-  const [showTopUp, setShowTopUp] = useState(false);
-  const [topUpAmount, setTopUpAmount] = useState("");
-  const [showQR, setShowQR] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [activeTab, setActiveTab] = useState("profile");
-  const [favorites, setFavorites] = useState([]);
-  const [orderHistory, setOrderHistory] = useState([]);
+   const [user, setUser] = useState(null);
+   const [isEditing, setIsEditing] = useState(false);
+   const [editName, setEditName] = useState("");
+   const [editPhone, setEditPhone] = useState("");
+   const [editAvatar, setEditAvatar] = useState(null);
+   const [editAddress, setEditAddress] = useState("");
+   const [showTopUp, setShowTopUp] = useState(false);
+   const [topUpAmount, setTopUpAmount] = useState("");
+   const [showQR, setShowQR] = useState(false);
+   const [showSuccess, setShowSuccess] = useState(false);
+   const [qrData, setQrData] = useState(null);
+   const [paymentTimer, setPaymentTimer] = useState(null);
+   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes
+   const [isCheckingPayment, setIsCheckingPayment] = useState(false);
+   const [activeTab, setActiveTab] = useState("profile");
+   const [favorites, setFavorites] = useState([]);
+   const [orderHistory, setOrderHistory] = useState([]);
+   const [isLoginMode, setIsLoginMode] = useState(false);
+   const [loginEmail, setLoginEmail] = useState("");
+   const [loginPassword, setLoginPassword] = useState("");
+   const [signupPassword, setSignupPassword] = useState("");
+   const [confirmPassword, setConfirmPassword] = useState("");
 
   // ✅ Load user data
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
-    if (savedUser) setUser(JSON.parse(savedUser));
+    if (savedUser) {
+      const parsedUser = JSON.parse(savedUser);
+      setUser(parsedUser);
+
+      // Load user-specific order history
+      const userOrdersKey = `orders_${parsedUser.id}`;
+      const savedOrders = localStorage.getItem(userOrdersKey);
+      if (savedOrders) setOrderHistory(JSON.parse(savedOrders));
+    }
 
     const savedFavorites = localStorage.getItem("favorites");
     if (savedFavorites) setFavorites(JSON.parse(savedFavorites));
-
-    const savedOrders = localStorage.getItem("orderHistory");
-    if (savedOrders) setOrderHistory(JSON.parse(savedOrders));
   }, []);
 
   // Keep data in sync with other components
@@ -38,18 +52,31 @@ export default function Profile() {
     };
 
     const handleOrderHistoryUpdate = () => {
-      const savedOrders = localStorage.getItem("orderHistory");
-      if (savedOrders) setOrderHistory(JSON.parse(savedOrders));
+      if (user) {
+        const userOrdersKey = `orders_${user.id}`;
+        const savedOrders = localStorage.getItem(userOrdersKey);
+        if (savedOrders) setOrderHistory(JSON.parse(savedOrders));
+      }
+    };
+
+    const handleWalletUpdate = () => {
+      const savedUser = localStorage.getItem("user");
+      if (savedUser) {
+        const parsedUser = JSON.parse(savedUser);
+        setUser(parsedUser);
+      }
     };
 
     window.addEventListener("favoritesUpdated", handleFavoritesUpdate);
     window.addEventListener("orderHistoryUpdated", handleOrderHistoryUpdate);
+    window.addEventListener("walletUpdated", handleWalletUpdate);
 
     return () => {
       window.removeEventListener("favoritesUpdated", handleFavoritesUpdate);
       window.removeEventListener("orderHistoryUpdated", handleOrderHistoryUpdate);
+      window.removeEventListener("walletUpdated", handleWalletUpdate);
     };
-  }, []);
+  }, [user]);
 
   // ✅ Save user data
   useEffect(() => {
@@ -62,27 +89,88 @@ export default function Profile() {
   }, [favorites]);
 
   useEffect(() => {
-    localStorage.setItem("orderHistory", JSON.stringify(orderHistory));
-  }, [orderHistory]);
+    if (user) {
+      const userOrdersKey = `orders_${user.id}`;
+      localStorage.setItem(userOrdersKey, JSON.stringify(orderHistory));
+    }
+  }, [orderHistory, user]);
 
   // ✅ Create account
   const handleCreateAccount = (e) => {
     e.preventDefault();
     const name = e.target.name.value.trim();
-    const phone = e.target.phone.value.trim();
-    if (!name || !phone) return;
+    const email = e.target.email.value.trim();
+    const password = e.target.password.value.trim();
+    const confirmPass = e.target.confirmPassword.value.trim();
+
+    if (!name || !email || !password) return;
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert("Please enter a valid email address");
+      return;
+    }
+
+    // Password validation
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters long");
+      return;
+    }
+
+    if (password !== confirmPass) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    // Check if user already exists
+    const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
+    if (existingUsers.find(u => u.email === email)) {
+      alert("An account with this email already exists");
+      return;
+    }
 
     const newUser = {
+      id: Date.now(),
       name,
-      phone,
+      email,
+      password, // In real app, this should be hashed
       avatar: "https://via.placeholder.com/100",
       joinDate: new Date().toISOString().split("T")[0],
       address: "",
       wallet: 0,
     };
+
+    // Save to users array
+    existingUsers.push(newUser);
+    localStorage.setItem("users", JSON.stringify(existingUsers));
+
+    // Set current user
     setUser(newUser);
     setEditName(name);
-    setEditPhone(phone);
+    setEditPhone(email);
+    setSignupPassword("");
+    setConfirmPassword("");
+  };
+
+  // ✅ Login
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const email = e.target.email.value.trim();
+    const password = e.target.password.value.trim();
+
+    if (!email || !password) return;
+
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    const foundUser = users.find(u => u.email === email && u.password === password);
+
+    if (foundUser) {
+      setUser(foundUser);
+      setLoginEmail("");
+      setLoginPassword("");
+    } else {
+      alert("Invalid email or password");
+    }
   };
 
   // ✅ Upload image
@@ -97,18 +185,43 @@ export default function Profile() {
 
   // ✅ Save edited info
   const handleSave = () => {
+    // Validate email if editing
+    if (editPhone) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(editPhone)) {
+        alert("Please enter a valid email address");
+        return;
+      }
+    }
+
     const updatedUser = {
       ...user,
       name: editName,
-      phone: editPhone,
+      email: editPhone,
       avatar: editAvatar || user.avatar,
       address: editAddress,
     };
+
+    // Update in users array
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    const userIndex = users.findIndex(u => u.id === user.id);
+    if (userIndex !== -1) {
+      users[userIndex] = updatedUser;
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+
     setUser(updatedUser);
     setIsEditing(false);
   };
 
-  const handleLogout = () => setUser(null);
+  const handleLogout = () => {
+    setUser(null);
+    setIsLoginMode(false);
+    setLoginEmail("");
+    setLoginPassword("");
+    setSignupPassword("");
+    setConfirmPassword("");
+  };
 
   // ✅ Toggle favorite
   const toggleFavorite = (productId) => {
@@ -144,23 +257,82 @@ export default function Profile() {
   };
 
   // ✅ Handle ABA top-up
-  const handleTopUp = () => {
-    const amount = parseFloat(topUpAmount);
-    if (isNaN(amount) || amount <= 0) return;
-    setShowQR(true);
-  };
+   const handleTopUp = async () => {
+     const amount = parseFloat(topUpAmount);
+     if (isNaN(amount) || amount <= 0) {
+       alert('Please enter a valid amount');
+       return;
+     }
 
-  // ✅ Simulate payment
-  const handleConfirmPayment = () => {
-    const amount = parseFloat(topUpAmount);
-    setShowSuccess(true);
-    setTimeout(() => {
-      setUser({ ...user, wallet: user.wallet + amount });
-      setShowSuccess(false);
-      setTopUpAmount("");
-      setShowQR(false);
-      setShowTopUp(false);
-    }, 2000);
+     if (amount < 0.001) {
+       alert('Minimum top-up amount is $0.001');
+       return;
+     }
+
+     // For demo purposes, simulate successful payment without backend
+     setQrData({
+       amount: amount,
+       qr_image: 'https://via.placeholder.com/200x200?text=QR+Code', // Placeholder QR
+       md5: 'demo-' + Date.now()
+     });
+     setShowQR(true);
+     setTimeLeft(300); // 5 minutes
+     startPaymentTimer('demo-' + Date.now());
+   };
+
+  // ✅ Start payment timer and checking
+   const startPaymentTimer = (md5) => {
+     const timer = setInterval(() => {
+       setTimeLeft(prev => {
+         if (prev <= 1) {
+           clearInterval(timer);
+           setPaymentTimer(null);
+           setShowQR(false);
+           setQrData(null);
+           alert('Payment timeout. Please try again.');
+           return 0;
+         }
+         return prev - 1;
+       });
+     }, 1000);
+
+     setPaymentTimer(timer);
+
+     // For demo purposes, simulate payment success after 5 seconds
+     setTimeout(() => {
+       clearInterval(timer);
+       setPaymentTimer(null);
+       setShowSuccess(true);
+       setTimeout(() => {
+         const updatedUser = { ...user, wallet: (user.wallet || 0) + parseFloat(topUpAmount) };
+
+         // Update user in users array
+         const users = JSON.parse(localStorage.getItem("users") || "[]");
+         const userIndex = users.findIndex(u => u.id === user.id);
+         if (userIndex !== -1) {
+           users[userIndex] = updatedUser;
+           localStorage.setItem("users", JSON.stringify(users));
+         }
+
+         setUser(updatedUser);
+         setShowSuccess(false);
+         setTopUpAmount("");
+         setShowQR(false);
+         setQrData(null);
+         setShowTopUp(false);
+       }, 2000);
+     }, 5000); // Simulate payment success after 5 seconds
+   };
+
+  // ✅ Cancel payment
+  const handleCancelPayment = () => {
+    if (paymentTimer) {
+      clearInterval(paymentTimer);
+      setPaymentTimer(null);
+    }
+    setShowQR(false);
+    setQrData(null);
+    setTimeLeft(300);
   };
 
   const stats = user ? getStats() : { totalOrders: 0, totalSpent: 0, avgRating: 0 };
@@ -189,43 +361,131 @@ export default function Profile() {
       {/* Main content */}
       <div className="max-w-6xl mx-auto px-4 py-10">
         {!user ? (
-          // Create account form
-          <motion.form
-            onSubmit={handleCreateAccount}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white p-8 rounded-2xl shadow-lg max-w-md mx-auto"
-          >
-            <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
-              Create Your Account
-            </h2>
-            <div className="mb-4">
-              <label className="block mb-2 text-sm font-medium">Full Name</label>
-              <input
-                type="text"
-                name="name"
-                placeholder="Enter your name"
-                className="w-full border rounded-lg px-4 py-2"
-                required
-              />
-            </div>
-            <div className="mb-6">
-              <label className="block mb-2 text-sm font-medium">Phone Number</label>
-              <input
-                type="tel"
-                name="phone"
-                placeholder="Enter your phone number"
-                className="w-full border rounded-lg px-4 py-2"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-green-800 text-white py-2 rounded-2xl hover:bg-green-900 transition"
-            >
-              Create Account
-            </button>
-          </motion.form>
+           // Login/Signup forms
+           <motion.div
+             initial={{ opacity: 0, scale: 0.95 }}
+             animate={{ opacity: 1, scale: 1 }}
+             className="bg-white p-8 rounded-2xl shadow-lg max-w-md mx-auto"
+           >
+             <div className="flex justify-center mb-6">
+               <button
+                 onClick={() => setIsLoginMode(false)}
+                 className={`px-4 py-2 rounded-l-lg font-medium transition ${!isLoginMode ? 'bg-green-800 text-white' : 'bg-gray-200 text-gray-700'}`}
+               >
+                 Sign Up
+               </button>
+               <button
+                 onClick={() => setIsLoginMode(true)}
+                 className={`px-4 py-2 rounded-r-lg font-medium transition ${isLoginMode ? 'bg-green-800 text-white' : 'bg-gray-200 text-gray-700'}`}
+               >
+                 Login
+               </button>
+             </div>
+
+             {!isLoginMode ? (
+               // Sign Up Form
+               <motion.form
+                 onSubmit={handleCreateAccount}
+                 initial={{ opacity: 0 }}
+                 animate={{ opacity: 1 }}
+               >
+                 <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+                   Create Your Account
+                 </h2>
+                 <div className="mb-4">
+                   <label className="block mb-2 text-sm font-medium">Full Name</label>
+                   <input
+                     type="text"
+                     name="name"
+                     placeholder="Enter your name"
+                     className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                     required
+                   />
+                 </div>
+                 <div className="mb-4">
+                   <label className="block mb-2 text-sm font-medium">Email Address</label>
+                   <input
+                     type="email"
+                     name="email"
+                     placeholder="Enter your email address"
+                     className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                     required
+                   />
+                 </div>
+                 <div className="mb-4">
+                   <label className="block mb-2 text-sm font-medium">Password</label>
+                   <input
+                     type="password"
+                     name="password"
+                     value={signupPassword}
+                     onChange={(e) => setSignupPassword(e.target.value)}
+                     placeholder="Enter your password"
+                     className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                     required
+                   />
+                 </div>
+                 <div className="mb-6">
+                   <label className="block mb-2 text-sm font-medium">Confirm Password</label>
+                   <input
+                     type="password"
+                     name="confirmPassword"
+                     value={confirmPassword}
+                     onChange={(e) => setConfirmPassword(e.target.value)}
+                     placeholder="Confirm your password"
+                     className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                     required
+                   />
+                 </div>
+                 <button
+                   type="submit"
+                   className="w-full bg-green-800 text-white py-3 rounded-2xl hover:bg-green-900 transition font-medium shadow-lg hover:shadow-xl"
+                 >
+                   Create Account
+                 </button>
+               </motion.form>
+             ) : (
+               // Login Form
+               <motion.form
+                 onSubmit={handleLogin}
+                 initial={{ opacity: 0 }}
+                 animate={{ opacity: 1 }}
+               >
+                 <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+                   Welcome Back
+                 </h2>
+                 <div className="mb-4">
+                   <label className="block mb-2 text-sm font-medium">Email Address</label>
+                   <input
+                     type="email"
+                     name="email"
+                     value={loginEmail}
+                     onChange={(e) => setLoginEmail(e.target.value)}
+                     placeholder="Enter your email address"
+                     className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                     required
+                   />
+                 </div>
+                 <div className="mb-6">
+                   <label className="block mb-2 text-sm font-medium">Password</label>
+                   <input
+                     type="password"
+                     name="password"
+                     value={loginPassword}
+                     onChange={(e) => setLoginPassword(e.target.value)}
+                     placeholder="Enter your password"
+                     className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                     required
+                   />
+                 </div>
+                 <button
+                   type="submit"
+                   className="w-full bg-green-800 text-white py-3 rounded-2xl hover:bg-green-900 transition font-medium shadow-lg hover:shadow-xl"
+                 >
+                   Login
+                 </button>
+               </motion.form>
+             )}
+           </motion.div>
         ) : (
           // User profile with tabs
           <motion.div
@@ -253,7 +513,7 @@ export default function Profile() {
                 </div>
                 <div className="text-center md:text-left flex-1">
                   <h2 className="text-2xl font-bold">{user.name}</h2>
-                  <p className="text-white-100">{user.phone}</p>
+                  <p className="text-white-100">{user.email}</p>
                   <p className="text-wthie-200 text-sm mt-1">
                     Member since {user.joinDate}
                   </p>
@@ -266,10 +526,7 @@ export default function Profile() {
                       <FaWallet className="inline mr-1" />
                       ${stats.totalSpent.toFixed(2)} Spent
                     </div>
-                    <div className="bg-white/20 rounded-lg px-3 py-1">
-                      <FaStar className="inline mr-1" />
-                      {stats.avgRating.toFixed(1)} Avg Rating
-                    </div>
+                   
                   </div>
                 </div>
               </div>
@@ -324,16 +581,16 @@ export default function Profile() {
                           )}
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
                           {isEditing ? (
                             <input
-                              type="tel"
+                              type="email"
                               value={editPhone}
                               onChange={(e) => setEditPhone(e.target.value)}
                               className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
                             />
                           ) : (
-                            <p className="text-gray-600 bg-gray-50 px-3 py-2 rounded-lg">{user.phone}</p>
+                            <p className="text-gray-600 bg-gray-50 px-3 py-2 rounded-lg">{user.email}</p>
                           )}
                         </div>
                       </div>
@@ -381,12 +638,16 @@ export default function Profile() {
                             <div>
                               <h4 className="font-medium text-gray-800">{order.productName}</h4>
                               <p className="text-sm text-gray-600">
-                                Order #{order.id} • {new Date(order.date).toLocaleDateString()}
+                                Order #{order.orderCode} • {new Date(order.date).toLocaleDateString()}
                               </p>
                             </div>
                             <div className="text-right">
                               <p className="font-semibold text-green-600">${order.price}</p>
-                              <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                              <span className={`text-xs px-2 py-1 rounded-full ${
+                                order.status === 'Processing' ? 'bg-yellow-100 text-yellow-800' :
+                                order.status === 'Shipped' ? 'bg-blue-100 text-blue-800' :
+                                'bg-green-100 text-green-800'
+                              }`}>
                                 {order.status}
                               </span>
                             </div>
@@ -408,10 +669,10 @@ export default function Profile() {
               {activeTab === "wallet" && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   <div className="text-center">
-                    <div className="bg-gradient-to-r y-100 text-gray-700 p-8 rounded-2xl mb-6">
-                      <FaWallet className="mx-auto text-4xl mb-4" />
+                    <div className="bg-gradient-to-r from-green-100 to-blue-100 text-gray-700 p-8 rounded-2xl mb-6">
+                      <FaWallet className="mx-auto text-4xl mb-4 text-green-600" />
                       <h3 className="text-2xl font-bold mb-2">Wallet Balance</h3>
-                      <p className="text-4xl font-bold">${user.wallet.toFixed(2)}</p>
+                      <p className="text-4xl font-bold text-green-600">${user.wallet ? user.wallet.toFixed(2) : '0.00'}</p>
                     </div>
                     <button
                       onClick={() => setShowTopUp(true)}
@@ -441,6 +702,10 @@ export default function Profile() {
                           <input type="checkbox" className="mr-2" defaultChecked />
                           <span className="text-sm">Promotional emails</span>
                         </label>
+                        <label className="flex items-center">
+                          <input type="checkbox" className="mr-2" />
+                          <span className="text-sm">New product alerts</span>
+                        </label>
                       </div>
                     </div>
                     <div className="border rounded-lg p-4">
@@ -450,12 +715,31 @@ export default function Profile() {
                           <input type="checkbox" className="mr-2" />
                           <span className="text-sm">Make profile public</span>
                         </label>
+                        <label className="flex items-center">
+                          <input type="checkbox" className="mr-2" defaultChecked />
+                          <span className="text-sm">Show purchase history</span>
+                        </label>
                       </div>
                     </div>
-                    <div className="pt-4">
-                      <button className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+                    <div className="border rounded-lg p-4">
+                      <h4 className="font-medium text-gray-800 mb-2">Security</h4>
+                      <div className="space-y-3">
+                        <button className="w-full text-left px-3 py-2 bg-gray-50 rounded hover:bg-gray-100 transition">
+                          Change Password
+                        </button>
+                        <button className="w-full text-left px-3 py-2 bg-gray-50 rounded hover:bg-gray-100 transition">
+                          Enable Two-Factor Authentication
+                        </button>
+                      </div>
+                    </div>
+                    <div className="pt-4 border-t">
+                      <h4 className="font-medium text-gray-800 mb-3">Danger Zone</h4>
+                      <button className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition shadow-sm">
                         Delete Account
                       </button>
+                      <p className="text-xs text-gray-500 mt-2">
+                        This action cannot be undone. All your data will be permanently deleted.
+                      </p>
                     </div>
                   </div>
                 </motion.div>
@@ -506,36 +790,35 @@ export default function Profile() {
                       </>
                     ) : (
                       <>
-                        <div className="flex flex-col items-center">
+                        <div className="flex flex-col items-center ">
                           <img
-                            src="https://seeklogo.com/images/A/aba-bank-logo-8C5CC7E80E-seeklogo.com.png"
+                            src="public/Logo/OIP.webp"
                             alt="ABA Logo"
-                            className="w-16 mb-3"
+                            className="w-16 mb-3 rounded-md"
                           />
                           <h3 className="text-lg font-semibold text-gray-800 text-center mb-2">
                             Scan with ABA App
                           </h3>
-                          <p className="text-center text-sm text-gray-600 mb-3">
-                            Amount: ${topUpAmount}
+                          <p className="text-center text-sm text-gray-600 mb-2">
+                            Amount: ${qrData?.amount || topUpAmount}
                           </p>
-                          <img
-                            src={`https://api.qrserver.com/v1/create-qr-code/?data=ABA%20Payment%20-%20${topUpAmount}%20USD&size=200x200`}
-                            alt="ABA QR"
-                            className="mx-auto mb-4 border rounded-lg"
-                          />
+                          <p className="text-center text-sm text-gray-600 mb-3">
+                            Time left: {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
+                          </p>
+                          {qrData?.qr_image && (
+                            <img
+                              src={qrData.qr_image}
+                              alt="ABA QR Code"
+                              className="mx-auto mb-4 border rounded-lg w-48"
+                            />
+                          )}
                           {!showSuccess ? (
-                            <div className="flex justify-end space-x-2 w-full">
+                            <div className="flex justify-center space-x-2 w-full">
                               <button
-                                onClick={() => setShowTopUp(false)}
-                                className="px-3 py-2 bg-gray-200 rounded-lg"
+                                onClick={handleCancelPayment}
+                                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
                               >
                                 Cancel
-                              </button>
-                              <button
-                                onClick={handleConfirmPayment}
-                                className="px-4 py-2 bg-green-800 text-white rounded-lg hover:bg-green-900 transition"
-                              >
-                                Confirm Payment
                               </button>
                             </div>
                           ) : (

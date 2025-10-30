@@ -24,6 +24,7 @@ export default function Nav() {
   const hoverTimer = useRef(null);
   const searchInputRef = useRef(null);
 
+  // Update cart count from localStorage
   const updateCartCount = useCallback(() => {
     try {
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -99,8 +100,8 @@ export default function Nav() {
   );
 
   return (
-    <div>
-      {/* Main Nav */}
+    <>
+      {/* Navigation Bar */}
       <nav
         className="fixed top-0 left-0 w-full z-50 bg-gradient-to-b from-white/30 via-white/20 to-transparent backdrop-blur-xl border-b border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)] transition-all duration-500"
         role="navigation"
@@ -116,7 +117,7 @@ export default function Nav() {
                 aria-label="Go to homepage"
               >
                 <img
-                  src="logo_shop.png"
+                  src="/logo_shop.png"
                   alt="Cloverleaf Logo"
                   className="h-12 w-12"
                   loading="lazy"
@@ -135,7 +136,7 @@ export default function Nav() {
                     <Link
                       to={link.href}
                       role="menuitem"
-                      className={`px-3 py-2 rounded-3xl text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300 ${
+                      className={`px-3 py-2 rounded-3xl text-sm font-medium transition-all duration-300 ${
                         isActiveLink(link.href)
                           ? "text-gray-800 bg-white/30 shadow-sm"
                           : "text-gray-800 hover:text-gray-900 hover:bg-white/20"
@@ -159,7 +160,7 @@ export default function Nav() {
                     aria-expanded={isSearchExpanded}
                     aria-label={isSearchExpanded ? "Close search" : "Open search"}
                     title="Search products"
-                    className="group p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-300 transition-all duration-200 rounded-[25px]"
+                    className="group p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200 rounded-[25px]"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -168,7 +169,6 @@ export default function Nav() {
                       strokeWidth={1.5}
                       stroke="currentColor"
                       className="w-6 h-6 group-hover:scale-110 transition-transform duration-200"
-                      aria-hidden="true"
                     >
                       <path
                         strokeLinecap="round"
@@ -185,13 +185,8 @@ export default function Nav() {
                   className={`absolute top-1/2 right-0 -translate-y-1/2 bg-white shadow-xl rounded-[25px] border border-gray-300 overflow-hidden transition-all duration-300 ease-in-out ${
                     isSearchExpanded ? "w-[320px] opacity-100" : "w-0 opacity-0"
                   }`}
-                  role="search"
-                  aria-label="Product search"
                 >
                   <form onSubmit={handleSearch} className="flex items-center">
-                    <label htmlFor="search-input" className="sr-only">
-                      Search for products
-                    </label>
                     <input
                       id="search-input"
                       type="text"
@@ -204,7 +199,7 @@ export default function Nav() {
                     />
                     <button
                       type="submit"
-                      className="p-3 text-gray-600 hover:text-blue-500 transition-all duration-200 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-300 rounded"
+                      className="p-3 text-gray-600 hover:text-blue-500 transition-all duration-200 bg-transparent focus:outline-none"
                       aria-label="Submit search"
                     >
                       <svg
@@ -214,7 +209,6 @@ export default function Nav() {
                         strokeWidth={1.5}
                         stroke="currentColor"
                         className="w-5 h-5"
-                        aria-hidden="true"
                       >
                         <path
                           strokeLinecap="round"
@@ -230,7 +224,7 @@ export default function Nav() {
               {/* Cart */}
               <Link
                 to="/cart"
-                className="relative p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-[25px] transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-blue-300"
+                className="relative p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-[25px] transition-all duration-300 group"
                 aria-label={`Shopping cart with ${cartCount} items`}
               >
                 <svg
@@ -240,7 +234,6 @@ export default function Nav() {
                   strokeWidth={1.5}
                   stroke="currentColor"
                   className="w-6 h-6 group-hover:scale-110 transition-transform duration-200"
-                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -249,10 +242,7 @@ export default function Nav() {
                   />
                 </svg>
                 {cartCount > 0 && (
-                  <span
-                    className="absolute -top-2 -right-2 bg-[#d8554e] text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg"
-                    aria-label={`${cartCount} items in cart`}
-                  >
+                  <span className="absolute -top-2 -right-2 bg-[#d8554e] text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg">
                     {cartCount > 99 ? "99+" : cartCount}
                   </span>
                 )}
@@ -261,8 +251,8 @@ export default function Nav() {
               {/* Profile */}
               <Link
                 to="/profile"
-                className="group p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-[25px] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                aria-label="Go to profile"
+                className="group p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-[25px] transition-all duration-300"
+                aria-label="User profile"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -271,7 +261,6 @@ export default function Nav() {
                   strokeWidth={1.5}
                   stroke="currentColor"
                   className="w-6 h-6 group-hover:scale-110 transition-transform duration-200"
-                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -296,7 +285,6 @@ export default function Nav() {
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
-                      aria-hidden="true"
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -307,7 +295,6 @@ export default function Nav() {
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
-                      aria-hidden="true"
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
@@ -350,6 +337,6 @@ export default function Nav() {
 
       {/* Spacer for fixed nav */}
       <div className="h-16" aria-hidden="true"></div>
-    </div>
+    </>
   );
 }

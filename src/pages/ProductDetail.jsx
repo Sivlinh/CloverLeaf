@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { FaStar, FaShoppingCart, FaChevronLeft, FaChevronRight, FaUser } from "react-icons/fa";
 import products from "../data/products";
 
 export default function ProductDetail() {
-   const { id } = useParams();
-   const product = products.find((p) => p.id === parseInt(id));
-   const [selectedProduct, setSelectedProduct] = useState(null);
-   const [orderCode, setOrderCode] = useState("");
-   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-   const [reviews, setReviews] = useState([]);
-   const [newReview, setNewReview] = useState({ rating: 5, comment: "" });
-   const [user, setUser] = useState(null);
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const product = products.find((p) => p.id === parseInt(id));
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [orderCode, setOrderCode] = useState("");
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [reviews, setReviews] = useState([]);
+    const [newReview, setNewReview] = useState({ rating: 5, comment: "" });
+    const [user, setUser] = useState(null);
+    const [message, setMessage] = useState(null);
+    const [messageType, setMessageType] = useState("info");
 
    // Load user and reviews
    useEffect(() => {
@@ -45,13 +48,63 @@ export default function ProductDetail() {
   };
 
   const handleBuy = (item) => {
+    if (!user) {
+      setMessage("Please log in or sign up to purchase this product.");
+      setMessageType("error");
+      setTimeout(() => navigate("/profile"), 2000);
+      return;
+    }
     setSelectedProduct(item);
     setOrderCode(generateOrderCode());
   };
 
   const handleConfirm = () => {
-    // alert(`✅ Order Confirmed!\nProduct: ${selectedProduct.title}\nPrice: $${selectedProduct.price}\nOrder Code: ${orderCode}`);
+    if (!user) {
+      setMessage("Please log in or sign up to confirm your purchase.");
+      setMessageType("error");
+      setTimeout(() => navigate("/profile"), 2000);
+      return;
+    }
+
+    const userWallet = user.wallet || 0;
+    if (userWallet < selectedProduct.price) {
+      setMessage(`Insufficient funds. You need $${(selectedProduct.price - userWallet).toFixed(2)} more. Please top up your wallet.`);
+      setMessageType("error");
+      setTimeout(() => navigate("/profile"), 3000);
+      return;
+    }
+
+    // Deduct from wallet
+    const updatedUser = { ...user, wallet: userWallet - selectedProduct.price };
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    const userIndex = users.findIndex(u => u.id === user.id);
+    if (userIndex !== -1) {
+      users[userIndex] = updatedUser;
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    setUser(updatedUser);
+
+    // Add to order history
+    const order = {
+      id: Date.now(),
+      productId: selectedProduct.id,
+      productName: selectedProduct.title,
+      price: selectedProduct.price,
+      date: new Date().toISOString(),
+      status: "Delivered",
+      orderCode: orderCode
+    };
+    const userOrdersKey = `orders_${user.id}`;
+    const existingOrders = JSON.parse(localStorage.getItem(userOrdersKey) || "[]");
+    existingOrders.unshift(order);
+    localStorage.setItem(userOrdersKey, JSON.stringify(existingOrders));
+
+    setMessage(`✅ Purchase Successful! ${selectedProduct.title} - $${selectedProduct.price}`);
+    setMessageType("success");
     setSelectedProduct(null);
+    window.dispatchEvent(new Event("walletUpdated"));
+    window.dispatchEvent(new Event("orderHistoryUpdated"));
   };
 
   const handleCancel = () => {
@@ -62,7 +115,9 @@ export default function ProductDetail() {
   const handleSubmitReview = (e) => {
     e.preventDefault();
     if (!user) {
-      alert("Please log in to submit a review.");
+      setMessage("Please log in to submit a review.");
+      setMessageType("error");
+      setTimeout(() => navigate("/profile"), 2000);
       return;
     }
     if (!newReview.comment.trim()) return;
@@ -79,6 +134,8 @@ export default function ProductDetail() {
     setReviews(updatedReviews);
     localStorage.setItem(`reviews_${id}`, JSON.stringify(updatedReviews));
     setNewReview({ rating: 5, comment: "" });
+    setMessage("Review submitted successfully!");
+    setMessageType("success");
 
     // Update product rating
     updateProductRating(updatedReviews);
@@ -135,6 +192,24 @@ export default function ProductDetail() {
 
   return (
     <div id="bodybg" className="min-h-screen bg-[#fffaf5] py-16 px-4 animate-fade-in">
+      {/* Inline message banner */}
+      {message && (
+        <div
+          className={`max-w-4xl mx-auto mb-6 p-4 rounded-lg flex items-start justify-between border ${
+            messageType === "success"
+              ? "bg-green-50 border-green-200 text-green-800"
+              : messageType === "error"
+              ? "bg-red-50 border-red-200 text-red-800"
+              : "bg-blue-50 border-blue-200 text-blue-800"
+          }`}
+        >
+          <div className="flex-1 pr-4">{message}</div>
+          <button onClick={() => setMessage(null)} className="ml-4 text-sm font-medium underline opacity-80">
+            Dismiss
+          </button>
+        </div>
+      )}
+
       <div className="max-w-6xl mx-auto">
         <Link
           to="/shop"
@@ -184,12 +259,6 @@ export default function ProductDetail() {
               <p className="text-3xl font-bold text-[#007bff] mb-6">
                 ${product.price}
               </p>
-              <div className="mb-4">
-                <div className="flex items-center gap-2 mb-2">
-                  {renderStars(reviews.length > 0 ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length : product.rating)}
-                  <span className="text-gray-600 text-sm">({reviews.length} reviews)</span>
-                </div>
-              </div>
               <p className="text-gray-700 text-lg leading-relaxed mb-8">
                 {product.description}
               </p>
@@ -339,3 +408,4 @@ export default function ProductDetail() {
     </div>
   );
 }
+
