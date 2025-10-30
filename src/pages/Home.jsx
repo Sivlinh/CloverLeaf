@@ -291,7 +291,7 @@ export default function Home() {
 >
   {/* 🖼️ Image instead of video */}
   <img
-    src="public/image copy.png" // ← change path to your image
+    src="public/image copy 2.png" // ← change path to your image
     alt="Face Mask"
     className="w-full h-[250px] md:h-[300px] object-cover transition-transform duration-700 group-hover:scale-105"
   />

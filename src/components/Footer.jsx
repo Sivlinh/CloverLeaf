@@ -3,9 +3,15 @@ import Home from "../pages/Home";
 
 export default function Footer() {
   return (
+<<<<<<< HEAD
     <footer id="footer" className="bg-amber-950 text-white py-10 mt-16">
       <div className="max-w-7xl h-90%  mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
 
+=======
+    <footer id="footer" className="text-white py-10 mt-16 bg-[#ab8c6d]">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
+        
+>>>>>>> 05a75971ce422a8e9b339ca147fe161c152de1af
         {/* Logo & Description */}
         <div>
           <div className="ml-2 text-black text-xl font-bold flex items-center">

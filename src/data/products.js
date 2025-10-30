@@ -52,15 +52,15 @@ const products = [
 
   // Make up products
 
-   { id: 11, title: "3CE Velvet Lip Tint", price: 15.99, category: "Make Up", rating: 4.7, images: ["public/m1.png"], description: "Soft matte tint that delivers vibrant color and a smooth finish." },
-  { id: 12, title: "Clio Kill Cover Cushion", price: 23.0, category: "Make Up", rating: 4.6, images: ["public/m3.png"], description: "High coverage cushion foundation for flawless, dewy skin." },
-  { id: 14, title: "Etude Play Color Eyes", price: 19.99, category: "Make Up", rating: 4.5, images: ["public/m4.png"], description: "Beautiful eyeshadow palette with soft, blendable colors." },
-  { id: 15, title: "INNISFREE No Sebum Mineral", price: 8.0, category: "Make Up", rating: 4.7, images: ["public/m5.png"], description: "Fine setting powder that keeps your skin oil-free and smooth." },
-  { id: 16, title: "Rom&nd Juicy Lasting Tint", price: 10.99, category: "Make Up", rating: 4.8, images: ["public/m6.png"], description: "Glossy lip tint that provides long-lasting shine and hydration." },
-  { id: 17, title: "Missha Glow Cushion", price: 21.5, category: "Make Up", rating: 4.7, images: ["public/m7.png"], description: "Dewy cushion foundation for bright, glowing skin." },
-  { id: 18, title: "Espoir Water Splash Foundation", price: 28.0, category: "Make Up", rating: 4.6, images: ["public/m8.png"] , description: "Lightweight liquid foundation that hydrates and smooths skin." },
-  { id: 19, title: "Holika Holika Mascara", price: 11.75, category: "Make Up", rating: 4.4, images: ["public/m9.png"], description: "Lengthening mascara for dramatic, defined lashes." },
-  { id: 20, title: "Moonshot Micro Settingfit ", price: 24.99, category: "Make Up", rating: 4.5, images: ["public/m10.png"], description: "Smooth cushion foundation that resists sweat and oil." },
+   { id: 11, title: "3CE Velvet Lip Tint", price: 15.99, category: "Make Up", rating: 4.7, images: ["/m1.png"], description: "Soft matte tint that delivers vibrant color and a smooth finish." },
+   { id: 12, title: "Clio Kill Cover Cushion", price: 23.0, category: "Make Up", rating: 4.6, images: ["/m3.png"], description: "High coverage cushion foundation for flawless, dewy skin." },
+   { id: 14, title: "Etude Play Color Eyes", price: 19.99, category: "Make Up", rating: 4.5, images: ["/m4.png"], description: "Beautiful eyeshadow palette with soft, blendable colors." },
+   { id: 15, title: "INNISFREE No Sebum Mineral", price: 8.0, category: "Make Up", rating: 4.7, images: ["/m5.png"], description: "Fine setting powder that keeps your skin oil-free and smooth." },
+   { id: 16, title: "Rom&nd Juicy Lasting Tint", price: 10.99, category: "Make Up", rating: 4.8, images: ["/m6.png"], description: "Glossy lip tint that provides long-lasting shine and hydration." },
+   { id: 17, title: "Missha Glow Cushion", price: 21.5, category: "Make Up", rating: 4.7, images: ["/m7.png"], description: "Dewy cushion foundation for bright, glowing skin." },
+   { id: 18, title: "Espoir Water Splash Foundation", price: 28.0, category: "Make Up", rating: 4.6, images: ["/m8.png"] , description: "Lightweight liquid foundation that hydrates and smooths skin." },
+   { id: 19, title: "Holika Holika Mascara", price: 11.75, category: "Make Up", rating: 4.4, images: ["/m9.png"], description: "Lengthening mascara for dramatic, defined lashes." },
+   { id: 20, title: "Moonshot Micro Settingfit ", price: 24.99, category: "Make Up", rating: 4.5, images: ["/m10.png"], description: "Smooth cushion foundation that resists sweat and oil." },
 ];
 
 export default products;

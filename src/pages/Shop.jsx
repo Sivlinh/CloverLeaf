@@ -1,33 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { FaStar, FaHeart } from "react-icons/fa";
-import { useSearchParams, Link, useLocation } from "react-router-dom"; // 🆕 add useLocation
+import { FaStar, FaShoppingCart } from "react-icons/fa";
+import { useSearchParams, Link, useLocation } from "react-router-dom";
 import products from "../data/products";
 
 export default function Shop() {
   const [searchParams] = useSearchParams();
-  const location = useLocation(); // 🆕 get location state
+  const location = useLocation();
   const selectedCategory = searchParams.get("category");
   const searchQuery = searchParams.get("search");
-  const stateCategories = location.state?.categories || []; // 🆕 from navigate(..., { state })
+  const stateCategories = location.state?.categories || [];
 
   const [productsState] = useState(products);
   const [addedIds, setAddedIds] = useState(() => {
     try {
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
       return cart.map((p) => p.id);
-    } catch (e) {
+    } catch {
       return [];
     }
   });
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [orderCode, setOrderCode] = useState("");
+  const [reviewsData, setReviewsData] = useState({});
 
-  // ✅ Filter logic supports both: single query category OR array (from state)
+  // ✅ Filter products
   let filteredProducts = products;
 
   if (stateCategories.length > 0) {
-    // 🆕 filter if array of categories from location.state
     filteredProducts = products.filter((product) =>
       stateCategories.includes(product.category)
     );
@@ -39,7 +39,6 @@ export default function Shop() {
     );
   }
 
-  // Apply search filter if search query exists
   if (searchQuery) {
     filteredProducts = filteredProducts.filter((product) =>
       product.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -54,15 +53,9 @@ export default function Shop() {
     setOrderCode(generateOrderCode());
   };
 
-  const handleConfirm = () => {
-    setSelectedProduct(null);
-  };
+  const handleConfirm = () => setSelectedProduct(null);
+  const handleCancel = () => setSelectedProduct(null);
 
-  const handleCancel = () => {
-    setSelectedProduct(null);
-  };
-
-  // ⭐ Function to render stars
   const renderStars = (rating) => {
     const fullStars = Math.floor(rating);
     const halfStar = rating - fullStars >= 0.5;
@@ -103,7 +96,7 @@ export default function Shop() {
       try {
         const cart = JSON.parse(localStorage.getItem("cart")) || [];
         setAddedIds(cart.map((p) => p.id));
-      } catch (e) {
+      } catch {
         setAddedIds([]);
       }
     };
@@ -111,42 +104,43 @@ export default function Shop() {
     return () => window.removeEventListener("cartUpdated", handler);
   }, []);
 
+  useEffect(() => {
+    const reviews = {};
+    products.forEach((product) => {
+      const productReviews = localStorage.getItem(`reviews_${product.id}`);
+      if (productReviews) {
+        reviews[product.id] = JSON.parse(productReviews);
+      }
+    });
+    setReviewsData(reviews);
+  }, []);
+
   return (
-    <div
-      id="bodybg"
-      className="min-h-screen flex flex-col items-center py-10  animate-fade-in"
-    >
-<div className="text-center mb-16 px-4">
-  <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-    {searchQuery ? (
-      `Search Results for "${searchQuery}"`
-    ) : location.state?.fromSection === "ShopRelated" ? (
-      "Shop Related Products"
-    ) : (
-      `About ${
-        stateCategories.length > 0
-          ? stateCategories.join(", ")
-          : selectedCategory && selectedCategory !== "All Products"
-          ? selectedCategory
-          : "All Products"
-      } Collection`
-    )}
-  </h1>
+    <div id="bodybg" className="min-h-screen flex flex-col items-center py-10">
+      <div className="text-center mb-16 px-4">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+          {searchQuery
+            ? `Search Results for "${searchQuery}"`
+            : location.state?.fromSection === "ShopRelated"
+            ? "Shop Related Products"
+            : `About ${
+                stateCategories.length > 0
+                  ? stateCategories.join(", ")
+                  : selectedCategory || "All Products"
+              } Collection`}
+        </h1>
 
-  <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-    {searchQuery ? (
-      "Browse through our carefully selected items to find exactly what you need."
-    ) : location.state?.fromSection === "ShopRelated" ? (
-      "Discover the secrets to radiant, healthy skin with our curated collection of expert-approved products. From soothing masks to nourishing serums, each item is designed to elevate your daily skincare routine naturally and gently."
-    ) : (
-      " At Cloverleaf, good skin is about confidence, not perfection. Explore our full range of products to find your perfect skincare match."
-    )}
-  </p>
-</div>
-     
-     {/* card */}
+        <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          {searchQuery
+            ? "Browse to find what you need."
+            : location.state?.fromSection === "ShopRelated"
+            ? "Discover expert-approved skincare products."
+            : "Find your perfect skincare match."}
+        </p>
+      </div>
 
-      <div className="w-full  max-w-7xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      {/* ✅ Product Cards */}
+      <div className="w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((item) => (
             <Link
@@ -158,34 +152,43 @@ export default function Shop() {
                 <img
                   src={item.images[0]}
                   alt={item.title}
-                  className="w-full h-60 object-contain p-6 16 bg-[#7e4b172e]"
+                  className="w-full h-60 object-contain p-6 bg-[#7e4b172e]"
                 />
+
                 <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-md rounded-full p-2 shadow-sm">
-                  <FaHeart
+                  <FaShoppingCart
                     onClick={(e) => {
-                      e.stopPropagation();
                       e.preventDefault();
+                      e.stopPropagation();
                       handleAddToCart(item);
                     }}
                     className={`${
                       addedIds.includes(item.id)
-                        ? "text-red-500"
-                        : "text-gray-400 hover:text-red-500"
+                        ? "text-green-500"
+                        : "text-gray-400 hover:text-green-500"
                     } transition-colors duration-200 cursor-pointer`}
                   />
                 </div>
               </div>
 
               <div className="p-2 flex flex-col items-center text-center">
-                <h3 className="font-semibold text-lg text-[#0a1a2f] mb-1 line-clamp-2">
+                <h3 className="font-semibold text-lg text-[#08172b] mb-1 line-clamp-2">
                   {item.title}
                 </h3>
-                {renderStars(item.rating)}
+
+                {renderStars(
+                  reviewsData[item.id]?.length
+                    ? reviewsData[item.id].reduce((s, r) => s + r.rating, 0) /
+                        reviewsData[item.id].length
+                    : item.rating
+                )}
+
                 <p className="text-gray-400 text-sm mb-2">
                   {Array.isArray(item.category)
                     ? item.category.join(", ")
                     : item.category}
                 </p>
+
                 <p className="text-[#0a1a2f] font-bold text-xl mb-2">
                   ${item.price}
                 </p>
@@ -196,7 +199,7 @@ export default function Shop() {
                     e.preventDefault();
                     handleBuy(item);
                   }}
-                  className="flex-1 hover:bg-green-800 text-white py-2 px-8 rounded-full text-sm font-medium shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                  className="flex-1 bg-green-900 hover:bg-green-800 text-white py-2 px-12 rounded-full text-sm font-medium shadow-md hover:shadow-lg hover:scale-105 transition-all"
                 >
                   Buy
                 </button>
@@ -206,12 +209,12 @@ export default function Shop() {
         ) : (
           <div className="col-span-full text-center py-16">
             <p className="text-gray-500 text-xl mb-4">No products found</p>
-            <p className="text-gray-400">Try adjusting your search terms</p>
+            <p className="text-gray-400">Try changing your search</p>
           </div>
         )}
       </div>
 
-      {/* Popup */}
+      {/* ✅ Buy Popup */}
       {selectedProduct && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-8 shadow-2xl w-[90%] max-w-md text-center">
@@ -228,13 +231,13 @@ export default function Shop() {
             <div className="flex justify-center gap-4 mt-6">
               <button
                 onClick={handleConfirm}
-                className="bg-green-900 hover:bg-green-800 text-white px-6 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                className="bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition"
               >
                 Confirm
               </button>
               <button
                 onClick={handleCancel}
-                className="bg-gray-500 hover:bg-gray-400 text-white px-6 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                className="bg-gray-500 hover:bg-gray-400 text-white px-6 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition"
               >
                 Cancel
               </button>
