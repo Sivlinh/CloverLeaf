@@ -790,11 +790,11 @@ export default function Profile() {
                       </>
                     ) : (
                       <>
-                        <div className="flex flex-col items-center">
+                        <div className="flex flex-col items-center ">
                           <img
-                            src="https://seeklogo.com/images/A/aba-bank-logo-8C5CC7E80E-seeklogo.com.png"
+                            src="public/Logo/OIP.webp"
                             alt="ABA Logo"
-                            className="w-16 mb-3"
+                            className="w-16 mb-3 rounded-md"
                           />
                           <h3 className="text-lg font-semibold text-gray-800 text-center mb-2">
                             Scan with ABA App
