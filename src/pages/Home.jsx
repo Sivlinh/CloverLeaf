@@ -15,7 +15,7 @@ const slides = [
     title: "Top 10 Trending Picks",
     text: "Discover our most loved skincare products that redefine self-care and confidence.",
     button: "Shop Top Picks",
-    image: "/hero3.png",
+    image: "public/image copy 3.png",
     category: "Top",
   },
   {
@@ -289,18 +289,30 @@ export default function Home() {
   onClick={() => navigate("/shop?category=Face Mask")}
   className="bg-white rounded-3xl shadow-lg relative overflow-hidden group md:col-span-2 cursor-pointer"
 >
-  {/* 🖼️ Image instead of video */}
+  {/* Image */}
   <img
-    src="public/image copy 2.png" // ← change path to your image
+    src="public/bro.jpg"
     alt="Face Mask"
     className="w-full h-[250px] md:h-[300px] object-cover transition-transform duration-700 group-hover:scale-105"
   />
 
-  {/* Hover overlay */}
-  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-    <p className="text-white font-medium text-lg">Glow with Face Masks </p>
-  </div>
+  {/* Subtle overlay on hover */}
+  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/35 transition-all duration-500"></div>
+
+  {/* Centered Text */}
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 1 }}
+    className="absolute text-[#3e2f24] inset-0 flex flex-col items-center justify-center text-center text-br font-semiboldgit text-lg md:text-xl leading-relaxed tracking-wide space-y-2 drop-shadow-[0_6px_12px_rgba(0,0,0,0.55)] px-4"
+  >
+    <p>• Reveal Radiant Skin</p>
+    <p>• Refresh Your Glow</p>
+    <p>Self-Care Starts With You </p>
+  </motion.div>
 </motion.div>
+
+
 
 
     </div>
