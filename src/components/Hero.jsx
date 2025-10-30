@@ -7,8 +7,7 @@ export default function Hero() {
   const images = [
     'public/treegirl.png',
     'public/face.png',
-    'public/hero6.png',
-    'public/bubble.png',
+   
   ];
 
   const [index, setIndex] = useState(0);

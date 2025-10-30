@@ -44,10 +44,6 @@ background: #7ab5f0;
 background: radial-gradient(circle, rgb(170, 212, 255) 14%, rgba(255, 255, 255, 1) 77%);
 } */
 
-footer {
-  background: gray;
-}
-  
 
 
 #bodybg{
@@ -55,7 +51,7 @@ footer {
 }
 
  #btn{
-  background-color:#372514 ;
+  background-color:#206140;
   color: white;
  }
 
@@ -67,6 +63,9 @@ footer {
   /* color: rgb(33, 20, 20); */
   color: #372514;
   
+ }
+ #best-seller{
+  background-color:#fee0d9;
  }
 
 

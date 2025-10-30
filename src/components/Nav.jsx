@@ -87,7 +87,8 @@ export default function Nav() {
 
   return (
     <div>
-      <nav className="fixed top-0 left-0 w-full z-50 bg-white/20 backdrop-blur-xl border-b border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
+<nav className="fixed top-0 left-0 w-full z-50 bg-gradient-to-b from-white/30 via-white/20 to-transparent backdrop-blur-xl border-b border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)] transition-all duration-500">
+
         <div className=" max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
           <div className="flex justify-between items-center h-16">
             {/* 🪴 Logo */}

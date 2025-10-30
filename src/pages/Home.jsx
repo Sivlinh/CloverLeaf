@@ -48,7 +48,7 @@ export default function Home() {
   };
 
   return (
-    <div id="bodybg" className="w-full mt-16">
+    <div id="bodybg" className="w-full mb-10 mt-16 bg-[#fffaf5]">
       {/* Hero Slider with Images */}
       <div  className="relative  shadow-sm  w-full h-[80vh] md:h-[90vh] overflow-hidden animate-fade-in">
         {slides.map((slide, i) => (
@@ -62,7 +62,7 @@ export default function Home() {
             <div className="flex flex-col justify-center w-full md:w-1/2 px-8 md:px-16 py-10 md:py-0 text-center md:text-left z-20">
               <h2 className="text-3xl md:text-5xl font-serif font-bold mb-4">{slide.title}</h2>
               <p className="text-base md:text-lg mb-6">{slide.text}</p>
-             <button
+             <button id="btn"
  onClick={() => navigate(`/shop?category=${encodeURIComponent(slide.category)}`)}
  className="bg-green-900 hover:bg-green-800 text-white py-2 px-5 rounded-2xl font-medium shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 w-fit mx-auto md:mx-0 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
 >
@@ -87,8 +87,7 @@ export default function Home() {
         <button
           onClick={prevSlide}
           className="absolute left-3 md:left-5 top-1/2 -translate-y-1/2 text-3xl md:text-4xl text-white bg-black/40 px-3 py-1 rounded-full hover:bg-black/70 z-30"
-        >
-          ‹
+        >         ‹
         </button>
         <button
           onClick={nextSlide}
@@ -119,7 +118,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-3xl font-bold text-center mb-8 text-gray-800"
+            className="text-3xl font-bold text-center mb-8 text-[#3e2f24]"
           >
             <h1 className="font-serif">Bestselling Favorites</h1>
             <h3 className="font-extralight text-lg">
@@ -127,7 +126,7 @@ export default function Home() {
             </h3>
           </motion.h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {products.map((product, index) => (
               <Link to={`/product/${product.id}`} key={product.id}>
                 <motion.div
@@ -137,7 +136,7 @@ export default function Home() {
                   viewport={{ once: true }}
                   className="group border rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                 >
-                  <div className="overflow-hidden relative">
+                  <div id="best-seller" className="overflow-hidden bg- relative">
                     <motion.img
                       src={product.image}
                       alt={product.name}
@@ -154,7 +153,7 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="text-center mt-12">
+          {/* <div className="text-center mt-12">
             <motion.a
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -163,9 +162,155 @@ export default function Home() {
             >
               View All Products
             </motion.a>
-          </div>
+          </div> */}
         </div>
       </section>
+    
+{/* ✨ Skincare Inspiration Section 2 */}
+ 
+     
+<section className="py-15 bg-gradient-to-b   from-[#fffaf5] to-[#f4f1ec]">
+    <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-3xl font-bold text-center  mb-8 text-[#3e2f24]"
+          >
+            <h1 className="font-serif">Gentle care every day</h1>
+           
+          </motion.h2>
+  
+  <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+    
+    
+    {/* Sidebar */}
+  
+<motion.div
+  initial={{ opacity: 0, x: -40 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  transition={{ duration: 0.8 }}
+  viewport={{ once: true }}
+  className="col-span-1 rounded-3xl shadow-lg overflow-hidden relative hover:shadow-2xl transition-all duration-500"
+>
+  {/* 🖼️ Background Image */}
+  <img
+    src="public/treeback.png"  // ← replace with your image path
+    alt="Skincare Daily Routine"
+    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+  />
+
+  {/* Overlay for readability */}
+  <div className="absolute inset-0 bg-white/80 backdrop-blur-sm"></div>
+
+  {/* Text and Button Content */}
+  <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-8 space-y-4">
+    <h3
+      style={{
+        fontFamily: "'Roboto', sans-serif",
+        fontWeight: 600,
+        fontSize: "24px",
+        color: "#333",
+      }}
+    >
+      Daily skincare made easy
+    </h3>
+    <p className="text-gray-700 text-sm">
+      A collection of carefully selected products to support your skin every
+      day, naturally and gently.
+    </p>
+
+    {/* ✅ Link to Shop by selected categories */}
+    <button
+      onClick={() =>
+        navigate("/shop", {
+          state: {
+            categories: ["Serum", "Face Mask", "Moisturizer"],
+            fromSection: "ShopRelated",
+          },
+        })
+      }
+      id="btn"
+      className="px-6 py-3 bg-[#3e2f24] text-white rounded-full hover:bg-[#5b4334] transition-all duration-300"
+    >
+      Shop Now
+    </button>
+  </div>
+</motion.div>
+
+
+    {/* Right Content Area */}
+    <div className="col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Content-1 → Serum */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        onClick={() => navigate("/shop?category=Serum")}
+        className="bg-white rounded-3xl shadow-lg relative overflow-hidden group cursor-pointer"
+      >
+        <img
+          src="public/serum2.png"
+          alt="Serum Care"
+          className="w-full h-[250px] object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+          <p className="text-white font-medium text-lg">Serum Secrets</p>
+        </div>
+      </motion.div>
+
+      {/* Content-2 → Moisturizer */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        viewport={{ once: true }}
+        onClick={() => navigate("/shop?category=Moisturizer")}
+        className="bg-white rounded-3xl shadow-lg relative overflow-hidden group cursor-pointer"
+      >
+        <img
+          src="public/mos1.png"
+          alt="Moisture Care"
+          className="w-full h-[250px] object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+          <p className="text-white font-medium text-lg">Moisture Magic </p>
+        </div>
+      </motion.div>
+
+      {/* Content-3 → Face Mask */}
+ {/* Content-3 → Face Mask (Video Version) */}
+<motion.div
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, delay: 0.4 }}
+  viewport={{ once: true }}
+  onClick={() => navigate("/shop?category=Face Mask")}
+  className="bg-white rounded-3xl shadow-lg relative overflow-hidden group md:col-span-2 cursor-pointer"
+>
+  {/* 🖼️ Image instead of video */}
+  <img
+    src="public/image copy.png" // ← change path to your image
+    alt="Face Mask"
+    className="w-full h-[250px] md:h-[300px] object-cover transition-transform duration-700 group-hover:scale-105"
+  />
+
+  {/* Hover overlay */}
+  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+    <p className="text-white font-medium text-lg">Glow with Face Masks </p>
+  </div>
+</motion.div>
+
+
+    </div>
+  </div>
+</section>
+
+
+
+
+      
     </div>
   );
 }

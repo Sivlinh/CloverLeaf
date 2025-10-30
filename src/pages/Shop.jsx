@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { FaStar, FaHeart } from "react-icons/fa";
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams, Link, useLocation } from "react-router-dom"; // 🆕 add useLocation
 import products from "../data/products";
 
 export default function Shop() {
   const [searchParams] = useSearchParams();
-  const selectedCategory = searchParams.get('category');
-  const searchQuery = searchParams.get('search');
+  const location = useLocation(); // 🆕 get location state
+  const selectedCategory = searchParams.get("category");
+  const searchQuery = searchParams.get("search");
+  const stateCategories = location.state?.categories || []; // 🆕 from navigate(..., { state })
+
   const [productsState] = useState(products);
   const [addedIds, setAddedIds] = useState(() => {
     try {
@@ -20,18 +23,25 @@ export default function Shop() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [orderCode, setOrderCode] = useState("");
 
-  // ✅ Filter products by category (supports array or string)
-  let filteredProducts = selectedCategory && selectedCategory !== 'All Products'
-    ? products.filter(product => 
-        Array.isArray(product.category)
-          ? product.category.includes(selectedCategory)
-          : product.category === selectedCategory
-      )
-    : products;
+  // ✅ Filter logic supports both: single query category OR array (from state)
+  let filteredProducts = products;
+
+  if (stateCategories.length > 0) {
+    // 🆕 filter if array of categories from location.state
+    filteredProducts = products.filter((product) =>
+      stateCategories.includes(product.category)
+    );
+  } else if (selectedCategory && selectedCategory !== "All Products") {
+    filteredProducts = products.filter((product) =>
+      Array.isArray(product.category)
+        ? product.category.includes(selectedCategory)
+        : product.category === selectedCategory
+    );
+  }
 
   // Apply search filter if search query exists
   if (searchQuery) {
-    filteredProducts = filteredProducts.filter(product =>
+    filteredProducts = filteredProducts.filter((product) =>
       product.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }
@@ -76,21 +86,18 @@ export default function Shop() {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     const exists = cart.find((p) => p.id === item.id);
     if (exists) {
-      // remove it
       const updated = cart.filter((p) => p.id !== item.id);
       localStorage.setItem("cart", JSON.stringify(updated));
       setAddedIds(updated.map((p) => p.id));
       window.dispatchEvent(new Event("cartUpdated"));
       return;
     }
-    // add it
     cart.push({ ...item, quantity: 1 });
     localStorage.setItem("cart", JSON.stringify(cart));
     setAddedIds(cart.map((p) => p.id));
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
-  // keep addedIds in sync when other components update the cart
   useEffect(() => {
     const handler = () => {
       try {
@@ -105,28 +112,53 @@ export default function Shop() {
   }, []);
 
   return (
-    <div id="bodybg" className="min-h-screen flex flex-col items-center py-10 bg-[#fffaf5] animate-fade-in">
-      <h1 id="fontcolor" className="text-2xl text-gray-800 mb-10 font-semibold">
-        {searchQuery
-          ? `Search Results for "${searchQuery}"`
-          : ` About  ${selectedCategory && selectedCategory !== 'All Products'
-              ? selectedCategory
-              : 'All Products'}  Collection`}
-      </h1>
+    <div
+      id="bodybg"
+      className="min-h-screen flex flex-col items-center py-10  animate-fade-in"
+    >
+<div className="text-center mb-16 px-4">
+  <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+    {searchQuery ? (
+      `Search Results for "${searchQuery}"`
+    ) : location.state?.fromSection === "ShopRelated" ? (
+      "Shop Related Products"
+    ) : (
+      `About ${
+        stateCategories.length > 0
+          ? stateCategories.join(", ")
+          : selectedCategory && selectedCategory !== "All Products"
+          ? selectedCategory
+          : "All Products"
+      } Collection`
+    )}
+  </h1>
 
-      <div className="w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+  <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+    {searchQuery ? (
+      "Browse through our carefully selected items to find exactly what you need."
+    ) : location.state?.fromSection === "ShopRelated" ? (
+      "Discover the secrets to radiant, healthy skin with our curated collection of expert-approved products. From soothing masks to nourishing serums, each item is designed to elevate your daily skincare routine naturally and gently."
+    ) : (
+      " At Cloverleaf, good skin is about confidence, not perfection. Explore our full range of products to find your perfect skincare match."
+    )}
+  </p>
+</div>
+     
+     {/* card */}
+
+      <div className="w-full  max-w-7xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((item) => (
             <Link
               key={item.id}
               to={`/product/${item.id}`}
-              className="bg-white rounded-3xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 overflow-hidden cursor-pointer"
+              className="bg-white rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 overflow-hidden cursor-pointer"
             >
               <div className="relative">
                 <img
                   src={item.images[0]}
                   alt={item.title}
-                  className="w-full h-60 object-contain p-6 bg-gradient-to-b from-[#f9fcff] to-[#eef5ff]"
+                  className="w-full h-60 object-contain p-6 16 bg-[#7e4b172e]"
                 />
                 <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-md rounded-full p-2 shadow-sm">
                   <FaHeart
@@ -135,10 +167,11 @@ export default function Shop() {
                       e.preventDefault();
                       handleAddToCart(item);
                     }}
-                    className={`${addedIds.includes(item.id)
-                      ? 'text-red-500'
-                      : 'text-gray-400 hover:text-red-500'
-                      } transition-colors duration-200 cursor-pointer`}
+                    className={`${
+                      addedIds.includes(item.id)
+                        ? "text-red-500"
+                        : "text-gray-400 hover:text-red-500"
+                    } transition-colors duration-200 cursor-pointer`}
                   />
                 </div>
               </div>
@@ -149,16 +182,22 @@ export default function Shop() {
                 </h3>
                 {renderStars(item.rating)}
                 <p className="text-gray-400 text-sm mb-2">
-                  {Array.isArray(item.category) ? item.category.join(", ") : item.category}
+                  {Array.isArray(item.category)
+                    ? item.category.join(", ")
+                    : item.category}
                 </p>
                 <p className="text-[#0a1a2f] font-bold text-xl mb-2">
                   ${item.price}
                 </p>
 
                 <button
-                  onClick={(e) => { e.preventDefault(); handleBuy(item); }}
-                 className="flex-1 bg-green-900 hover:bg-green-800 text-white py-2 px-8 rounded-full text-sm font-medium shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
->
+                  id="btn"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleBuy(item);
+                  }}
+                  className="flex-1 hover:bg-green-800 text-white py-2 px-8 rounded-full text-sm font-medium shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                >
                   Buy
                 </button>
               </div>
@@ -176,7 +215,9 @@ export default function Shop() {
       {selectedProduct && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-8 shadow-2xl w-[90%] max-w-md text-center">
-            <h2 className="text-xl font-bold text-[#0a1a2f] mb-4">Confirm Buy</h2>
+            <h2 className="text-xl font-bold text-[#0a1a2f] mb-4">
+              Confirm Buy
+            </h2>
             <p className="text-gray-600 mb-2">
               <strong>Product:</strong> {selectedProduct.title}
             </p>

@@ -6,12 +6,13 @@ import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
 import Profile from "./pages/Profile";
 import Footer from "./components/Footer";
-import Hero from "./components/Hero";
 import Shop from "./pages/Shop";
 import Search from "./pages/Search";
 import React from "react";
 import ProductDetail from "./pages/ProductDetail";
 import DetailShop from "./pages/DetailShop";
+import Hero from "./components/Hero";
+import { TestimonialsSection } from "./pages/TestimonialsSection";
 
 
 export default function App() {
@@ -31,6 +32,8 @@ export default function App() {
         <Route path="/detail/:id" element={<DetailShop />} />
         <Route path="/search" element={<Search />} />
       </Routes>
+      <TestimonialsSection />
+
 
      
       
@@ -39,3 +42,4 @@ export default function App() {
     </div>
   );
 }
+
