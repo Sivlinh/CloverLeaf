@@ -25,7 +25,7 @@ export const TestimonialsSection = () => {
     },
     {
       id: 3,
-      name: 'Emily Davis',
+      name: 'Hout Nova',
       role: 'Skincare Blogger',
       company: '',
       content: 'These serums and moisturizers are a game-changer. I feel confident showing my skin naturally.',
@@ -46,7 +46,7 @@ export const TestimonialsSection = () => {
 
   return (
     <div>
-      <div className="mt-6  text-balance text-2xl font-semibold text-[#3e2f24] sm:text-4xl md:text-5xl">
+      <div id="bodybg" className="mt-6  text-balance text-2xl font-semibold text-[#3e2f24] sm:text-4xl md:text-5xl">
         <h2></h2>
 
       </div>
@@ -54,7 +54,7 @@ export const TestimonialsSection = () => {
     <section
       ref={containerRef}
       id="testimonials"
-      className="relative overflow-hidden bg-white px-6 py-28"
+      className="relative overflow-hidden  px-6 py-20"
     >
       <div className="pointer-events-none absolute inset-x-0 top-24 mx-auto h-64 max-w-5xl rounded-[120px] bg-gradient-to-b from-[#f3efe8] via-white to-transparent blur-3xl" />
 
@@ -129,7 +129,7 @@ export const TestimonialsSection = () => {
 
 
     {/* ✨ Brand Logos Section */}
-<section className="py-12 bg-[#fffaf5]">
+<section id='bodybg' className="py-12 bg-white">
   <div className="max-w-6xl mx-auto px-6">
     <h3 className="text-xl md:text-xl font-semibold text-[#3e2f24] text-center mb-8">
       Trusted by Leading Skincare Brands

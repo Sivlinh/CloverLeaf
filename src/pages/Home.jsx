@@ -49,7 +49,7 @@ export default function Home() {
   };
 
   return (
-    <div id="bodybg" className="w-full mb-10 mt-16 bg-[#fffaf5]">
+    <div className="w-full mb-10 mt-16 bg-[#fffaf5]">
       {/* Hero Slider with Images */}
       <div className="relative shadow-sm w-full h-[80vh] md:h-[90vh] overflow-hidden animate-fade-in">
         {slides.map((slide, i) => (
@@ -111,7 +111,46 @@ export default function Home() {
           ))}
         </div>
       </div>
+     
+     {/* Gentle care every day */}
 
+<<<<<<< HEAD
+      <section id="bodybg" className="py-20 bg-[#fffaf5] mb-10">
+    <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-3xl font-bold text-center  mb-8 text-[#3e2f24]"
+          >
+            <h1 className="font-serif">Gentle care every day</h1>
+             <h3 className="font-extralight text-lg">
+              Our most-loved products, trusted by thousands for their transformative results
+            </h3>
+           
+          </motion.h2>
+  
+  <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+    
+    
+    {/* Sidebar */}
+  
+<motion.div
+  initial={{ opacity: 0, x: -40 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  transition={{ duration: 0.8 }}
+  viewport={{ once: true }}
+  className="col-span-1 rounded-3xl shadow-lg overflow-hidden relative hover:shadow-2xl transition-all duration-500"
+  style={{
+    backgroundImage: 'url(public/treeback.png)',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+  }}
+>
+  {/* Overlay for readability */}
+  <div className="absolute inset-0 bg-white/80 backdrop-blur-sm"></div>
+=======
       {/* Gentle Care Section */}
       <section className="py-15 bg-gradient-to-b from-[#fffaf5] to-[#f4f1ec]">
         <motion.h2
@@ -145,6 +184,7 @@ export default function Home() {
 
             {/* Overlay for readability */}
             <div className="absolute inset-0 bg-white/80 backdrop-blur-sm"></div>
+>>>>>>> 96a471c3df136cbdb0b3b356876fdcb63dd8034b
 
             {/* Text and Button Content */}
             <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-8 space-y-4">
@@ -256,8 +296,72 @@ export default function Home() {
         </div>
       </section>
 
+<<<<<<< HEAD
+      {/* Content-2 → Moisturizer */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        viewport={{ once: true }}
+        onClick={() => navigate("/shop?category=Moisturizer")}
+        className="bg-white rounded-3xl shadow-lg relative overflow-hidden group cursor-pointer"
+      >
+        <img
+          src="public/mos1.png"
+          alt="Moisture Care"
+          className="w-full h-[250px] object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+          <p className="text-white font-medium text-lg">Moisture Magic </p>
+        </div>
+      </motion.div>
+
+      {/* Content-3 → Face Mask */}
+ {/* Content-3 → Face Mask (Video Version) */}
+<motion.div
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, delay: 0.4 }}
+  viewport={{ once: true }}
+  onClick={() => navigate("/shop?category=Face Mask")}
+  className="bg-white rounded-3xl shadow-lg relative overflow-hidden group md:col-span-2 cursor-pointer"
+>
+  {/* Image */}
+  <img
+    src="public/bro.jpg"
+    alt="Face Mask"
+    className="w-full h-[250px] md:h-[300px] object-cover transition-transform duration-700 group-hover:scale-105"
+  />
+
+  {/* Subtle overlay on hover */}
+  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/35 transition-all duration-500"></div>
+
+  {/* Centered Text */}
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 1 }}
+    className="absolute text-[#3e2f24] inset-0 flex flex-col items-center justify-center text-center text-br font-semiboldgit text-lg md:text-xl leading-relaxed tracking-wide space-y-2 drop-shadow-[0_6px_12px_rgba(0,0,0,0.55)] px-4"
+  >
+    <p>• Reveal Radiant Skin</p>
+    <p>• Refresh Your Glow</p>
+    <p>Self-Care Starts With You </p>
+  </motion.div>
+</motion.div>
+
+
+
+
+    </div>
+  </div>
+</section>
+
+      {/* Bestselling Products Section (unchanged) */}
+      <section id="shop" className="py-26 bg-[#fffaf5] animate-slide-up">
+=======
       {/* Bestselling Products Section */}
       <section id="shop" className="py-16 bg-[#fffaf5] animate-slide-up">
+>>>>>>> 96a471c3df136cbdb0b3b356876fdcb63dd8034b
         <div className="max-w-6xl mx-auto px-4">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
