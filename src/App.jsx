@@ -13,6 +13,7 @@ import ProductDetail from "./pages/ProductDetail";
 import DetailShop from "./pages/DetailShop";
 import Hero from "./components/Hero";
 import { TestimonialsSection } from "./pages/TestimonialsSection";
+import Reception from "./pages/Reception";
 
 
 export default function App() {
@@ -33,6 +34,7 @@ export default function App() {
         <Route path="/shop" element={<Shop />} />
         <Route path="/detail/:id" element={<DetailShop />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/reception" element={<Reception />} />
 
       </Routes>
      

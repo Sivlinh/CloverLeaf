@@ -102,6 +102,8 @@ export default function Shop() {
     setSelectedProduct(null);
     window.dispatchEvent(new Event("walletUpdated"));
     window.dispatchEvent(new Event("orderHistoryUpdated"));
+    // Navigate to reception page after successful payment
+    setTimeout(() => navigate("/reception"), 2000);
   };
 
   const handleCancel = () => {
