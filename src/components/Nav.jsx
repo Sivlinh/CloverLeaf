@@ -9,8 +9,8 @@ const NAV_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
-const SEARCH_CLOSE_DELAY = 300;
-const SEARCH_FOCUS_DELAY = 80;
+const SEARCH_CLOSE_DELAY = 100;
+const SEARCH_FOCUS_DELAY = 100;
 
 export default function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,7 +24,7 @@ export default function Nav() {
   const hoverTimer = useRef(null);
   const searchInputRef = useRef(null);
 
-  // Update cart count from localStorage
+  // --- Update cart count ---
   const updateCartCount = useCallback(() => {
     try {
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -47,20 +47,18 @@ export default function Nav() {
     };
   }, [updateCartCount]);
 
+  // --- Menu & Search Toggles ---
   const navLinks = useMemo(() => NAV_LINKS, []);
   const toggleMenu = useCallback(() => setIsMenuOpen((prev) => !prev), []);
-
   const toggleSearch = useCallback(() => {
     setShowSearch((prev) => !prev);
     setIsSearchExpanded((prev) => !prev);
   }, []);
-
   const openSearch = useCallback(() => {
     clearTimeout(hoverTimer.current);
     setShowSearch(true);
     setIsSearchExpanded(true);
   }, []);
-
   const closeSearchWithDelay = useCallback(() => {
     clearTimeout(hoverTimer.current);
     hoverTimer.current = setTimeout(() => {
@@ -71,6 +69,7 @@ export default function Nav() {
     }, SEARCH_CLOSE_DELAY);
   }, []);
 
+  // --- Handle search submit ---
   const handleSearch = useCallback(
     (e) => {
       e.preventDefault();
@@ -79,12 +78,12 @@ export default function Nav() {
         navigate(`/shop?search=${encodeURIComponent(trimmedTerm)}`);
         setShowSearch(false);
         setIsSearchExpanded(false);
-        setSearchTerm("");
       }
     },
     [searchTerm, navigate]
   );
 
+  // --- Auto focus when search expands ---
   useEffect(() => {
     if (isSearchExpanded) {
       const timer = setTimeout(() => {
@@ -93,6 +92,24 @@ export default function Nav() {
       return () => clearTimeout(timer);
     }
   }, [isSearchExpanded]);
+
+  // --- Auto close search when route changes ---
+  useEffect(() => {
+    setShowSearch(false);
+    setIsSearchExpanded(false);
+  }, [location.pathname]);
+
+  // --- Debounced instant search (auto navigate) ---
+  useEffect(() => {
+    const trimmedTerm = searchTerm.trim();
+    if (!trimmedTerm) return;
+
+    const debounce = setTimeout(() => {
+      navigate(`/shop?search=${encodeURIComponent(trimmedTerm)}`);
+    }, 400); // waits 0.4s before searching
+
+    return () => clearTimeout(debounce);
+  }, [searchTerm, navigate]);
 
   const isActiveLink = useCallback(
     (path) => location.pathname === path,
@@ -150,10 +167,10 @@ export default function Nav() {
               </ul>
             </nav>
 
-            {/* Cart, Search, Profile, Mobile Menu */}
+            {/* Right Section */}
             <div className="flex items-center space-x-4">
               {/* Search */}
-              <div className="relative flex items-center space-x-3">
+              <div className="relative  items-center space-x-3 hidden md:flex">
                 <div onMouseEnter={openSearch} onMouseLeave={closeSearchWithDelay}>
                   <button
                     onClick={toggleSearch}
@@ -225,7 +242,6 @@ export default function Nav() {
               <Link
                 to="/cart"
                 className="relative p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-[25px] transition-all duration-300 group"
-                aria-label={`Shopping cart with ${cartCount} items`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -238,7 +254,14 @@ export default function Nav() {
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                    d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993
+                    1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125
+                    1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1
+                    5.513 7.5h12.974c.576 0 1.059.435 1.119
+                    1.007ZM8.625 10.5a.375.375 0 1
+                    1-.75 0 .375.375 0 0 1 .75
+                    0Zm7.5 0a.375.375 0 1 1-.75
+                    0 .375.375 0 0 1 .75 0Z"
                   />
                 </svg>
                 {cartCount > 0 && (
@@ -252,7 +275,6 @@ export default function Nav() {
               <Link
                 to="/profile"
                 className="group p-2 text-gray-700 hover:text-gray-900 hover:bg-white/30 rounded-[25px] transition-all duration-300"
-                aria-label="User profile"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -265,12 +287,18 @@ export default function Nav() {
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                    d="M17.982 18.725A7.488 7.488 0 0 0
+                    12 15.75a7.488 7.488 0 0 0-5.982
+                    2.975m11.963 0a9 9 0 1
+                    0-11.963 0m11.963 0A8.966 8.966
+                    0 0 1 12 21a8.966 8.966 0 0
+                    1-5.982-2.275M15 9.75a3 3 0 1
+                    1-6 0 3 3 0 0 1 6 0Z"
                   />
                 </svg>
               </Link>
 
-              {/* Mobile Menu Toggle */}
+              {/* Mobile Menu Button */}
               <div className="md:hidden">
                 <button
                   onClick={toggleMenu}
@@ -286,7 +314,12 @@ export default function Nav() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
                     </svg>
                   ) : (
                     <svg
@@ -296,7 +329,12 @@ export default function Nav() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 6h16M4 12h16M4 18h16"
+                      />
                     </svg>
                   )}
                 </button>
@@ -309,28 +347,58 @@ export default function Nav() {
             className={`${isMenuOpen ? "block" : "hidden"} md:hidden`}
             aria-label="Mobile navigation"
           >
-            <ul
-              className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white/20 backdrop-blur-lg rounded-lg mt-2 border border-white/30 shadow-md"
-              role="menu"
-            >
-              {navLinks.map((link) => (
-                <li key={link.href} role="none">
-                  <Link
-                    to={link.href}
-                    onClick={() => setIsMenuOpen(false)}
-                    role="menuitem"
-                    className={`block px-3 py-2 rounded-md text-base font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300 ${
-                      isActiveLink(link.href)
-                        ? "text-gray-900 bg-white/40"
-                        : "text-gray-800 hover:text-gray-900 hover:bg-white/30"
-                    }`}
-                    aria-current={isActiveLink(link.href) ? "page" : undefined}
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white/20 backdrop-blur-lg rounded-lg mt-2 border border-white/30 shadow-md">
+              {/* Mobile Search */}
+              <form onSubmit={handleSearch} className="px-3 py-2">
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search for products..."
+                    className="w-full px-4 py-2 pl-10 text-gray-700 placeholder-gray-400 bg-white/50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent text-sm"
+                    autoComplete="off"
+                  />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                   >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0
+                      1 0 5.196 5.196a7.5 7.5 0 0 0
+                      10.607 10.607Z"
+                    />
+                  </svg>
+                </div>
+              </form>
+
+              {/* Mobile Nav Links */}
+              <ul className="space-y-1" role="menu">
+                {navLinks.map((link) => (
+                  <li key={link.href} role="none">
+                    <Link
+                      to={link.href}
+                      onClick={() => setIsMenuOpen(false)}
+                      role="menuitem"
+                      className={`block px-3 py-2 rounded-md text-base font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300 ${
+                        isActiveLink(link.href)
+                          ? "text-gray-900 bg-white/40"
+                          : "text-gray-800 hover:text-gray-900 hover:bg-white/30"
+                      }`}
+                      aria-current={isActiveLink(link.href) ? "page" : undefined}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </nav>
         </div>
       </nav>

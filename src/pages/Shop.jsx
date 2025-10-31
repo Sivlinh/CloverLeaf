@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaStar, FaShoppingCart } from "react-icons/fa";
 import { useSearchParams, Link, useNavigate } from "react-router-dom";
 import products from "../data/products";
+import { div } from "framer-motion/client";
 
 export default function Shop() {
    const [searchParams] = useSearchParams();
@@ -213,6 +214,7 @@ export default function Shop() {
       <div className="w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((item) => (
+            
             <Link
               key={item.id}
               to={`/product/${item.id}`}
@@ -256,7 +258,8 @@ export default function Shop() {
                 <button
                   onClick={(e) => { e.preventDefault(); handleBuy(item); }}
                  className="flex-1 bg-green-900 hover:bg-green-800 text-white py-2 px-12 rounded-full text-sm font-medium shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
->
+                    >
+                     
                   Buy
                 </button>
               </div>
