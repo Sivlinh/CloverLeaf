@@ -8,7 +8,7 @@ import Profile from "./pages/Profile";
 import Footer from "./components/Footer";
 import Shop from "./pages/Shop";
 import Search from "./pages/Search";
-import React from "react";
+import React, { useEffect } from "react";
 import ProductDetail from "./pages/ProductDetail";
 import DetailShop from "./pages/DetailShop";
 import Hero from "./components/Hero";
@@ -17,6 +17,10 @@ import { TestimonialsSection } from "./pages/TestimonialsSection";
 
 export default function App() {
   const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
   return (
     <div className="App" id="bodybg">
