@@ -79,6 +79,7 @@ export default function Nav() {
         navigate(`/shop?search=${encodeURIComponent(trimmedTerm)}`);
         setShowSearch(false);
         setIsSearchExpanded(false);
+        setIsMenuOpen(false); // Close mobile menu after search
         setSearchTerm("");
       }
     },
