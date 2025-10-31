@@ -389,9 +389,9 @@ export default function ProductDetail() {
             </div>
             <div className="flex gap-4">
               <button
-                id="btn"
+              
                 onClick={handleConfirm}
-                className="flex-1 bg-green-900 hover:bg-green-800 text-white py-3 px-6 rounded-full font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                className="flex-1 bg-blue-600 hover:bg-blue-500 text-white py-3 px-6 rounded-full font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
               >
                 Confirm
               </button>

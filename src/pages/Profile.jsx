@@ -8,6 +8,7 @@ export default function Profile() {
    const [isEditing, setIsEditing] = useState(false);
    const [editName, setEditName] = useState("");
    const [editPhone, setEditPhone] = useState("");
+   const [editPhoneNumber, setEditPhoneNumber] = useState("");
    const [editAvatar, setEditAvatar] = useState(null);
    const [editAddress, setEditAddress] = useState("");
    const [showTopUp, setShowTopUp] = useState(false);
@@ -134,6 +135,7 @@ export default function Profile() {
       id: Date.now(),
       name,
       email,
+      phoneNumber: "",
       password, // In real app, this should be hashed
       avatar: "https://via.placeholder.com/100",
       joinDate: new Date().toISOString().split("T")[0],
@@ -149,6 +151,7 @@ export default function Profile() {
     setUser(newUser);
     setEditName(name);
     setEditPhone(email);
+    setEditPhoneNumber("");
     setSignupPassword("");
     setConfirmPassword("");
   };
@@ -198,6 +201,7 @@ export default function Profile() {
       ...user,
       name: editName,
       email: editPhone,
+      phoneNumber: editPhoneNumber,
       avatar: editAvatar || user.avatar,
       address: editAddress,
     };
@@ -591,6 +595,20 @@ export default function Profile() {
                             />
                           ) : (
                             <p className="text-gray-600 bg-gray-50 px-3 py-2 rounded-lg">{user.email}</p>
+                          )}
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                          {isEditing ? (
+                            <input
+                              type="tel"
+                              value={editPhoneNumber}
+                              onChange={(e) => setEditPhoneNumber(e.target.value)}
+                              placeholder="Enter your phone number"
+                              className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                            />
+                          ) : (
+                            <p className="text-gray-600 bg-gray-50 px-3 py-2 rounded-lg">{user.phoneNumber || "No phone number added yet."}</p>
                           )}
                         </div>
                       </div>
