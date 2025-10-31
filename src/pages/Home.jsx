@@ -100,7 +100,7 @@ export default function Home() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-3xl font-bold text-center mb-8 "
+          className="text-3xl font-bold text-center mb-8 text-[#3e2f24]"
         >
           <h1 className="font-serif">Gentle care every day</h1>
           <h3 className="font-extralight text-lg">
@@ -152,8 +152,8 @@ export default function Home() {
               className="bg-white rounded-3xl shadow-lg relative overflow-hidden group cursor-pointer"
             >
               <img src="/serum2.png" className="w-full h-[250px] object-cover transition-transform duration-700 group-hover:scale-105" />
-              <div className="absolute left-[20%] bottom-[20%] text-[#3e2f24] font-extralight text-xl underline decoration-2 underline-offset-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 drop-shadow-lg">
-                Serum
+              <div className="absolute bottom-[20%] left-[20%] opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <p className="text-[#3e2f24] font-extralight text-lg underline">Serum</p>
               </div>
             </motion.div>
 
@@ -167,8 +167,8 @@ export default function Home() {
               className="bg-white rounded-3xl shadow-lg relative overflow-hidden group cursor-pointer"
             >
               <img src="/mos1.png" className="w-full h-[250px] object-cover transition-transform duration-700 group-hover:scale-105" />
-              <div className="absolute left-[20%] bottom-[20%] text-[#3e2f24] font-extralight text-xl underline decoration-2 underline-offset-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 drop-shadow-lg">
-                Moisturizer
+              <div className="absolute bottom-[20%] left-[20%] opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <p className="text-[#3e2f24] font-extralight text-lg underline">Moisturizer</p>
               </div>
             </motion.div>
 
@@ -182,8 +182,8 @@ export default function Home() {
               className="bg-white rounded-3xl shadow-lg relative overflow-hidden group md:col-span-2 cursor-pointer"
             >
               <img src="/bro.jpg" className="w-full h-[300px] object-cover transition-transform duration-700 group-hover:scale-105" />
-              <div className="absolute left-[20%] bottom-[20%] text-[#3e2f24] font-extralight text-xl underline decoration-2 underline-offset-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 drop-shadow-lg">
-                Face Mask
+              <div className="absolute bottom-[20%] left-[20%] opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <p className="text-[#3e2f24] font-extralight text-lg underline">Face Mask</p>
               </div>
             </motion.div>
           </div>
@@ -239,4 +239,3 @@ export default function Home() {
     </div>
   );
 }
-
