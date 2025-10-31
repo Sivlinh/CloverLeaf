@@ -22,7 +22,7 @@ export default function App() {
   return (
     <div className="App" id="bodybg">
       <Nav />
-      {!location.pathname.startsWith('/product/') && !location.pathname.startsWith('/detail/') && <Hero />}
+      {!location.pathname.startsWith('/product/') && !location.pathname.startsWith('/detail/') && location.pathname !== '/profile' && location.pathname !== '/cart' && <Hero />}
 
       <Routes>
         <Route path="/" element={<Home />} />

@@ -191,7 +191,7 @@ export default function Cart() {
         </div>
       )}
 
-      <h1 className="text-2xl font-semibold mb-8 text-[#1e385b]">Your Cart</h1>
+      <h1 className="text-3xl font-bold mb-8 text-[#0a1a2f]">Your Cart</h1>
 
       {cartItems.length === 0 ? (
         <p className="text-gray-500">Your cart is empty.</p>
