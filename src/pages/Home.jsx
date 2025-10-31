@@ -102,10 +102,11 @@ export default function Home() {
           viewport={{ once: true }}
           className="text-3xl font-bold text-center mb-8 text-[#3e2f24]"
         >
+        <div>
           <h1 className="font-serif">Gentle care every day</h1>
           <h3 className="font-extralight text-lg">
             Our most-loved products, trusted by thousands for their transformative results
-          </h3>
+          </h3> </div>
         </motion.h2>
 
         <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -199,11 +200,12 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
             className="text-3xl font-bold text-center mb-8 text-[#3e2f24]"
-          >
+          > <div>
             <h1 className="font-serif">Bestselling Favorites</h1>
             <h3 className="font-extralight text-lg">
               Our most-loved products, trusted by thousands
             </h3>
+            </div>
           </motion.h2>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
