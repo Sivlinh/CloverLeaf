@@ -25,7 +25,7 @@ export default function App() {
   return (
     <div className="App" id="bodybg">
       <Nav />
-      {!location.pathname.startsWith('/product/') && !location.pathname.startsWith('/detail/') && !location.pathname.startsWith('/profile') && !location.pathname.startsWith('/cart')  && <Hero />}
+      {!location.pathname.startsWith('/product/') && !location.pathname.startsWith('/detail/') && !location.pathname.startsWith('/profile') && !location.pathname.startsWith('/cart') && !location.pathname.startsWith('/search') && <Hero />}
 
       <Routes>
         <Route path="/" element={<Home />} />

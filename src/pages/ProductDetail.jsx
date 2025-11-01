@@ -212,10 +212,10 @@ export default function ProductDetail() {
 
       <div className="max-w-6xl mx-auto">
         <Link
-          to="/shop"
+          to="/search"
           className="inline-flex items-center px-4 py-2 flex-1  text-black rounded-full font-semibold shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 mb-8 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
         >
-          ← Go to Shop
+          ← Back to Search
         </Link>
 
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
