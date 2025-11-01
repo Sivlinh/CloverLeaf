@@ -967,7 +967,7 @@ export default function Profile() {
                       <>
                         <div className="flex flex-col items-center ">
                           <img
-                            src="public/Logo/OIP.webp"
+                            src="public/Logo/bakong.png"
                             alt="KHQR Logo"
                             className="w-16 mb-3 rounded-md"
                           />

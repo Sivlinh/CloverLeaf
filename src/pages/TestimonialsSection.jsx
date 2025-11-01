@@ -9,7 +9,7 @@ export const TestimonialsSection = () => {
   const testimonials = [
     {
       id: 1,
-      name: 'Sophia Lee',
+      name: 'Suy Sivlinh',
       role: 'Beauty Enthusiast',
       company: '',
       content: 'Cloverleaf’s products transformed my daily skincare routine. My skin has never felt this soft and radiant!',
@@ -17,7 +17,7 @@ export const TestimonialsSection = () => {
     },
     {
       id: 2,
-      name: 'Mia Chen',
+      name: 'Hong Samphors',
       role: 'Influencer',
       company: '',
       content: 'I love the natural ingredients! My skin feels hydrated and glowing without any harsh chemicals.',
@@ -33,7 +33,7 @@ export const TestimonialsSection = () => {
     },
     {
       id: 4,
-      name: 'Liam Wilson',
+      name: 'Man Vann..da',
       role: 'Wellness Coach',
       company: '',
       content: 'Caring for your skin has never been easier. Cloverleaf makes every day a spa-like experience at home.',
